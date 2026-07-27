@@ -503,44 +503,78 @@ header.top{background:linear-gradient(135deg,#14131A 0%,#1E1D2A 100%);color:#fff
   .aviso-caja{padding:8px 10px;font-size:11px}
   .aviso-caja ul{padding-left:14px}
 
-  /* ---- modal ---- */
+  /* ---- modal movil: mucho mas espacioso ---- */
   .velo{padding:0;align-items:flex-end}
   .modal{width:100%;max-height:100dvh;border-radius:18px 18px 0 0}
-  .m-cab{padding:12px 14px 10px}
-  .m-cab h3{font-size:16px}
-  .espina{width:4px;min-height:32px}
-  .m-resumen-bar{padding:8px 14px;font-size:11px}
-  .m-tabs{padding:0 14px;gap:0;overflow-x:auto}
-  .m-tab{padding:8px 14px;font-size:11.5px;white-space:nowrap}
-  .m-panel{padding:14px 14px 12px;gap:16px}
-  .m-pie{padding:10px 14px}
-  .opciones{gap:7px}
-  .opc{padding:10px 12px;border-radius:12px}
-  .opc-h b{font-size:12.5px}
-  .horario{grid-template-columns:42px 1fr;font-size:10.5px;gap:2px 6px}
-  .horario .d{font-size:8px}
-  .horario .s em{font-size:9.5px}
-  .horario .s u{font-size:8px;padding:1px 3px}
-  .sub-fila{gap:4px}
-  .sub-chip{padding:5px 10px;font-size:10px}
-  .swatches{gap:4px}
-  .sw{width:24px;height:24px;border-radius:7px}
-  .campo label{font-size:8px}
-  .campo select,.campo input,.campo textarea{padding:7px 9px;font-size:14px;border-radius:10px}
-  .dos{grid-template-columns:1fr;gap:7px}
-  .eval-grid{grid-template-columns:1fr 1fr}
-  .eval-item{padding:10px 10px}
-  .eval-item label{font-size:10px}
-  .eval-item input[type="number"]{font-size:16px;width:50px}
-  .datos-cards{grid-template-columns:1fr}
-  .dato-card{padding:12px 14px;border-radius:12px}
-  .dato-card input,.dato-card select{font-size:15px;padding:10px 12px}
-  .notas-area{font-size:15px;padding:12px 14px;min-height:100px}
-  .glos{padding:10px 11px}
-  .glos dl{gap:5px 8px;font-size:11px}
-  .glos dt{font-size:9px;padding:2px 5px}
-  .mini-sem{padding:5px 6px 6px}
-  .ms-grid{height:56px}
+  .m-cab{padding:18px 18px 14px}
+  .m-cab h3{font-size:19px;line-height:1.2}
+  .m-cab .t-sub{gap:6px;margin-top:8px}
+  .m-cab .tag{font-size:10px;padding:4px 9px;border-radius:7px}
+  .espina{width:5px;min-height:38px;border-radius:6px}
+  .m-resumen-bar{padding:12px 18px;font-size:12px}
+  .m-resumen-bar .pt{font-size:10px}
+  .m-tabs{padding:0 18px;gap:0;overflow-x:auto}
+  .m-tab{padding:12px 18px;font-size:13px;white-space:nowrap}
+  .m-panel{padding:20px 18px 16px;gap:22px}
+  .m-sec h4{font-size:10px;letter-spacing:.14em;margin-bottom:14px}
+  .m-pie{padding:14px 18px}
+  .m-pie .btn{padding:10px 18px;font-size:13px;border-radius:12px}
+  .m-pie .pista{font-size:12px}
+
+  /* turnos */
+  .opciones{gap:12px}
+  .opc{padding:16px 18px;border-radius:16px;border-width:2px}
+  .opc[aria-pressed="true"]{border-width:2px}
+  .opc-h{margin-bottom:12px}
+  .opc-h b{font-size:15px}
+  .opc-h span{font-size:10px}
+  .mini-sem{padding:8px 10px 10px;border-radius:12px;margin-bottom:14px}
+  .ms-grid{height:70px}
+  .ms-dias span{font-size:9px}
+  .ms-pie{font-size:9px}
+  .horario{grid-template-columns:48px 1fr;font-size:12.5px;gap:4px 10px}
+  .horario .d{font-size:10px;padding-top:4px}
+  .horario .s{line-height:1.6}
+  .horario .s em{font-size:11.5px}
+  .horario .s u{font-size:9px;padding:2px 6px;border-radius:5px}
+
+  /* subgrupos */
+  .sub-cards{grid-template-columns:1fr;gap:10px}
+  .sub-card{padding:16px 18px;border-radius:16px;border-width:2px;gap:8px}
+  .sub-card.on{border-width:2px}
+  .sc-nombre{font-size:20px}
+  .sc-horario{gap:5px}
+  .sc-ses{font-size:14px;gap:8px}
+  .sc-ses em{font-size:13px}
+  .sc-ses u{font-size:10px;padding:2px 7px}
+  .sc-check{font-size:20px;top:14px;right:16px}
+
+  /* colores */
+  .swatches{gap:8px;padding:4px 0}
+  .sw{width:36px;height:36px;border-radius:12px;border-width:3px}
+
+  /* eval */
+  .eval-grid{grid-template-columns:1fr 1fr;gap:8px}
+  .eval-item{padding:12px 12px;border-radius:14px}
+  .eval-item label{font-size:12px}
+  .eval-item input[type="number"]{font-size:18px;width:54px;padding:6px 4px;border-radius:10px}
+  .eval-item .pct{font-size:14px}
+  .eval-total{padding:12px 16px;border-radius:14px;margin-top:8px}
+  .eval-bar{height:12px;border-radius:6px}
+  .eval-total-num{font-size:20px}
+
+  /* datos */
+  .datos-cards{grid-template-columns:1fr;gap:12px}
+  .dato-card{padding:16px 18px;border-radius:16px}
+  .dato-card label{font-size:10px}
+  .dato-card input,.dato-card select{font-size:16px;padding:12px 14px;border-radius:12px}
+  .conv-btn{padding:8px 16px;font-size:13px;border-radius:10px}
+  .dif-toggle{gap:6px}
+  .dif-dot{width:32px;height:32px;font-size:14px;border-radius:10px}
+  .notas-area{font-size:16px;padding:14px 16px;min-height:120px;border-radius:14px}
+  .glos{padding:14px 16px;border-radius:14px}
+  .glos dl{gap:8px 10px;font-size:13px}
+  .glos dt{font-size:10px;padding:3px 8px;border-radius:7px}
   .of-ctrl{padding:8px 10px;gap:5px}
   .of-tit{padding:8px 10px 6px}
   .of-tit h3{font-size:14px}
