@@ -413,22 +413,24 @@ header.top{background:linear-gradient(135deg,#14131A 0%,#1E1D2A 100%);color:#fff
   .mn-ico{width:28px;height:28px;border-radius:8px;display:grid;place-items:center;font-size:15px;transition:background .12s}
 
   /* ---- header compacto ---- */
-  .top-in{flex-direction:row;align-items:center;gap:10px;padding:8px 12px 0;flex-wrap:nowrap}
+  .top-in{flex-direction:row;align-items:center;gap:6px;padding:6px 10px 0;flex-wrap:nowrap}
   .kicker{display:none}
-  .marca h1{font-size:16px;margin:0;white-space:nowrap}
+  .marca h1{font-size:15px;margin:0;white-space:nowrap}
   .marca h1 em{display:none}
-  .metricas{gap:8px;padding-bottom:0;margin-left:auto;flex-shrink:0}
-  .metrica b{font-size:14px}
-  .metrica span{font-size:7px;margin-top:2px}
-  .top-tabs{padding:0 12px;margin-top:6px;gap:0;overflow-x:auto}
+  .metricas{gap:4px;padding-bottom:0;margin-left:auto;flex-shrink:0}
+  .metrica{padding:4px 8px;border-radius:8px}
+  .metrica b{font-size:13px}
+  .metrica span{font-size:6.5px;margin-top:1px}
+  .top-tabs{padding:0 10px;margin-top:4px;gap:0;overflow-x:auto}
   .tabs-sep{display:none}
   .tabs-pag{display:none}
-  .tab{padding:6px 12px;font-size:11px}
+  .tabs-cuat{gap:1px}
+  .tab{padding:5px 12px;font-size:10.5px}
 
   /* ---- paginas en movil ---- */
   .pagina{display:none!important}
   .pagina.mob-activo{display:block!important}
-  .pag-horario,.pag-asigs{padding:8px 8px 68px}
+  .pag-horario,.pag-asigs{padding:4px 4px 64px}
   .dos-cols{grid-template-columns:1fr;gap:10px}
 
   /* en movil, "elegidas" es su propia vista */
@@ -467,25 +469,25 @@ header.top{background:linear-gradient(135deg,#14131A 0%,#1E1D2A 100%);color:#fff
   .sub-card{padding:12px 14px;border-radius:12px}
   .sc-nombre{font-size:15px}
 
-  /* ---- barra calendario ---- */
-  .barra{padding:8px 10px;gap:6px;flex-wrap:wrap}
-  .seg{width:100%}
-  .seg button{flex:1;padding:7px 8px;font-size:11px;text-align:center}
-  .acciones{width:100%;justify-content:space-between}
-  .btn{padding:6px 10px;font-size:10.5px}
+  /* ---- barra calendario compacta ---- */
+  .barra{padding:6px 10px;gap:4px;flex-direction:row;flex-wrap:nowrap;overflow-x:auto}
+  .seg{flex:none}
+  .seg button{padding:6px 10px;font-size:10.5px}
+  .acciones{flex:none;gap:4px}
+  .btn{padding:5px 8px;font-size:10px}
 
-  /* ---- calendario ---- */
-  .cal-wrap{padding:2px 2px 6px}
-  .cal-cab{grid-template-columns:38px repeat(5,1fr)}
-  .cal-cab div{padding:6px 2px;font-size:8px;letter-spacing:.06em}
-  .cal-cuerpo{grid-template-columns:38px repeat(5,1fr)}
+  /* ---- calendario con scroll horizontal ---- */
+  .cal-wrap{padding:0 0 6px;overflow-x:auto;-webkit-overflow-scrolling:touch}
+  .cal-cab{grid-template-columns:42px repeat(5,130px);min-width:692px}
+  .cal-cab div{padding:7px 4px;font-size:9px;letter-spacing:.08em}
+  .cal-cuerpo{grid-template-columns:42px repeat(5,130px);min-width:692px}
   .t-turnos{padding:0 10px 5px;gap:2px}
   .t-turno{padding:3px 7px;font-size:8px}
-  .hm{font-size:9px;right:3px;font-weight:700}
-  .bq{padding:2px 4px 2px 6px;border-radius:7px;border-width:1px}
-  .bq .bq-nombre{font-size:9.5px}
-  .bq .bq-hora{font-size:7.5px}
-  .bq .tipo{font-size:6px;top:1px;right:2px;padding:1px 2px;border-radius:3px}
+  .hm{font-size:9px;right:4px;font-weight:700}
+  .bq{padding:3px 5px 3px 7px;border-radius:7px;border-width:1px}
+  .bq .bq-nombre{font-size:10.5px}
+  .bq .bq-hora{font-size:8px}
+  .bq .tipo{font-size:7px;top:2px;right:3px;padding:1px 3px;border-radius:3px}
   .bq .warn{font-size:7px;bottom:1px;right:2px}
   .bq.aula::before{width:3px}
 
@@ -564,15 +566,9 @@ header.top{background:linear-gradient(135deg,#14131A 0%,#1E1D2A 100%);color:#fff
   .mob-nav{height:52px}
   .mn-ico{width:24px;height:24px;font-size:13px;border-radius:6px}
   .mob-nav button{font-size:9px}
-  .cal-wrap{padding:1px 1px 4px}
-  .cal-cab{grid-template-columns:30px repeat(5,1fr)}
-  .cal-cab div{font-size:7px;padding:4px 1px;letter-spacing:.04em}
-  .cal-cuerpo{grid-template-columns:30px repeat(5,1fr)}
-  .hm{font-size:8px;right:1px}
-  .bq{padding:1px 2px 1px 4px;border-radius:5px}
-  .bq .bq-nombre{font-size:8px}
-  .bq .bq-hora{font-size:6.5px}
-  .bq .tipo{font-size:5px;top:0;right:1px;padding:0 1px}
+  .cal-cab{grid-template-columns:36px repeat(5,120px);min-width:636px}
+  .cal-cuerpo{grid-template-columns:36px repeat(5,120px);min-width:636px}
+  .hm{font-size:8px;right:2px}
 }
 
 @media print{
