@@ -192,29 +192,31 @@ header.top{background:linear-gradient(135deg,#14131A 0%,#1E1D2A 100%);color:#fff
 .glos dd{margin:0}
 
 /* ───────── calendario ───────── */
-.cal-wrap{padding:6px 8px 12px}
-.cal-cab{display:grid;grid-template-columns:52px repeat(5,minmax(0,1fr));border-bottom:2px solid var(--linea);position:sticky;top:0;background:#fff;z-index:4}
-.cal-cab div{padding:10px 4px 8px;text-align:center;font-family:var(--mono);font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-2)}
+.cal-wrap{padding:4px 6px 10px}
+.cal-cab{display:grid;grid-template-columns:56px repeat(5,minmax(0,1fr));border-bottom:2px solid var(--linea);position:sticky;top:0;background:#fff;z-index:4}
+.cal-cab div{padding:10px 4px 8px;text-align:center;font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-2)}
 .cal-cab div:first-child{color:transparent}
-.cal-cuerpo{display:grid;grid-template-columns:52px repeat(5,minmax(0,1fr));position:relative}
-.horas{position:relative;border-right:1px solid var(--linea)}
-.hm{position:absolute;left:4px;right:6px;text-align:right;font-family:var(--mono);font-size:10px;color:#9998AC;transform:translateY(-6px);font-weight:600}
-.dia{position:relative;border-right:1px solid #F0F0F6;padding:0 3px}
+.cal-cuerpo{display:grid;grid-template-columns:56px repeat(5,minmax(0,1fr));position:relative}
+.horas{position:relative;border-right:2px solid var(--linea)}
+.hm{position:absolute;left:0;right:8px;text-align:right;font-family:var(--mono);font-size:11px;color:#8886A0;transform:translateY(-7px);font-weight:700}
+.dia{position:relative;border-right:1px solid #EAEAF2;padding:0 2px}
 .dia:last-child{border-right:0}
-.dia:nth-child(odd){background:rgba(0,0,0,.012)}
-.raya{position:absolute;left:0;right:0;border-top:1px solid #F0F0F6}
-.raya.h{border-top-color:#E2E2EE;border-top-width:1px}
-.bq{position:absolute;border-radius:10px;padding:5px 8px 5px 10px;overflow:hidden;color:#2A2838;font-size:11.5px;line-height:1.22;box-shadow:0 1px 5px rgba(20,19,26,.1);transition:filter .12s,box-shadow .12s,transform .12s;border:1.5px solid rgba(0,0,0,.1);display:flex;flex-direction:column;justify-content:center;gap:1px}
-.bq b{font-weight:700;font-size:12.5px;letter-spacing:-.02em;line-height:1.2;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.bq small{font-family:var(--mono);font-size:9px;opacity:.6;color:#3A3848;letter-spacing:.01em}
-.bq .tipo{position:absolute;bottom:4px;right:5px;font-family:var(--mono);font-size:8px;font-weight:700;background:rgba(0,0,0,.07);border-radius:4px;padding:1px 5px;letter-spacing:.04em;color:rgba(0,0,0,.4)}
-.bq.aula::before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px;background:rgba(0,0,0,.12)}
-.bq.lab::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(135deg,rgba(0,0,0,.05) 0 4px,transparent 4px 8px);pointer-events:none}
+.dia:nth-child(odd){background:rgba(0,0,0,.015)}
+.raya{position:absolute;left:0;right:0;border-top:1px solid #EDEDF4}
+.raya.h{border-top-color:#DDDDE8}
+
+/* ── bloques de asignatura ── */
+.bq{position:absolute;border-radius:10px;padding:4px 7px 4px 9px;overflow:hidden;color:#1A1828;font-size:11px;line-height:1.18;box-shadow:0 1px 4px rgba(20,19,26,.1);transition:filter .12s,box-shadow .12s,transform .12s;border:1.5px solid rgba(0,0,0,.1);display:flex;flex-direction:column;justify-content:center;gap:0}
+.bq .bq-nombre{font-weight:700;font-size:11.5px;letter-spacing:-.02em;line-height:1.15;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.bq .bq-hora{font-family:var(--mono);font-size:9px;color:rgba(0,0,0,.5);letter-spacing:.01em;line-height:1.3}
+.bq .tipo{position:absolute;top:3px;right:4px;font-family:var(--mono);font-size:7.5px;font-weight:800;background:rgba(0,0,0,.08);border-radius:4px;padding:1px 4px;letter-spacing:.04em;color:rgba(0,0,0,.45);line-height:1.3}
+.bq.aula::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:rgba(0,0,0,.12)}
+.bq.lab::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(135deg,rgba(0,0,0,.04) 0 4px,transparent 4px 8px);pointer-events:none}
 /* desdoble */
 .bq.desdoble{border-style:dashed;border-width:2px;border-color:rgba(0,0,0,.22)}
 .bq.desdoble .tipo::after{content:" ×2";font-weight:400;opacity:.7}
 .bq.choca{box-shadow:0 0 0 2px #14131A, 0 0 0 4px #FFD400}
-.bq .warn{position:absolute;bottom:3px;right:5px;font-size:9px}
+.bq .warn{position:absolute;bottom:2px;right:4px;font-size:8px}
 /* importancia */
 .bq.bq-imp{box-shadow:0 0 0 2.5px #FFB300,0 2px 8px rgba(255,179,0,.3)}
 .bq.bq-muyimp{box-shadow:0 0 0 3px #FF1744,0 0 14px rgba(255,23,68,.35);animation:glow-imp 2s ease-in-out infinite}
@@ -473,18 +475,19 @@ header.top{background:linear-gradient(135deg,#14131A 0%,#1E1D2A 100%);color:#fff
   .btn{padding:6px 10px;font-size:10.5px}
 
   /* ---- calendario ---- */
-  .cal-wrap{padding:4px 4px 8px}
-  .cal-cab{grid-template-columns:36px repeat(5,1fr)}
+  .cal-wrap{padding:2px 2px 6px}
+  .cal-cab{grid-template-columns:38px repeat(5,1fr)}
   .cal-cab div{padding:6px 2px;font-size:8px;letter-spacing:.06em}
-  .cal-cuerpo{grid-template-columns:36px repeat(5,1fr)}
+  .cal-cuerpo{grid-template-columns:38px repeat(5,1fr)}
   .t-turnos{padding:0 10px 5px;gap:2px}
   .t-turno{padding:3px 7px;font-size:8px}
-  .hm{font-size:8px;right:3px}
-  .bq{padding:2px 4px;border-radius:5px;font-size:8.5px;line-height:1.15}
-  .bq b{font-size:9px;letter-spacing:-.02em}
-  .bq small{font-size:7px;margin-top:1px}
-  .bq .tipo{font-size:6.5px;top:1px;right:2px;padding:1px 2px;border-radius:3px}
-  .bq .warn{font-size:8px;bottom:1px;right:2px}
+  .hm{font-size:9px;right:3px;font-weight:700}
+  .bq{padding:2px 4px 2px 6px;border-radius:7px;border-width:1px}
+  .bq .bq-nombre{font-size:9.5px}
+  .bq .bq-hora{font-size:7.5px}
+  .bq .tipo{font-size:6px;top:1px;right:2px;padding:1px 2px;border-radius:3px}
+  .bq .warn{font-size:7px;bottom:1px;right:2px}
+  .bq.aula::before{width:3px}
 
   /* ---- leyenda ---- */
   .leyenda{overflow-x:auto;-webkit-overflow-scrolling:touch}
@@ -561,15 +564,15 @@ header.top{background:linear-gradient(135deg,#14131A 0%,#1E1D2A 100%);color:#fff
   .mob-nav{height:52px}
   .mn-ico{width:24px;height:24px;font-size:13px;border-radius:6px}
   .mob-nav button{font-size:9px}
-  .cal-wrap{padding:2px 2px 6px}
-  .cal-cab{grid-template-columns:28px repeat(5,1fr)}
-  .cal-cab div{font-size:7px;padding:5px 1px;letter-spacing:.04em}
-  .cal-cuerpo{grid-template-columns:28px repeat(5,1fr)}
-  .hm{font-size:7px;right:1px}
-  .bq{padding:1px 2px;border-radius:4px;font-size:7.5px}
-  .bq b{font-size:8px}
-  .bq .tipo{font-size:5.5px;top:0;right:1px;padding:0 1px}
-  .bq small{display:none}
+  .cal-wrap{padding:1px 1px 4px}
+  .cal-cab{grid-template-columns:30px repeat(5,1fr)}
+  .cal-cab div{font-size:7px;padding:4px 1px;letter-spacing:.04em}
+  .cal-cuerpo{grid-template-columns:30px repeat(5,1fr)}
+  .hm{font-size:8px;right:1px}
+  .bq{padding:1px 2px 1px 4px;border-radius:5px}
+  .bq .bq-nombre{font-size:8px}
+  .bq .bq-hora{font-size:6.5px}
+  .bq .tipo{font-size:5px;top:0;right:1px;padding:0 1px}
 }
 
 @media print{
@@ -1661,8 +1664,8 @@ function htmlRejilla(bloques, opt){
     // restar: header(~80/48) + barra(~44/36) + navmovil(56) + paddings
     const overhead = movil ? 160 : 170;
     const disponible = Math.max(window.innerHeight - overhead, movil ? 280 : 360);
-    px = Math.max(disponible / rangoMin, movil ? 0.5 : 0.65);
-    px = Math.min(px, movil ? 0.95 : PX_MIN_DEFAULT);
+    px = Math.max(disponible / rangoMin, movil ? 0.55 : 0.7);
+    px = Math.min(px, movil ? 1.0 : PX_MIN_DEFAULT);
   }
 
   const alto = rangoMin * px;
@@ -1692,10 +1695,10 @@ function htmlRejilla(bloques, opt){
         if(t === "aula") fondo = aclara(col, .35);
         else if(t === "lab") fondo = oscurece(col, .15);
       }
-      const gap = movil ? 2 : 3;
-      const top = (b.ini - rangoIni) * px + gap, h = Math.max((b.fin - b.ini) * px - gap*2, movil ? 14 : 22);
+      const gap = movil ? 1 : 2;
+      const top = (b.ini - rangoIni) * px + gap;
+      const h = Math.max((b.fin - b.ini) * px - gap*2, movil ? 16 : 24);
       const w = 100 / (b.cols||1), x = w * (b.col||0);
-      const corto = h < (movil ? 24 : 40), mini = h < (movil ? 17 : 28);
       const extra = opt.oficial ? (b.mia ? " mia" : " nomia") : "";
       const dato = opt.oficial ? `data-add="${b.asig.id}|${b.op.id}|${b.sub||""}"` : `data-asig="${b.asig.id}"`;
       const selB = estado.sel[b.asig.id];
@@ -1704,14 +1707,15 @@ function htmlRejilla(bloques, opt){
                    : (!opt.oficial && selB && selB.etiqueta === "muy importante") ? " bq-muyimp" : "";
       const desCls = desdobles.has(idx) ? " desdoble" : "";
       const borderCol = oscurece(col, .3);
-      const pad = movil ? 2 : 4;
+      const pad = movil ? 1 : 3;
+      /* siempre mostrar nombre + hora, adaptar contenido al espacio */
+      const mostrarHora = h > (movil ? 26 : 32);
       inner += `<div class="bq ${t} ${b.choca?"choca":""}${extra}${convCls}${impCls}${desCls}" ${dato}
         style="top:${top}px;height:${h}px;left:calc(${x}% + ${pad}px);width:calc(${w}% - ${pad*2}px);background:${fondo};border-color:${borderCol}"
-        title="${esc(b.asig.n)} · ${DIAS[d]} ${hhmm(b.ini)}–${hhmm(b.fin)} · ${b.sub?esc(b.sub)+" (práctica de tu subgrupo)":"teoría, van todos"}${desdobles.has(idx)?" · DESDOBLE: hay otro subgrupo a la misma hora":""} · aula ${esc(b.aula||"")}${b.nota?" · ⚠ "+esc(b.nota):""}${opt.oficial?(b.mia?" — ya la tienes elegida":" — pulsa para añadirla"):" — pulsa para abrir su ficha"}">
+        title="${esc(b.asig.n)} · ${hhmm(b.ini)}–${hhmm(b.fin)} · ${b.sub||"T"} · ${esc(b.aula||"")}">
         <span class="tipo">${b.sub ? esc(b.sub) : "T"}</span>
-        <b>${esc(mini ? b.asig.n.split(" ").slice(0,2).join(" ") : b.asig.n)}</b>
-        ${corto?"":`<small>${hhmm(b.ini)}–${hhmm(b.fin)} · ${esc(b.aula||"")}</small>`}
-        ${b.nota?`<span class="warn">⚠</span>`:""}
+        <span class="bq-nombre">${esc(b.asig.n)}</span>
+        ${mostrarHora?`<span class="bq-hora">${hhmm(b.ini)}–${hhmm(b.fin)} · ${esc(b.aula||"")}</span>`:""}
       </div>`;
     });
     dias += `<div class="dia" style="height:${alto}px">${inner}</div>`;
