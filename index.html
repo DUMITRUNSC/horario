@@ -698,14 +698,8 @@ header.top{background:linear-gradient(135deg,#14131A 0%,#1E1D2A 100%);color:#fff
   <section class="panel">
     <div class="barra">
       <div class="seg" id="seg-vista">
-        <button data-vista="cal" aria-pressed="true">Semana</button>
-        <button data-vista="dia" aria-pressed="false">Dia</button>
+        <button data-vista="cal" aria-pressed="true">Calendario</button>
         <button data-vista="nota" aria-pressed="false">Info</button>
-      </div>
-      <div class="seg seg-dia" id="seg-dia" style="display:none">
-        <button data-dianav="prev">&larr;</button>
-        <button data-dianav="nombre" class="dia-nombre">Lunes</button>
-        <button data-dianav="next">&rarr;</button>
       </div>
       <div class="acciones">
         <button class="btn" id="btn-tonos">Tonos</button>
@@ -1172,7 +1166,7 @@ const PRESELECCION = [
   ["4a-procesos","G1"], ["4a-protocolo"], ["4a-igualdad"], ["4a-rsc","G1"]
 ];
 
-let estado = { cuat:1, curso:"todos", q:"", vista:"cal", diaActual:0, sel:{}, abierta:null, tonos:false, ofCurso:4, ofGrupo:null, ofSolo:false };
+let estado = { cuat:1, curso:"todos", q:"", vista:"cal", sel:{}, abierta:null, tonos:false, ofCurso:4, ofGrupo:null, ofSolo:false };
 const porId = {}; ASIGS.forEach(a => porId[a.id] = a);
 
 const min = t => { const [h,m] = t.split(":").map(Number); return h*60+m; };
@@ -1671,78 +1665,9 @@ function cerrarModal(){
 /* ─────── vistas ─────── */
 function pintarVista(){
   const v = document.getElementById("vista");
-  const segDia = document.getElementById("seg-dia");
-  if(estado.vista === "cal"){ v.innerHTML = htmlCalendario(); engancharBloques(); segDia.style.display = "none"; }
-  else if(estado.vista === "dia"){ v.innerHTML = htmlDia(); engancharBloquesDia(); segDia.style.display = "flex"; actualizarNombreDia(); }
-  else if(estado.vista === "of"){ v.innerHTML = htmlOficial(); engancharOficial(); segDia.style.display = "none"; }
-  else { v.innerHTML = htmlNota(); segDia.style.display = "none"; }
-}
-
-function actualizarNombreDia(){
-  const btn = document.querySelector("[data-dianav='nombre']");
-  if(btn) btn.textContent = DIAS[estado.diaActual || 0];
-}
-
-function htmlDia(){
-  const bloques = bloquesVisibles(estado.cuat);
-  const d = estado.diaActual || 0;
-  const delDia = bloques.filter(b => b.dia === d);
-
-  if(!bloques.length) return `<div class="dia-vacio">No hay asignaturas elegidas.</div>`;
-  if(!delDia.length) return `<div class="dia-vacio">No tienes clase el ${DIAS[d]}.</div>`;
-
-  /* rango de horas del dia */
-  const bMin = Math.min(...delDia.map(b => b.ini));
-  const bMax = Math.max(...delDia.map(b => b.fin));
-  let rangoIni = Math.floor(bMin / 60) * 60;
-  let rangoFin = Math.ceil(bMax / 60) * 60;
-  rangoIni = Math.max(rangoIni - 30, INICIO_DIA);
-  rangoFin = Math.min(rangoFin + 30, FIN_DIA);
-  const rangoMin = rangoFin - rangoIni;
-
-  const movil = window.innerWidth <= 768;
-  const disponible = Math.max(window.innerHeight - (movil ? 200 : 220), 300);
-  let px = Math.max(disponible / rangoMin, 0.8);
-  px = Math.min(px, 2.0);
-
-  const alto = rangoMin * px;
-  repartirColumnas(delDia);
-
-  let horasHtml = `<div class="dia-horas" style="height:${alto}px">`;
-  for(let m = rangoIni; m <= rangoFin; m += 60)
-    horasHtml += `<div class="dia-hm" style="top:${(m-rangoIni)*px}px">${hhmm(m)}</div>`;
-  horasHtml += `</div>`;
-
-  let inner = "";
-  for(let m = rangoIni; m <= rangoFin; m += 30)
-    inner += `<div class="dia-raya ${m%60===0?"h":""}" style="top:${(m-rangoIni)*px}px"></div>`;
-
-  delDia.forEach(b => {
-    const t = tipoDe(b), col = colorDe(b.asig.id);
-    let fondo = col;
-    if(estado.tonos){
-      if(t === "aula") fondo = aclara(col, .35);
-      else if(t === "lab") fondo = oscurece(col, .15);
-    }
-    const top = (b.ini - rangoIni) * px + 2;
-    const h = Math.max((b.fin - b.ini) * px - 4, 40);
-    const borderCol = oscurece(col, .3);
-    inner += `<div class="dia-bq ${t}" data-asig="${b.asig.id}"
-      style="top:${top}px;height:${h}px;background:${fondo};border-color:${borderCol}">
-      <span class="dia-bq-nombre">${esc(b.asig.n)}</span>
-      <span class="dia-bq-info"><b>${hhmm(b.ini)} – ${hhmm(b.fin)}</b> ${esc(b.aula||"")}</span>
-      <span class="dia-bq-tipo">${b.sub ? esc(b.sub) : "Teoria"}</span>
-    </div>`;
-  });
-
-  return `<div class="dia-wrap">
-    <div class="dia-cab">${DIAS[d]}</div>
-    <div class="dia-grid">${horasHtml}<div class="dia-col" style="height:${alto}px">${inner}</div></div>
-  </div>`;
-}
-
-function engancharBloquesDia(){
-  document.querySelectorAll("#vista .dia-bq[data-asig]").forEach(b => b.onclick = () => abrirModal(b.dataset.asig));
+  if(estado.vista === "cal"){ v.innerHTML = htmlCalendario(); engancharBloques(); }
+  else if(estado.vista === "of"){ v.innerHTML = htmlOficial(); engancharOficial(); }
+  else v.innerHTML = htmlNota();
 }
 function engancharBloques(){
   document.querySelectorAll("#vista .bq[data-asig]").forEach(b => b.onclick = () => abrirModal(b.dataset.asig));
@@ -2109,13 +2034,6 @@ document.getElementById("seg-vista").querySelectorAll("button").forEach(b => b.o
   pintarVista();
 });
 
-/* navegacion por dia */
-document.querySelectorAll("[data-dianav]").forEach(b => b.onclick = () => {
-  if(b.dataset.dianav === "prev") estado.diaActual = (estado.diaActual + 4) % 5;
-  else if(b.dataset.dianav === "next") estado.diaActual = (estado.diaActual + 1) % 5;
-  pintarVista();
-});
-
 /* controles */
 document.getElementById("buscador").oninput = e => { estado.q = e.target.value; pintarCatalogo(); };
 document.getElementById("btn-tonos").onclick = e => {
@@ -2192,21 +2110,15 @@ anadir = function(id, abrir){
   if(esMovil() && !abrir) cambiarMob("horario");
 };
 
-/* arranque */
+/* arranque - limpiar datos corruptos de versiones anteriores */
+try{ if(!localStorage.getItem("uva-v3-ok")){ localStorage.removeItem(CLAVE); localStorage.setItem("uva-v3-ok","1"); } }catch(e){}
 cargar();
 document.querySelectorAll(".tab").forEach(o => o.setAttribute("aria-selected", Number(o.dataset.cuat)===estado.cuat));
 document.getElementById("btn-tonos").setAttribute("aria-pressed", estado.tonos);
 pintar();
 
 /* en movil, activar la primera vista */
-if(esMovil()){
-  cambiarMob("horario");
-  estado.vista = "dia";
-  estado.diaActual = Math.min(new Date().getDay() - 1, 4);
-  if(estado.diaActual < 0) estado.diaActual = 0;
-  document.getElementById("seg-vista").querySelectorAll("button").forEach(o => o.setAttribute("aria-pressed", o.dataset.vista === "dia"));
-  pintarVista();
-}
+if(esMovil()) cambiarMob("horario");
 
 /* recalcular calendario al cambiar tamano */
 let _rzTimer;
@@ -2217,18 +2129,6 @@ window.addEventListener("resize", () => {
   }, 200);
 });
 
-/* swipe para cambiar de dia en vista diaria */
-let _touchX = 0;
-document.getElementById("vista").addEventListener("touchstart", e => { _touchX = e.touches[0].clientX; }, {passive:true});
-document.getElementById("vista").addEventListener("touchend", e => {
-  if(estado.vista !== "dia") return;
-  const dx = e.changedTouches[0].clientX - _touchX;
-  if(Math.abs(dx) > 60){
-    if(dx < 0) estado.diaActual = (estado.diaActual + 1) % 5;
-    else estado.diaActual = (estado.diaActual + 4) % 5;
-    pintarVista();
-  }
-});
 </script>
 </body>
 </html>
