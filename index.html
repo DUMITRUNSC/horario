@@ -228,6 +228,27 @@ header.top{background:linear-gradient(135deg,#14131A 0%,#1E1D2A 100%);color:#fff
 @keyframes glow-imp{0%,100%{box-shadow:0 0 0 3px #FF1744,0 0 8px rgba(255,23,68,.25)}50%{box-shadow:0 0 0 3px #FF1744,0 0 18px rgba(255,23,68,.45)}}
 .cal-vacio{padding:60px 24px;text-align:center;color:var(--ink-3);line-height:1.7;font-size:14px}
 
+/* ── vista diaria ── */
+.seg-dia{align-items:center}
+.seg-dia .dia-nombre{min-width:100px;text-align:center;font-weight:700;color:var(--ink);font-size:13px}
+.dia-wrap{padding:8px 12px 16px}
+.dia-cab{font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-2);padding:8px 0 6px;text-align:center;border-bottom:2px solid var(--linea)}
+.dia-grid{display:grid;grid-template-columns:52px 1fr;position:relative}
+.dia-horas{position:relative;border-right:2px solid var(--linea)}
+.dia-hm{position:absolute;left:0;right:6px;text-align:right;font-family:var(--mono);font-size:11px;color:#6E6D82;transform:translateY(-7px);font-weight:700}
+.dia-col{position:relative}
+.dia-raya{position:absolute;left:0;right:0;border-top:1px solid #EEEEF5}
+.dia-raya.h{border-top-color:#D8D8E5}
+.dia-bq{position:absolute;left:8px;right:8px;border-radius:14px;padding:12px 14px;color:#1A1828;box-shadow:0 2px 8px rgba(20,19,26,.1);border:1.5px solid rgba(0,0,0,.1);display:flex;flex-direction:column;gap:4px;cursor:pointer;transition:all .12s}
+.dia-bq:hover{transform:translateY(-1px);box-shadow:0 4px 16px rgba(20,19,26,.15)}
+.dia-bq .dia-bq-nombre{font-weight:700;font-size:15px;letter-spacing:-.02em;line-height:1.25}
+.dia-bq .dia-bq-info{display:flex;gap:8px;align-items:center;font-family:var(--mono);font-size:11px;color:rgba(0,0,0,.5)}
+.dia-bq .dia-bq-info b{font-weight:700;color:rgba(0,0,0,.65)}
+.dia-bq .dia-bq-tipo{font-family:var(--mono);font-size:9px;font-weight:700;background:rgba(0,0,0,.07);border-radius:5px;padding:2px 7px;color:rgba(0,0,0,.45);align-self:flex-start}
+.dia-bq.aula::before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px;border-radius:14px 0 0 14px;background:rgba(0,0,0,.1)}
+.dia-bq.lab::after{content:"";position:absolute;inset:0;border-radius:14px;background:repeating-linear-gradient(135deg,rgba(0,0,0,.03) 0 5px,transparent 5px 10px);pointer-events:none}
+.dia-vacio{padding:40px 20px;text-align:center;color:var(--ink-3);font-size:14px}
+
 /* ───────── tablas oficiales ───────── */
 .oficial{padding:16px}
 .of-h{display:flex;align-items:baseline;gap:10px;margin:20px 0 8px}
@@ -600,6 +621,17 @@ header.top{background:linear-gradient(135deg,#14131A 0%,#1E1D2A 100%);color:#fff
   .nota p,.nota ul{font-size:12px}
   .conv-badge{font-size:9px;padding:3px 7px}
   .cal-vacio{padding:40px 16px;font-size:13px}
+  /* dia movil */
+  .dia-wrap{padding:4px 8px 12px}
+  .dia-cab{font-size:12px;padding:10px 0 8px}
+  .dia-grid{grid-template-columns:40px 1fr}
+  .dia-hm{font-size:10px}
+  .dia-bq{left:6px;right:6px;padding:10px 12px;border-radius:12px;gap:3px}
+  .dia-bq .dia-bq-nombre{font-size:16px}
+  .dia-bq .dia-bq-info{font-size:12px}
+  .dia-bq .dia-bq-tipo{font-size:10px;padding:3px 8px}
+  .dia-vacio{padding:60px 16px;font-size:15px}
+  .seg-dia .dia-nombre{font-size:12px;min-width:80px}
 }
 
 /* ───────── movil pequeno ───────── */
@@ -666,12 +698,17 @@ header.top{background:linear-gradient(135deg,#14131A 0%,#1E1D2A 100%);color:#fff
   <section class="panel">
     <div class="barra">
       <div class="seg" id="seg-vista">
-        <button data-vista="cal" aria-pressed="true">Calendario</button>
-        <button data-vista="nota" aria-pressed="false">Nota informativa</button>
+        <button data-vista="cal" aria-pressed="true">Semana</button>
+        <button data-vista="dia" aria-pressed="false">Dia</button>
+        <button data-vista="nota" aria-pressed="false">Info</button>
+      </div>
+      <div class="seg seg-dia" id="seg-dia" style="display:none">
+        <button data-dianav="prev">&larr;</button>
+        <button data-dianav="nombre" class="dia-nombre">Lunes</button>
+        <button data-dianav="next">&rarr;</button>
       </div>
       <div class="acciones">
-        <button class="btn" id="btn-tonos">Tonos por tipo</button>
-        <button class="btn" id="btn-imprimir">Imprimir</button>
+        <button class="btn" id="btn-tonos">Tonos</button>
         <button class="btn ppal" id="btn-limpiar">Vaciar</button>
       </div>
     </div>
@@ -1135,7 +1172,7 @@ const PRESELECCION = [
   ["4a-procesos","G1"], ["4a-protocolo"], ["4a-igualdad"], ["4a-rsc","G1"]
 ];
 
-let estado = { cuat:1, curso:"todos", q:"", vista:"cal", sel:{}, abierta:null, tonos:false, ofCurso:4, ofGrupo:null, ofSolo:false };
+let estado = { cuat:1, curso:"todos", q:"", vista:"cal", diaActual:0, sel:{}, abierta:null, tonos:false, ofCurso:4, ofGrupo:null, ofSolo:false };
 const porId = {}; ASIGS.forEach(a => porId[a.id] = a);
 
 const min = t => { const [h,m] = t.split(":").map(Number); return h*60+m; };
@@ -1634,9 +1671,78 @@ function cerrarModal(){
 /* ─────── vistas ─────── */
 function pintarVista(){
   const v = document.getElementById("vista");
-  if(estado.vista === "cal"){ v.innerHTML = htmlCalendario(); engancharBloques(); }
-  else if(estado.vista === "of"){ v.innerHTML = htmlOficial(); engancharOficial(); }
-  else v.innerHTML = htmlNota();
+  const segDia = document.getElementById("seg-dia");
+  if(estado.vista === "cal"){ v.innerHTML = htmlCalendario(); engancharBloques(); segDia.style.display = "none"; }
+  else if(estado.vista === "dia"){ v.innerHTML = htmlDia(); engancharBloquesDia(); segDia.style.display = "flex"; actualizarNombreDia(); }
+  else if(estado.vista === "of"){ v.innerHTML = htmlOficial(); engancharOficial(); segDia.style.display = "none"; }
+  else { v.innerHTML = htmlNota(); segDia.style.display = "none"; }
+}
+
+function actualizarNombreDia(){
+  const btn = document.querySelector("[data-dianav='nombre']");
+  if(btn) btn.textContent = DIAS[estado.diaActual || 0];
+}
+
+function htmlDia(){
+  const bloques = bloquesVisibles(estado.cuat);
+  const d = estado.diaActual || 0;
+  const delDia = bloques.filter(b => b.dia === d);
+
+  if(!bloques.length) return `<div class="dia-vacio">No hay asignaturas elegidas.</div>`;
+  if(!delDia.length) return `<div class="dia-vacio">No tienes clase el ${DIAS[d]}.</div>`;
+
+  /* rango de horas del dia */
+  const bMin = Math.min(...delDia.map(b => b.ini));
+  const bMax = Math.max(...delDia.map(b => b.fin));
+  let rangoIni = Math.floor(bMin / 60) * 60;
+  let rangoFin = Math.ceil(bMax / 60) * 60;
+  rangoIni = Math.max(rangoIni - 30, INICIO_DIA);
+  rangoFin = Math.min(rangoFin + 30, FIN_DIA);
+  const rangoMin = rangoFin - rangoIni;
+
+  const movil = window.innerWidth <= 768;
+  const disponible = Math.max(window.innerHeight - (movil ? 200 : 220), 300);
+  let px = Math.max(disponible / rangoMin, 0.8);
+  px = Math.min(px, 2.0);
+
+  const alto = rangoMin * px;
+  repartirColumnas(delDia);
+
+  let horasHtml = `<div class="dia-horas" style="height:${alto}px">`;
+  for(let m = rangoIni; m <= rangoFin; m += 60)
+    horasHtml += `<div class="dia-hm" style="top:${(m-rangoIni)*px}px">${hhmm(m)}</div>`;
+  horasHtml += `</div>`;
+
+  let inner = "";
+  for(let m = rangoIni; m <= rangoFin; m += 30)
+    inner += `<div class="dia-raya ${m%60===0?"h":""}" style="top:${(m-rangoIni)*px}px"></div>`;
+
+  delDia.forEach(b => {
+    const t = tipoDe(b), col = colorDe(b.asig.id);
+    let fondo = col;
+    if(estado.tonos){
+      if(t === "aula") fondo = aclara(col, .35);
+      else if(t === "lab") fondo = oscurece(col, .15);
+    }
+    const top = (b.ini - rangoIni) * px + 2;
+    const h = Math.max((b.fin - b.ini) * px - 4, 40);
+    const borderCol = oscurece(col, .3);
+    inner += `<div class="dia-bq ${t}" data-asig="${b.asig.id}"
+      style="top:${top}px;height:${h}px;background:${fondo};border-color:${borderCol}">
+      <span class="dia-bq-nombre">${esc(b.asig.n)}</span>
+      <span class="dia-bq-info"><b>${hhmm(b.ini)} – ${hhmm(b.fin)}</b> ${esc(b.aula||"")}</span>
+      <span class="dia-bq-tipo">${b.sub ? esc(b.sub) : "Teoria"}</span>
+    </div>`;
+  });
+
+  return `<div class="dia-wrap">
+    <div class="dia-cab">${DIAS[d]}</div>
+    <div class="dia-grid">${horasHtml}<div class="dia-col" style="height:${alto}px">${inner}</div></div>
+  </div>`;
+}
+
+function engancharBloquesDia(){
+  document.querySelectorAll("#vista .dia-bq[data-asig]").forEach(b => b.onclick = () => abrirModal(b.dataset.asig));
 }
 function engancharBloques(){
   document.querySelectorAll("#vista .bq[data-asig]").forEach(b => b.onclick = () => abrirModal(b.dataset.asig));
@@ -1992,6 +2098,21 @@ document.getElementById("seg-vista").querySelectorAll("button").forEach(b => b.o
   pintarVista();
 });
 
+/* navegacion por dia */
+document.querySelectorAll("[data-dianav]").forEach(b => b.onclick = () => {
+  if(b.dataset.dianav === "prev") estado.diaActual = (estado.diaActual + 4) % 5;
+  else if(b.dataset.dianav === "next") estado.diaActual = (estado.diaActual + 1) % 5;
+  pintarVista();
+});
+
+/* en movil, empezar en vista dia */
+if(window.innerWidth <= 768){
+  estado.vista = "dia";
+  estado.diaActual = Math.min(new Date().getDay() - 1, 4);
+  if(estado.diaActual < 0) estado.diaActual = 0;
+  document.getElementById("seg-vista").querySelectorAll("button").forEach(o => o.setAttribute("aria-pressed", o.dataset.vista === "dia"));
+}
+
 /* controles */
 document.getElementById("buscador").oninput = e => { estado.q = e.target.value; pintarCatalogo(); };
 document.getElementById("btn-tonos").onclick = e => {
@@ -2084,6 +2205,19 @@ window.addEventListener("resize", () => {
   _rzTimer = setTimeout(() => {
     if(paginaActual === "horario" || esMovil()) pintarVista();
   }, 200);
+});
+
+/* swipe para cambiar de dia en vista diaria */
+let _touchX = 0;
+document.getElementById("vista").addEventListener("touchstart", e => { _touchX = e.touches[0].clientX; }, {passive:true});
+document.getElementById("vista").addEventListener("touchend", e => {
+  if(estado.vista !== "dia") return;
+  const dx = e.changedTouches[0].clientX - _touchX;
+  if(Math.abs(dx) > 60){
+    if(dx < 0) estado.diaActual = (estado.diaActual + 1) % 5;
+    else estado.diaActual = (estado.diaActual + 4) % 5;
+    pintarVista();
+  }
 });
 </script>
 </body>
