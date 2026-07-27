@@ -2040,30 +2040,41 @@ function pintarMetricas(){
    GUARDADO Y EVENTOS
    ========================================================= */
 function guardar(){ try{ localStorage.setItem(CLAVE, JSON.stringify({sel:estado.sel, cuat:estado.cuat, tonos:estado.tonos})); }catch(e){} }
+function cargarPreseleccion(){
+  PRESELECCION.forEach(([id, opId]) => {
+    const a = porId[id]; if(!a) return;
+    const op = a.ops.find(o => o.id === opId) || a.ops[0], fam = subgruposDe(op), sub = {};
+    Object.keys(fam).forEach(f => sub[f] = fam[f][0]);
+    estado.sel[id] = { op:op.id, sub, color:null, profesor:"", correo:"", notas:"", etiqueta:"", convocatoria:"", dificultad:0, evalOrd:{examen:0,pracGrupal:0,pracIndiv:0,asistencia:0,participacion:0,otros:0}, evalExt:{examen:0,pracGrupal:0,pracIndiv:0,asistencia:0,participacion:0,otros:0} };
+  });
+}
 function cargar(){
-  let hay = false;
   try{
     const d = JSON.parse(localStorage.getItem(CLAVE) || "null");
     if(d && d.sel && Object.keys(d.sel).length){
+      const defEv = {examen:0,pracGrupal:0,pracIndiv:0,asistencia:0,participacion:0,otros:0};
       Object.keys(d.sel).forEach(k => {
-        if(!d.sel[k].convocatoria) d.sel[k].convocatoria = "";
-        if(!d.sel[k].dificultad) d.sel[k].dificultad = 0;
-        const defEv = {examen:0,pracGrupal:0,pracIndiv:0,asistencia:0,participacion:0,otros:0};
-        if(!d.sel[k].evalOrd) d.sel[k].evalOrd = d.sel[k].eval ? {...defEv,...d.sel[k].eval} : {...defEv};
-        if(!d.sel[k].evalExt) d.sel[k].evalExt = {...defEv};
-        delete d.sel[k].eval;
+        const s = d.sel[k];
+        if(!s || !s.op){ delete d.sel[k]; return; }
+        if(!s.convocatoria) s.convocatoria = "";
+        if(!s.dificultad) s.dificultad = 0;
+        if(!s.etiqueta) s.etiqueta = "";
+        if(!s.notas) s.notas = "";
+        if(!s.profesor) s.profesor = "";
+        if(!s.correo) s.correo = "";
+        if(!s.evalOrd) s.evalOrd = s.eval ? {...defEv,...s.eval} : {...defEv};
+        if(!s.evalExt) s.evalExt = {...defEv};
+        delete s.eval;
       });
-      estado.sel = d.sel; estado.cuat = d.cuat || 1; estado.tonos = !!d.tonos; hay = true;
+      if(Object.keys(d.sel).length){
+        estado.sel = d.sel; estado.cuat = d.cuat || 1; estado.tonos = !!d.tonos;
+        return;
+      }
     }
-  }catch(e){}
-  if(!hay){
-    PRESELECCION.forEach(([id, opId]) => {
-      const a = porId[id]; if(!a) return;
-      const op = a.ops.find(o => o.id === opId) || a.ops[0], fam = subgruposDe(op), sub = {};
-      Object.keys(fam).forEach(f => sub[f] = fam[f][0]);
-      estado.sel[id] = { op:op.id, sub, color:null, profesor:"", correo:"", notas:"", etiqueta:"", convocatoria:"", dificultad:0, evalOrd:{examen:0,pracGrupal:0,pracIndiv:0,asistencia:0,participacion:0,otros:0}, evalExt:{examen:0,pracGrupal:0,pracIndiv:0,asistencia:0,participacion:0,otros:0} };
-    });
+  }catch(e){
+    try{ localStorage.removeItem(CLAVE); }catch(x){}
   }
+  cargarPreseleccion();
 }
 
 /* =========================================================
