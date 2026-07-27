@@ -1,0 +1,2045 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Planificador de horarios · Publicidad y RRPP · UVa Segovia 2026-27</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Inter+Tight:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#14131A;
+  --ink-2:#3A3947;
+  --ink-3:#6E6D7E;
+  --lienzo:#EFEFF3;
+  --panel:#FFFFFF;
+  --linea:#E1E1E9;
+  --linea-2:#F0F0F5;
+  --granate:#7A1E2E;
+  --alerta:#C0392B;
+  --aviso:#8A5A12;
+  --r:14px;
+  --sombra:0 1px 1px rgba(20,19,26,.04), 0 8px 24px -12px rgba(20,19,26,.22);
+  --display:"Bricolage Grotesque", "Inter Tight", system-ui, sans-serif;
+  --ui:"Inter Tight", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono:"JetBrains Mono", ui-monospace, Menlo, monospace;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{font-family:var(--ui);background:var(--lienzo);color:var(--ink);font-size:14px;line-height:1.45;-webkit-font-smoothing:antialiased}
+button{font-family:inherit;cursor:pointer}
+input,select,textarea{font-family:inherit;font-size:13px;color:var(--ink)}
+:focus-visible{outline:2px solid var(--granate);outline-offset:2px}
+
+/* ───────── cabecera ───────── */
+header.top{background:linear-gradient(135deg,#14131A 0%,#1E1D2A 100%);color:#fff;position:sticky;top:0;z-index:50;border-bottom:1px solid rgba(255,255,255,.06)}
+.top-in{max-width:1900px;margin:0 auto;padding:10px 30px 0;display:flex;gap:18px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.kicker{display:block;font-family:var(--mono);font-size:8.5px;letter-spacing:.18em;text-transform:uppercase;color:#7A7990;margin-bottom:2px}
+.marca h1{font-family:var(--display);font-weight:800;font-size:22px;line-height:1.1;margin:0;letter-spacing:-.03em}
+.marca h1 em{font-style:normal;font-weight:500;color:#6E6D82;font-size:16px;margin-left:6px}
+.metricas{display:flex;gap:6px;padding-bottom:0}
+.metrica{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:6px 14px;text-align:center}
+.metrica b{display:block;font-family:var(--mono);font-size:18px;font-weight:500;line-height:1;letter-spacing:-.02em}
+.metrica span{display:block;font-size:8px;letter-spacing:.14em;text-transform:uppercase;color:#8E8DA0;margin-top:3px}
+.metrica.mal{border-color:rgba(255,100,80,.3);background:rgba(255,80,60,.1)}
+.metrica.mal b{color:#FF8A80}
+.top-tabs{max-width:1900px;margin:8px auto 0;padding:0 30px 8px;display:flex;gap:16px;align-items:center}
+.tabs-cuat{display:flex;background:rgba(255,255,255,.08);border-radius:10px;padding:3px;gap:2px}
+.tab{background:none;border:0;color:#8E8DA0;padding:6px 18px;font-size:12px;font-weight:600;border-radius:8px;letter-spacing:-.005em;transition:all .15s}
+.tab[aria-selected="true"]{background:rgba(255,255,255,.14);color:#fff;box-shadow:0 1px 4px rgba(0,0,0,.2)}
+.tab:hover:not([aria-selected="true"]){color:#ddd;background:rgba(255,255,255,.05)}
+.tabs-sep{width:1px;height:22px;background:#3A3950;margin:0 2px;flex:none}
+.tabs-pag{display:flex;background:rgba(255,255,255,.08);border-radius:10px;padding:3px;gap:2px}
+.tab-pag{background:none;border:0;color:#8E8DA0;padding:6px 18px;font-size:12px;font-weight:600;border-radius:8px;letter-spacing:-.005em;display:flex;align-items:center;gap:6px;transition:all .15s}
+.tab-pag[aria-selected="true"]{background:rgba(255,255,255,.14);color:#fff;box-shadow:0 1px 4px rgba(0,0,0,.2)}
+.tab-pag:hover:not([aria-selected="true"]){color:#ddd;background:rgba(255,255,255,.05)}
+.tab-pag .tp-ico{font-size:13px}
+
+/* ───────── paginas ───────── */
+.pagina{max-width:1900px;margin:0 auto;display:none}
+.pagina.activa{display:block}
+
+/* ─── pag horario: calendario a pantalla completa ─── */
+.pag-horario{padding:14px 20px 28px}
+.pag-horario .panel{width:100%}
+
+/* ─── pag asignaturas: dos columnas ─── */
+.pag-asigs{padding:14px 20px 28px}
+.dos-cols{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start}
+
+.panel{background:var(--panel);border:1px solid var(--linea);border-radius:var(--r);box-shadow:var(--sombra);overflow:hidden;min-width:0}
+
+/* ───────── nav movil inferior ───────── */
+.mob-nav{display:none}
+.panel-h{padding:13px 16px;display:flex;align-items:center;justify-content:space-between;gap:10px;border-bottom:1px solid var(--linea-2)}
+.panel-h h2{margin:0;font-family:var(--display);font-size:15px;font-weight:700;letter-spacing:-.015em}
+.panel-h .acciones{margin-left:auto}
+.cuenta{font-family:var(--mono);font-size:10.5px;color:var(--ink-3)}
+
+/* ───────── filtros ───────── */
+.filtros{padding:12px 16px;display:flex;flex-direction:column;gap:10px;border-bottom:1px solid var(--linea-2);background:#FBFBFD}
+.chips{display:flex;gap:5px;flex-wrap:wrap}
+.chip{border:1px solid var(--linea);background:#fff;border-radius:8px;padding:5px 11px;font-size:12px;font-weight:600;color:var(--ink-2)}
+.chip[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:#fff}
+.buscador{width:100%;padding:9px 12px;border:1px solid var(--linea);border-radius:10px;background:#fff}
+
+/* ───────── catálogo ───────── */
+.lista{max-height:min(60vh,580px);overflow:auto;padding:8px}
+.grupo-titulo{display:flex;align-items:center;gap:10px;padding:14px 8px 8px;margin-top:6px;border-top:1px solid var(--linea-2)}
+.grupo-titulo:first-child{border-top:0;margin-top:0}
+.grupo-titulo b{font-family:var(--display);font-size:13px;font-weight:700}
+.grupo-titulo span{font-family:var(--mono);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);background:#F0F0F5;padding:2px 8px;border-radius:5px}
+.item{display:flex;gap:10px;align-items:flex-start;width:100%;text-align:left;background:none;border:1.5px solid transparent;border-radius:12px;padding:10px 12px;transition:all .12s}
+.item:hover{background:#F6F6FB;border-color:#E8E8F0}
+.item.activo{background:#F0F0FA;border-color:var(--linea)}
+.tick{flex:none;width:20px;height:20px;border:2px solid var(--linea);border-radius:7px;display:grid;place-items:center;font-size:12px;color:#fff;background:#fff;margin-top:1px;transition:all .12s}
+.item.activo .tick{border-color:transparent}
+.item .nom{font-size:13.5px;font-weight:600;line-height:1.3;display:block;letter-spacing:-.01em}
+.item .meta{display:flex;gap:5px;flex-wrap:wrap;margin-top:5px;align-items:center}
+.tag{font-family:var(--mono);font-size:9px;font-weight:600;padding:3px 7px;border-radius:6px;background:#F0F0F5;color:var(--ink-3);letter-spacing:.02em}
+.tag.op{background:#EDEBF8;color:#4A3E8E}
+.tag.elige{background:#FDF0E4;color:#8A5A12}
+
+/* ───────── selección ───────── */
+.sel-cuerpo{padding:8px;max-height:min(60vh,620px);overflow:auto}
+.vacio{padding:34px 22px;text-align:center;color:var(--ink-3);font-size:13px;line-height:1.6}
+.curso-cab{display:flex;align-items:center;gap:10px;padding:14px 8px 8px;margin-top:6px;border-top:1px solid var(--linea-2)}
+.curso-cab:first-child{border-top:0;margin-top:0}
+.curso-num{font-family:var(--display);font-size:17px;font-weight:800;letter-spacing:-.03em;line-height:1}
+.curso-cab .barra{flex:1;height:1px;background:var(--linea-2)}
+.curso-cab .ects{font-family:var(--mono);font-size:10px;color:var(--ink-3);letter-spacing:.04em}
+.tarjeta{position:relative;border:1.5px solid var(--linea);border-radius:14px;margin:8px 2px;background:#fff;overflow:hidden;transition:all .15s}
+.tarjeta::before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px;background:var(--c)}
+.tarjeta.otro{opacity:.45}
+.tarjeta:hover{border-color:#C5C5D5;box-shadow:0 2px 10px rgba(20,19,26,.08)}
+.t-h{display:flex;gap:10px;align-items:flex-start;padding:12px 12px 10px 16px}
+.t-h .nom{flex:1;font-size:14px;font-weight:600;line-height:1.3;letter-spacing:-.01em}
+.t-sub{display:flex;gap:5px;flex-wrap:wrap;margin-top:6px;align-items:center}
+.mini{background:none;border:1px solid var(--linea);border-radius:7px;width:27px;height:27px;font-size:12px;line-height:1;color:var(--ink-3);flex:none;display:grid;place-items:center}
+.mini:hover{background:#F3F3F8;color:var(--ink)}
+.ficha{padding:2px 12px 12px 14px;border-top:1px solid var(--linea-2);display:flex;flex-direction:column;gap:9px}
+.campo{display:flex;flex-direction:column;gap:4px}
+.campo label{font-family:var(--mono);font-size:9px;letter-spacing:.13em;text-transform:uppercase;color:var(--ink-3)}
+.campo select,.campo input,.campo textarea{padding:7px 9px;border:1px solid var(--linea);border-radius:9px;background:#FBFBFD;width:100%}
+.campo textarea{min-height:54px;resize:vertical;line-height:1.45}
+.dos{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.fijo{font-size:11.5px;color:var(--ink-3);background:#F6F6FA;border-radius:8px;padding:6px 9px}
+.et{font-family:var(--mono);font-size:9px;font-weight:500;padding:2px 6px;border-radius:5px;letter-spacing:.06em;text-transform:uppercase}
+.et.ir{background:#E2F1EC;color:#1F6F4E}
+.et.importante{background:#FFF3E0;color:#E65100;border:1px solid #FFB300}
+.et.muy-importante{background:#FFEBEE;color:#C62828;border:1px solid #FF1744;animation:pulse-ext 2s infinite}
+.et.no-urgente{background:#EEEEF4;color:var(--ink-3)}
+
+/* ───────── barra vista ───────── */
+.barra{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap;padding:10px 14px;border-bottom:1px solid var(--linea-2);background:linear-gradient(180deg,#FBFBFD,#fff)}
+.seg{display:flex;background:#EDEDF2;border-radius:10px;padding:3px;gap:1px}
+.seg button{border:0;background:none;padding:6px 14px;font-size:12px;font-weight:600;border-radius:8px;color:var(--ink-3);transition:all .12s}
+.seg button[aria-pressed="true"]{background:#fff;color:var(--ink);box-shadow:0 1px 3px rgba(20,19,26,.1)}
+.acciones{display:flex;gap:5px;flex-wrap:wrap}
+.btn{border:1px solid var(--linea);background:#fff;border-radius:8px;padding:6px 12px;font-size:11.5px;font-weight:600;color:var(--ink-2);transition:all .12s}
+.btn:hover{background:#F3F3F8;color:var(--ink);border-color:#D0D0DB}
+.btn.ppal{background:var(--ink);border-color:var(--ink);color:#fff}
+.btn.ppal:hover{background:#2A2935;color:#fff}
+.btn[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:#fff}
+
+/* ───────── avisos ───────── */
+.aviso-caja{padding:11px 16px;border-bottom:1px solid var(--linea-2);font-size:12.5px;line-height:1.5}
+.aviso-caja.rojo{background:#FDF3F2;color:#8E2A1E}
+.aviso-caja.ambar{background:#FDF8EF;color:var(--aviso)}
+.aviso-caja b{font-weight:700}
+.aviso-caja ul{margin:6px 0 0;padding-left:17px}
+.aviso-caja li{margin-bottom:3px}
+
+/* ───────── leyenda ───────── */
+.leyenda{display:block;padding:0;border-bottom:1px solid var(--linea-2);background:linear-gradient(180deg,#FBFBFD,#F7F7FA)}
+.ley-fila{display:flex;gap:5px;flex-wrap:wrap;padding:8px 14px;align-items:center}
+.ley-fila + .ley-fila{border-top:1px dashed var(--linea-2);padding-top:6px;padding-bottom:6px}
+.ley-rot{font-family:var(--mono);font-size:8px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3);margin-right:3px}
+.ley{display:flex;align-items:center;gap:5px;font-size:11.5px;background:#fff;border:1px solid var(--linea);border-radius:8px;padding:4px 8px 4px 5px;cursor:pointer;transition:all .12s}
+.ley:hover{border-color:var(--ink);transform:translateY(-1px);box-shadow:0 2px 8px rgba(20,19,26,.1)}
+.ley i{width:11px;height:11px;border-radius:3px;flex:none}
+.ley .ln{font-weight:500;letter-spacing:-.01em;font-size:11px}
+.ley .lm{font-family:var(--mono);font-size:8px;color:var(--ink-3);letter-spacing:.04em}
+.ley-tipo{display:flex;align-items:center;gap:6px;font-size:10.5px;color:var(--ink-2);background:#fff;border:1px solid var(--linea-2);border-radius:8px;padding:4px 8px 4px 5px}
+.muestra{width:22px;height:12px;border-radius:3px;background:var(--ink-3);position:relative;flex:none}
+.muestra.pa::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:rgba(255,255,255,.55)}
+.muestra.lb::after{content:"";position:absolute;inset:0;border-radius:3px;background:repeating-linear-gradient(135deg,rgba(255,255,255,.55) 0 3px,transparent 3px 6px)}
+.dim .bq{opacity:.16}
+.dim .bq.on{opacity:1}
+
+/* ───────── tablas oficiales rediseñadas ───────── */
+.of-ctrl{display:flex;gap:8px;flex-wrap:wrap;align-items:center;padding:12px 16px;border-bottom:1px solid var(--linea-2);background:#FBFBFD}
+.of-ctrl .ley-rot{margin:0 2px 0 0}
+.of-ctrl .sep{width:1px;height:20px;background:var(--linea);margin:0 4px}
+.of-tit{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;padding:14px 16px 10px}
+.of-tit h3{font-family:var(--display);font-size:17px;font-weight:700;margin:0;letter-spacing:-.025em}
+.of-tit span{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3)}
+.of-pista{padding:0 16px 10px;font-size:12px;color:var(--ink-3)}
+.of-cal .bq{cursor:pointer}
+.bq.nomia{opacity:.52}
+.bq.nomia:hover{opacity:.9}
+.bq.mia{box-shadow:0 0 0 2px #fff,0 0 0 3.5px var(--ink)}
+.of-prof{margin:6px 16px 20px;width:calc(100% - 32px)}
+.of-prof tr.sel td{background:#FBFBFD;font-weight:600}
+.of-prof td.pill-c{width:26px}
+.pto{display:inline-block;width:11px;height:11px;border-radius:4px}
+
+/* ───────── glosario dentro de la ficha ───────── */
+.glos{background:#FBFBFD;border:1px solid var(--linea-2);border-radius:12px;padding:13px 14px}
+.glos dl{display:grid;grid-template-columns:auto 1fr;gap:7px 11px;margin:0;font-size:12px;line-height:1.45;color:var(--ink-2)}
+.glos dt{font-family:var(--mono);font-size:10px;color:var(--ink);background:#EEEEF4;border-radius:6px;padding:2px 7px;height:fit-content;white-space:nowrap}
+.glos dd{margin:0}
+
+/* ───────── calendario ───────── */
+.cal-wrap{padding:4px 6px 10px}
+.cal-cab{display:grid;grid-template-columns:56px repeat(5,minmax(0,1fr));border-bottom:2px solid var(--linea);position:sticky;top:0;background:#fff;z-index:4}
+.cal-cab div{padding:10px 4px 8px;text-align:center;font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-2)}
+.cal-cab div:first-child{color:transparent}
+.cal-cuerpo{display:grid;grid-template-columns:56px repeat(5,minmax(0,1fr));position:relative}
+.horas{position:relative;border-right:2px solid var(--linea)}
+.hm{position:absolute;left:0;right:8px;text-align:right;font-family:var(--mono);font-size:11px;color:#8886A0;transform:translateY(-7px);font-weight:700}
+.dia{position:relative;border-right:1px solid #EAEAF2;padding:0 2px}
+.dia:last-child{border-right:0}
+.dia:nth-child(odd){background:rgba(0,0,0,.015)}
+.raya{position:absolute;left:0;right:0;border-top:1px solid #EDEDF4}
+.raya.h{border-top-color:#DDDDE8}
+
+/* ── bloques de asignatura ── */
+.bq{position:absolute;border-radius:10px;padding:4px 7px 4px 9px;overflow:hidden;color:#1A1828;font-size:11px;line-height:1.18;box-shadow:0 1px 4px rgba(20,19,26,.1);transition:filter .12s,box-shadow .12s,transform .12s;border:1.5px solid rgba(0,0,0,.1);display:flex;flex-direction:column;justify-content:center;gap:0}
+.bq .bq-nombre{font-weight:700;font-size:11.5px;letter-spacing:-.02em;line-height:1.15;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.bq .bq-hora{font-family:var(--mono);font-size:9px;color:rgba(0,0,0,.5);letter-spacing:.01em;line-height:1.3}
+.bq .tipo{position:absolute;top:3px;right:4px;font-family:var(--mono);font-size:7.5px;font-weight:800;background:rgba(0,0,0,.08);border-radius:4px;padding:1px 4px;letter-spacing:.04em;color:rgba(0,0,0,.45);line-height:1.3}
+.bq.aula::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:rgba(0,0,0,.12)}
+.bq.lab::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(135deg,rgba(0,0,0,.04) 0 4px,transparent 4px 8px);pointer-events:none}
+/* desdoble */
+.bq.desdoble{border-style:dashed;border-width:2px;border-color:rgba(0,0,0,.22)}
+.bq.desdoble .tipo::after{content:" ×2";font-weight:400;opacity:.7}
+.bq.choca{box-shadow:0 0 0 2px #14131A, 0 0 0 4px #FFD400}
+.bq .warn{position:absolute;bottom:2px;right:4px;font-size:8px}
+/* importancia */
+.bq.bq-imp{box-shadow:0 0 0 2.5px #FFB300,0 2px 8px rgba(255,179,0,.3)}
+.bq.bq-muyimp{box-shadow:0 0 0 3px #FF1744,0 0 14px rgba(255,23,68,.35);animation:glow-imp 2s ease-in-out infinite}
+@keyframes glow-imp{0%,100%{box-shadow:0 0 0 3px #FF1744,0 0 8px rgba(255,23,68,.25)}50%{box-shadow:0 0 0 3px #FF1744,0 0 18px rgba(255,23,68,.45)}}
+.cal-vacio{padding:60px 24px;text-align:center;color:var(--ink-3);line-height:1.7;font-size:14px}
+
+/* ───────── tablas oficiales ───────── */
+.oficial{padding:16px}
+.of-h{display:flex;align-items:baseline;gap:10px;margin:20px 0 8px}
+.of-h:first-child{margin-top:0}
+.of-h h3{font-family:var(--display);font-size:16px;font-weight:700;margin:0;letter-spacing:-.02em}
+.of-h span{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3)}
+.of-tabla{border:1px solid var(--linea);border-radius:11px;overflow:hidden}
+.of-fila{display:grid;grid-template-columns:repeat(5,minmax(0,1fr))}
+.of-fila.cab div{background:#F6F6FA;font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);padding:8px;text-align:center}
+.of-fila > div{border-right:1px solid var(--linea-2);border-top:1px solid var(--linea-2);padding:8px;min-height:60px}
+.of-fila.cab > div{border-top:0}
+.of-fila > div:last-child{border-right:0}
+.celda{border-left:3px solid var(--c);padding-left:7px;margin-bottom:9px}
+.celda .franja{font-family:var(--mono);font-size:9.5px;color:var(--ink-3);letter-spacing:.03em}
+.celda .cn{font-size:12px;font-weight:600;line-height:1.25;margin:1px 0 2px;letter-spacing:-.01em}
+.celda .det{font-family:var(--mono);font-size:9.5px;color:var(--ink-2);line-height:1.5}
+.celda .aul{font-size:10px;color:var(--ink-3)}
+.of-prof{width:100%;border-collapse:collapse;font-size:12px;margin-top:6px}
+.of-prof th{text-align:left;font-family:var(--mono);font-size:9.5px;letter-spacing:.11em;text-transform:uppercase;color:var(--ink-3);padding:7px 9px;background:#F6F6FA;border:1px solid var(--linea-2)}
+.of-prof td{padding:7px 9px;border:1px solid var(--linea-2)}
+.of-prof td.ects{font-family:var(--mono);text-align:center;width:66px}
+.of-prof td.vacio-p{color:#B4B3C2;font-style:italic}
+
+/* ───────── nota ───────── */
+.nota{padding:20px 24px;max-width:78ch;line-height:1.65;font-size:13.5px}
+.nota h3{font-family:var(--display);font-size:18px;margin:0 0 10px;letter-spacing:-.02em}
+.nota h4{font-family:var(--display);font-size:13.5px;margin:20px 0 5px}
+.nota p{margin:0 0 10px;color:var(--ink-2)}
+.nota ul{margin:0 0 10px;padding-left:19px;color:var(--ink-2)}
+.nota li{margin-bottom:5px}
+.nota code{font-family:var(--mono);font-size:11.5px;background:#F0F0F5;padding:1px 5px;border-radius:5px}
+
+
+/* ───────── ventana emergente ───────── */
+.velo{position:fixed;inset:0;background:rgba(20,19,26,.5);backdrop-filter:blur(7px);-webkit-backdrop-filter:blur(7px);z-index:90;display:grid;place-items:center;padding:22px;opacity:0;pointer-events:none;transition:opacity .18s ease}
+.velo.on{opacity:1;pointer-events:auto}
+.modal{width:min(1020px,100%);max-height:90vh;overflow:auto;background:var(--panel);border-radius:22px;box-shadow:0 40px 90px -24px rgba(20,19,26,.55),0 0 0 1px rgba(20,19,26,.06);transform:translateY(12px) scale(.985);transition:transform .2s cubic-bezier(.2,.8,.2,1)}
+.velo.on .modal{transform:none}
+.m-cab{position:sticky;top:0;z-index:3;background:rgba(255,255,255,.94);backdrop-filter:blur(10px);padding:20px 24px 15px;border-bottom:1px solid var(--linea-2);display:flex;gap:14px;align-items:flex-start}
+.espina{width:6px;border-radius:4px;align-self:stretch;background:var(--c);flex:none;min-height:44px}
+.m-cab h3{font-family:var(--display);font-size:21px;font-weight:700;margin:0;letter-spacing:-.03em;line-height:1.12}
+.m-cab .t-sub{margin-top:7px}
+/* modal tabs */
+.m-resumen-bar{display:flex;gap:8px;flex-wrap:wrap;padding:10px 24px;background:#FBFBFD;border-bottom:1px solid var(--linea-2);font-size:12.5px;align-items:center}
+.m-resumen-bar b{font-weight:600}
+.m-resumen-bar .pt{font-family:var(--mono);font-size:10px;color:var(--ink-3);letter-spacing:.05em;margin-right:4px}
+.m-tabs{display:flex;gap:2px;padding:0 24px;background:#FBFBFD;border-bottom:1px solid var(--linea-2)}
+.m-tab{border:0;background:none;padding:10px 18px;font-size:12.5px;font-weight:600;color:var(--ink-3);border-bottom:2px solid transparent;transition:all .12s}
+.m-tab.on{color:var(--ink);border-bottom-color:var(--granate)}
+.m-tab:hover:not(.on){color:var(--ink-2)}
+.m-panel{padding:20px 24px 16px;display:flex;flex-direction:column;gap:20px;min-width:0}
+.m-sec h4{font-family:var(--mono);font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3);margin:0 0 10px;display:flex;align-items:center;gap:9px}
+.m-sec h4::after{content:"";flex:1;height:1px;background:var(--linea-2)}
+.swatches{display:flex;gap:7px;flex-wrap:wrap;align-items:center}
+.sw{width:29px;height:29px;border-radius:10px;border:2px solid transparent;box-shadow:inset 0 0 0 2px #fff;padding:0}
+.sw[aria-pressed="true"]{border-color:var(--ink)}
+.sw:hover{transform:translateY(-1px)}
+.opciones{display:grid;gap:10px}
+.mini-sem{background:#F7F7FB;border-radius:10px;padding:7px 8px 8px;margin-bottom:10px}
+.ms-dias{display:grid;grid-template-columns:repeat(5,1fr);gap:4px;margin-bottom:4px}
+.ms-dias span{font-family:var(--mono);font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);text-align:center}
+.ms-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:4px;position:relative;height:76px}
+.ms-col{position:relative;background:#fff;border-radius:5px}
+.ms-col span{position:absolute;left:2px;right:2px;border-radius:3px}
+.ms-linea{position:absolute;left:0;right:0;border-top:1px dashed #D5D5E2;pointer-events:none}
+.ms-pie{display:flex;justify-content:space-between;font-family:var(--mono);font-size:8.5px;color:var(--ink-3);margin-top:5px;letter-spacing:.06em}
+.opc{border:1.5px solid var(--linea);border-radius:14px;padding:13px 15px;background:#fff;text-align:left;width:100%;display:block;transition:border-color .15s,background .15s}
+.opc:hover{border-color:#C7C7D6}
+.opc[aria-pressed="true"]{border-color:var(--ink);background:#FBFBFD}
+.opc-h{display:flex;justify-content:space-between;gap:10px;align-items:baseline;margin-bottom:9px}
+.opc-h b{font-size:13.5px;font-weight:700;letter-spacing:-.01em}
+.opc-h span{font-family:var(--mono);font-size:9.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-3)}
+.horario{display:grid;grid-template-columns:66px 1fr;gap:3px 12px;font-size:11.5px}
+.horario .d{font-family:var(--mono);font-size:9px;letter-spacing:.11em;text-transform:uppercase;color:var(--ink-3);padding-top:3px}
+.horario .s{color:var(--ink-2);line-height:1.5}
+.horario .s em{font-style:normal;font-family:var(--mono);font-size:10.5px;color:var(--ink)}
+.horario .s u{text-decoration:none;font-family:var(--mono);font-size:9px;background:#F0F0F5;border-radius:4px;padding:1px 4px;margin-left:3px;color:var(--ink-3)}
+.horario .s.off{opacity:.38}
+.sub-fila{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:9px}
+.sub-chip{border:1.5px solid var(--linea);background:#fff;border-radius:9px;padding:6px 12px;font-family:var(--mono);font-size:11px;font-weight:500;color:var(--ink-2)}
+.sub-chip[aria-pressed="true"]{border-color:var(--ink);background:var(--ink);color:#fff}
+/* subgrupo cards */
+.sub-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px}
+.sub-card{position:relative;border:2px solid var(--linea);border-radius:14px;padding:14px 16px;background:#fff;text-align:left;width:100%;display:flex;flex-direction:column;gap:6px;transition:all .15s;cursor:pointer}
+.sub-card:hover{border-color:#C0C0D0;background:#FAFAFF}
+.sub-card.on{border-color:var(--ink);background:#F5F5FA;box-shadow:0 2px 10px rgba(20,19,26,.1)}
+.sc-nombre{font-family:var(--mono);font-size:16px;font-weight:800;letter-spacing:-.02em;color:var(--ink)}
+.sc-horario{display:flex;flex-direction:column;gap:3px}
+.sc-ses{font-size:12px;color:var(--ink-2);display:flex;align-items:baseline;gap:6px}
+.sc-ses em{font-style:normal;font-family:var(--mono);font-size:11px;font-weight:600;color:var(--ink)}
+.sc-ses u{text-decoration:none;font-family:var(--mono);font-size:9px;background:#F0F0F5;border-radius:4px;padding:1px 5px;color:var(--ink-3)}
+.sc-check{position:absolute;top:10px;right:12px;font-size:16px;color:var(--ink);font-weight:700}
+.m-pie{position:sticky;bottom:0;background:rgba(255,255,255,.94);backdrop-filter:blur(10px);border-top:1px solid var(--linea-2);padding:14px 24px;display:flex;justify-content:space-between;gap:10px;align-items:center}
+.btn.peligro{color:#A03325;border-color:#F1D9D5;background:#FEF8F7}
+.btn.peligro:hover{background:#FBEDEB;color:#8E2A1E}
+.pista{font-size:11.5px;color:var(--ink-3)}
+.tarjeta .t-h{cursor:pointer}
+.bq{cursor:pointer}
+.bq:hover{filter:brightness(.93);box-shadow:0 4px 14px -2px rgba(20,19,26,.22);transform:translateY(-1px)}
+
+/* ───────── convocatoria badge ───────── */
+.bq-ext{outline:2.5px dashed rgba(255,80,40,.8)!important;outline-offset:-2px}
+.conv-badge{display:inline-flex;align-items:center;gap:4px;font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:3px 8px;border-radius:6px;vertical-align:1px}
+.conv-badge.ord{background:#E8F5E9;color:#2E7D32}
+.conv-badge.ext{background:#FBE9E7;color:#BF360C}
+.conv-badge.ext.dif-alta{background:#FFCDD2;color:#B71C1C;animation:pulse-ext 2s infinite}
+@keyframes pulse-ext{0%,100%{opacity:1}50%{opacity:.7}}
+.conv-sel{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.conv-btn{border:1.5px solid var(--linea);background:#fff;border-radius:8px;padding:6px 12px;font-size:12px;font-weight:600;color:var(--ink-2);display:flex;align-items:center;gap:5px}
+.conv-btn:hover{border-color:#C7C7D6}
+.conv-btn[aria-pressed="true"]{border-color:var(--ink);background:var(--ink);color:#fff}
+.conv-btn .conv-ico{font-size:14px}
+.dif-toggle{display:flex;gap:4px;margin-left:6px}
+.dif-dot{width:22px;height:22px;border:1.5px solid var(--linea);border-radius:7px;background:#fff;font-size:11px;display:grid;place-items:center;color:var(--ink-3)}
+.dif-dot:hover{border-color:#C7C7D6}
+.dif-dot.on{border-color:var(--alerta);background:#FBE9E7;color:var(--alerta)}
+
+/* ── selector de turno en tarjeta ── */
+.t-turnos{display:flex;gap:3px;padding:0 14px 6px;flex-wrap:wrap}
+.t-turno{border:1.5px solid var(--linea);background:#FAFAFE;border-radius:7px;padding:4px 10px;font-family:var(--mono);font-size:9px;font-weight:600;color:var(--ink-3);letter-spacing:.03em;transition:all .12s}
+.t-turno:hover{border-color:var(--ink-2);color:var(--ink-2)}
+.t-turno.on{border-color:var(--ink);background:var(--ink);color:#fff}
+
+/* ── alerta/footer en tarjeta ── */
+.t-footer{display:flex;gap:4px;align-items:center;padding:5px 14px 8px;border-top:1px solid var(--linea-2);flex-wrap:wrap}
+.t-conv-btn{border:1.5px solid var(--linea);background:#fff;border-radius:7px;padding:4px 10px;font-family:var(--mono);font-size:9.5px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-3);transition:all .12s}
+.t-conv-btn:hover{border-color:var(--ink-2);color:var(--ink-2)}
+.t-conv-btn.ord-on{border-color:#2E7D32;background:#E8F5E9;color:#2E7D32}
+.t-conv-btn.ext-on{border-color:#BF360C;background:#FBE9E7;color:#BF360C}
+.t-eval-tags{display:flex;gap:3px;flex-wrap:wrap;margin-left:auto}
+.t-eval-tag{font-family:var(--mono);font-size:8px;padding:2px 5px;border-radius:4px;background:#F0F0F5;color:var(--ink-3);letter-spacing:.03em}
+.tarjeta.conv-ext{border-color:#E57373;background:#FFF8F7}
+.tarjeta.conv-ext::before{background:#E53935}
+.tarjeta.conv-ord{border-color:#A5D6A7;background:#F9FDF9}
+/* alerta de importancia en tarjeta */
+.t-alerta{display:flex;align-items:center;gap:6px;padding:6px 14px;font-family:var(--mono);font-size:9px;font-weight:600;letter-spacing:.06em;text-transform:uppercase}
+.t-alerta.a-imp{background:#FFF8E1;color:#E65100;border-top:2px solid #FFB300}
+.t-alerta.a-muyimp{background:#FFEBEE;color:#C62828;border-top:2px solid #FF1744;animation:pulse-ext 2s infinite}
+.t-alerta .a-ico{font-size:13px}
+
+/* ── evaluacion grid en modal ── */
+.eval-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.eval-item{display:flex;align-items:center;gap:8px;background:#FBFBFD;border:1px solid var(--linea-2);border-radius:12px;padding:10px 12px;transition:border-color .12s}
+.eval-item:focus-within{border-color:var(--granate);background:#fff}
+.eval-item label{font-size:11px;font-weight:600;color:var(--ink-2);flex:1;min-width:0;letter-spacing:-.01em}
+.eval-item input[type="number"]{width:48px;padding:5px 2px;border:1.5px solid var(--linea);border-radius:8px;background:#fff;font-family:var(--mono);font-size:15px;font-weight:700;text-align:center;color:var(--ink);-moz-appearance:textfield;transition:border-color .12s}
+.eval-item input[type="number"]:focus{border-color:var(--granate);outline:none}
+.eval-item input[type="number"]::-webkit-inner-spin-button{-webkit-appearance:none}
+.eval-item .pct{font-family:var(--mono);font-size:12px;color:var(--ink-3);flex:none;font-weight:600}
+.eval-total{display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:12px;margin-top:6px}
+.eval-total.ok{background:#E8F5E9;border:1.5px solid #81C784}
+.eval-total.warn{background:#FFF8E1;border:1.5px solid #FFB74D}
+.eval-total.bad{background:#FFEBEE;border:1.5px solid #E57373}
+.eval-bar{flex:1;height:10px;background:#E8E8EE;border-radius:5px;overflow:hidden}
+.eval-bar-fill{height:100%;border-radius:5px;transition:width .25s,background .25s}
+.eval-total-num{font-family:var(--mono);font-size:16px;font-weight:800;min-width:44px;text-align:right;letter-spacing:-.02em}
+.eval-total.ok .eval-total-num{color:#2E7D32}
+.eval-total.warn .eval-total-num{color:#E65100}
+.eval-total.bad .eval-total-num{color:#C62828}
+/* datos cards */
+.datos-cards{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.dato-card{background:#FBFBFD;border:1.5px solid var(--linea-2);border-radius:14px;padding:14px 16px;display:flex;flex-direction:column;gap:8px}
+.dato-card label{font-family:var(--mono);font-size:8.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3)}
+.dato-card input,.dato-card select{padding:8px 10px;border:1.5px solid var(--linea);border-radius:10px;background:#fff;font-size:13.5px;width:100%;transition:border-color .12s}
+.dato-card input:focus,.dato-card select:focus{border-color:var(--granate);outline:none}
+.notas-area{width:100%;min-height:80px;padding:12px 14px;border:1.5px solid var(--linea);border-radius:12px;background:#FBFBFD;font-size:13px;line-height:1.5;resize:vertical;font-family:var(--ui);transition:border-color .12s}
+.notas-area:focus{border-color:var(--granate);outline:none;background:#fff}
+
+/* ───────── responsive: tablet ───────── */
+@media (max-width:1120px){
+  .pag-horario,.pag-asigs{padding:14px 16px 32px}
+  .dos-cols{grid-template-columns:1fr 1fr;gap:12px}
+  .lista{max-height:min(50vh,500px)}
+  .sel-cuerpo{max-height:min(50vh,500px)}
+  .metricas{gap:14px}
+  .top-in{padding:10px 16px 0}
+  .top-tabs{padding:0 16px}
+  .m-panel{padding:16px 18px 12px}
+}
+
+/* ───────── responsive: movil ───────── */
+@media (max-width:768px){
+  /* ---- nav inferior fija ---- */
+  .mob-nav{display:flex;position:fixed;bottom:0;left:0;right:0;z-index:60;background:var(--ink);border-top:1px solid #2A2935;padding:0;height:56px}
+  .mob-nav button{flex:1;border:0;background:none;color:#8E8DA0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font-family:var(--ui);font-size:10px;font-weight:600;letter-spacing:.02em;padding:6px 0;transition:color .12s}
+  .mob-nav button.activo{color:#fff}
+  .mob-nav button.activo .mn-ico{background:var(--granate)}
+  .mn-ico{width:28px;height:28px;border-radius:8px;display:grid;place-items:center;font-size:15px;transition:background .12s}
+
+  /* ---- header compacto ---- */
+  .top-in{flex-direction:row;align-items:center;gap:10px;padding:8px 12px 0;flex-wrap:nowrap}
+  .kicker{display:none}
+  .marca h1{font-size:16px;margin:0;white-space:nowrap}
+  .marca h1 em{display:none}
+  .metricas{gap:8px;padding-bottom:0;margin-left:auto;flex-shrink:0}
+  .metrica b{font-size:14px}
+  .metrica span{font-size:7px;margin-top:2px}
+  .top-tabs{padding:0 12px;margin-top:6px;gap:0;overflow-x:auto}
+  .tabs-sep{display:none}
+  .tabs-pag{display:none}
+  .tab{padding:6px 12px;font-size:11px}
+
+  /* ---- paginas en movil ---- */
+  .pagina{display:none!important}
+  .pagina.mob-activo{display:block!important}
+  .pag-horario,.pag-asigs{padding:8px 8px 68px}
+  .dos-cols{grid-template-columns:1fr;gap:10px}
+
+  /* en movil, "elegidas" es su propia vista */
+  .pag-asigs [data-sec="seleccion"]{display:none}
+  .pag-asigs.mob-show-sel [data-sec="catalogo"]{display:none}
+  .pag-asigs.mob-show-sel [data-sec="seleccion"]{display:block}
+
+  /* ---- catalogo ---- */
+  .panel-h{padding:12px 14px;flex-wrap:wrap;gap:8px}
+  .panel-h h2{font-size:15px}
+  .panel-h .acciones{margin-left:0;width:100%;justify-content:flex-start}
+  .filtros{padding:10px 14px;gap:8px}
+  .chips{gap:4px}
+  .chip{padding:6px 12px;font-size:12px;border-radius:10px}
+  .buscador{padding:10px 14px;font-size:15px;border-radius:12px}
+  .lista{max-height:none;overflow:visible;padding:6px}
+  .item{padding:12px 12px;gap:10px;border-radius:14px}
+  .item .nom{font-size:14px}
+  .grupo-titulo{padding:12px 8px 8px}
+  .grupo-titulo b{font-size:14px}
+  .tag{font-size:9px;padding:3px 8px}
+
+  /* ---- seleccion ---- */
+  .sel-cuerpo{max-height:none;overflow:visible;padding:6px}
+  .tarjeta{margin:10px 2px;border-radius:16px}
+  .tarjeta::before{width:6px}
+  .t-h{padding:14px 14px 10px 18px}
+  .t-h .nom{font-size:15px}
+  .t-footer{padding:6px 16px 10px;gap:6px}
+  .t-conv-btn{padding:6px 14px;font-size:11px;border-radius:9px}
+  .t-turnos{padding:0 16px 8px;gap:4px}
+  .t-turno{padding:5px 12px;font-size:9.5px;border-radius:9px}
+  .curso-cab{padding:12px 8px 8px}
+  .t-alerta{padding:8px 16px;font-size:10px}
+  .sub-cards{grid-template-columns:1fr}
+  .sub-card{padding:12px 14px;border-radius:12px}
+  .sc-nombre{font-size:15px}
+
+  /* ---- barra calendario ---- */
+  .barra{padding:8px 10px;gap:6px;flex-wrap:wrap}
+  .seg{width:100%}
+  .seg button{flex:1;padding:7px 8px;font-size:11px;text-align:center}
+  .acciones{width:100%;justify-content:space-between}
+  .btn{padding:6px 10px;font-size:10.5px}
+
+  /* ---- calendario ---- */
+  .cal-wrap{padding:2px 2px 6px}
+  .cal-cab{grid-template-columns:38px repeat(5,1fr)}
+  .cal-cab div{padding:6px 2px;font-size:8px;letter-spacing:.06em}
+  .cal-cuerpo{grid-template-columns:38px repeat(5,1fr)}
+  .t-turnos{padding:0 10px 5px;gap:2px}
+  .t-turno{padding:3px 7px;font-size:8px}
+  .hm{font-size:9px;right:3px;font-weight:700}
+  .bq{padding:2px 4px 2px 6px;border-radius:7px;border-width:1px}
+  .bq .bq-nombre{font-size:9.5px}
+  .bq .bq-hora{font-size:7.5px}
+  .bq .tipo{font-size:6px;top:1px;right:2px;padding:1px 2px;border-radius:3px}
+  .bq .warn{font-size:7px;bottom:1px;right:2px}
+  .bq.aula::before{width:3px}
+
+  /* ---- leyenda ---- */
+  .leyenda{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  .ley-fila{padding:7px 10px;gap:4px;flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch}
+  .ley-fila:last-child{display:none}
+  .ley{flex:none;padding:3px 7px 3px 4px;font-size:10px;border-radius:6px;gap:5px}
+  .ley i{width:10px;height:10px;border-radius:3px}
+  .ley .ln{font-size:10px}
+  .ley .lm{display:none}
+  .ley-rot{font-size:7px}
+  .aviso-caja{padding:8px 10px;font-size:11px}
+  .aviso-caja ul{padding-left:14px}
+
+  /* ---- modal ---- */
+  .velo{padding:0;align-items:flex-end}
+  .modal{width:100%;max-height:100dvh;border-radius:18px 18px 0 0}
+  .m-cab{padding:12px 14px 10px}
+  .m-cab h3{font-size:16px}
+  .espina{width:4px;min-height:32px}
+  .m-resumen-bar{padding:8px 14px;font-size:11px}
+  .m-tabs{padding:0 14px;gap:0;overflow-x:auto}
+  .m-tab{padding:8px 14px;font-size:11.5px;white-space:nowrap}
+  .m-panel{padding:14px 14px 12px;gap:16px}
+  .m-pie{padding:10px 14px}
+  .opciones{gap:7px}
+  .opc{padding:10px 12px;border-radius:12px}
+  .opc-h b{font-size:12.5px}
+  .horario{grid-template-columns:42px 1fr;font-size:10.5px;gap:2px 6px}
+  .horario .d{font-size:8px}
+  .horario .s em{font-size:9.5px}
+  .horario .s u{font-size:8px;padding:1px 3px}
+  .sub-fila{gap:4px}
+  .sub-chip{padding:5px 10px;font-size:10px}
+  .swatches{gap:4px}
+  .sw{width:24px;height:24px;border-radius:7px}
+  .campo label{font-size:8px}
+  .campo select,.campo input,.campo textarea{padding:7px 9px;font-size:14px;border-radius:10px}
+  .dos{grid-template-columns:1fr;gap:7px}
+  .eval-grid{grid-template-columns:1fr 1fr}
+  .eval-item{padding:10px 10px}
+  .eval-item label{font-size:10px}
+  .eval-item input[type="number"]{font-size:16px;width:50px}
+  .datos-cards{grid-template-columns:1fr}
+  .dato-card{padding:12px 14px;border-radius:12px}
+  .dato-card input,.dato-card select{font-size:15px;padding:10px 12px}
+  .notas-area{font-size:15px;padding:12px 14px;min-height:100px}
+  .glos{padding:10px 11px}
+  .glos dl{gap:5px 8px;font-size:11px}
+  .glos dt{font-size:9px;padding:2px 5px}
+  .mini-sem{padding:5px 6px 6px}
+  .ms-grid{height:56px}
+  .of-ctrl{padding:8px 10px;gap:5px}
+  .of-tit{padding:8px 10px 6px}
+  .of-tit h3{font-size:14px}
+  .of-pista{padding:0 10px 6px;font-size:10.5px}
+  .of-prof{font-size:10px;margin:4px 10px 14px;width:calc(100% - 20px)}
+  .of-prof th,.of-prof td{padding:4px 5px}
+  .nota{padding:14px}
+  .nota h3{font-size:16px}
+  .nota p,.nota ul{font-size:12px}
+  .conv-badge{font-size:8px;padding:2px 5px}
+  .conv-btn{padding:5px 9px;font-size:11px}
+  .dif-dot{width:20px;height:20px;font-size:10px}
+  .cal-vacio{padding:40px 16px;font-size:13px}
+}
+
+/* ───────── movil pequeno ───────── */
+@media (max-width:400px){
+  .marca h1{font-size:14px}
+  .metricas{gap:5px}
+  .metrica b{font-size:12px}
+  .metrica span{font-size:6.5px}
+  .tab{padding:5px 9px;font-size:10px}
+  .mob-nav{height:52px}
+  .mn-ico{width:24px;height:24px;font-size:13px;border-radius:6px}
+  .mob-nav button{font-size:9px}
+  .cal-wrap{padding:1px 1px 4px}
+  .cal-cab{grid-template-columns:30px repeat(5,1fr)}
+  .cal-cab div{font-size:7px;padding:4px 1px;letter-spacing:.04em}
+  .cal-cuerpo{grid-template-columns:30px repeat(5,1fr)}
+  .hm{font-size:8px;right:1px}
+  .bq{padding:1px 2px 1px 4px;border-radius:5px}
+  .bq .bq-nombre{font-size:8px}
+  .bq .bq-hora{font-size:6.5px}
+  .bq .tipo{font-size:5px;top:0;right:1px;padding:0 1px}
+}
+
+@media print{
+  header.top,.mob-nav{display:none!important}
+  .pagina{display:none!important}
+  .pag-horario{display:block!important;padding:0;max-width:none}
+  .panel{border:0;box-shadow:none}
+  body{background:#fff}
+  .barra{display:none}
+  .bq{box-shadow:none;print-color-adjust:exact;-webkit-print-color-adjust:exact}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="top-in">
+    <div class="marca">
+      <span class="kicker">UVa · Campus de Segovia · CC. Sociales, Jurídicas y de la Comunicación</span>
+      <h1>Publicidad y RRPP <em>curso 2026-27</em></h1>
+    </div>
+    <div class="metricas">
+      <div class="metrica"><b id="m-asigs">0</b><span>asignaturas</span></div>
+      <div class="metrica"><b id="m-ects">0</b><span>ECTS</span></div>
+      <div class="metrica"><b id="m-horas">0</b><span>horas / sem</span></div>
+      <div class="metrica" id="m-choques-w"><b id="m-choques">0</b><span>solapes</span></div>
+    </div>
+  </div>
+  <div class="top-tabs">
+    <nav class="tabs-cuat" role="tablist">
+      <button class="tab" role="tab" data-cuat="1" aria-selected="true">1.er cuatrimestre</button>
+      <button class="tab" role="tab" data-cuat="2" aria-selected="false">2.º cuatrimestre</button>
+    </nav>
+    <span class="tabs-sep"></span>
+    <nav class="tabs-pag">
+      <button class="tab-pag" data-pag="horario" aria-selected="true"><span class="tp-ico">&#128197;</span> Mi horario</button>
+      <button class="tab-pag" data-pag="asigs" aria-selected="false"><span class="tp-ico">&#128218;</span> Asignaturas</button>
+    </nav>
+  </div>
+</header>
+
+<!-- ═══ PAGINA 1: HORARIO COMPLETO ═══ -->
+<div class="pagina pag-horario activa" data-pag-id="horario">
+  <section class="panel">
+    <div class="barra">
+      <div class="seg" id="seg-vista">
+        <button data-vista="cal" aria-pressed="true">Calendario</button>
+        <button data-vista="of" aria-pressed="false">Tablas oficiales</button>
+        <button data-vista="nota" aria-pressed="false">Nota informativa</button>
+      </div>
+      <div class="acciones">
+        <button class="btn" id="btn-tonos">Tonos por tipo</button>
+        <button class="btn" id="btn-imprimir">Imprimir</button>
+        <button class="btn ppal" id="btn-limpiar">Vaciar</button>
+      </div>
+    </div>
+    <div id="vista"></div>
+  </section>
+</div>
+
+<!-- ═══ PAGINA 2: ASIGNATURAS (catalogo + elegidas) ═══ -->
+<div class="pagina pag-asigs" data-pag-id="asigs">
+  <div class="dos-cols">
+    <section class="panel" data-sec="catalogo">
+      <div class="panel-h"><h2>Todas las asignaturas</h2><span class="cuenta" id="c-catalogo"></span></div>
+      <div class="filtros">
+        <div class="chips" id="chips-curso"></div>
+        <input class="buscador" id="buscador" type="search" placeholder="Buscar por nombre…" autocomplete="off">
+      </div>
+      <div class="lista" id="lista"></div>
+    </section>
+
+    <section class="panel" data-sec="seleccion">
+      <div class="panel-h">
+        <h2>Elegidas</h2>
+        <span class="cuenta" id="c-seleccion"></span>
+        <div class="acciones">
+          <button class="btn" id="btn-copiar">Copiar</button>
+          <button class="btn" id="btn-exportar">Guardar</button>
+          <button class="btn" id="btn-importar">Abrir</button>
+        </div>
+      </div>
+      <div class="sel-cuerpo" id="seleccion"></div>
+    </section>
+  </div>
+</div>
+
+<nav class="mob-nav" id="mob-nav">
+  <button data-mob="horario" class="activo"><span class="mn-ico">&#128197;</span>Horario</button>
+  <button data-mob="asigs"><span class="mn-ico">&#128218;</span>Asignaturas</button>
+  <button data-mob="elegidas"><span class="mn-ico">&#9989;</span>Elegidas</button>
+</nav>
+
+<div class="velo" id="velo"><div class="modal" role="dialog" aria-modal="true" aria-label="Ficha de la asignatura" id="modal"></div></div>
+
+<input type="file" id="fichero" accept="application/json" style="display:none">
+
+<script>
+/* =========================================================
+   DATOS — transcritos del PDF oficial de horarios 2026-2027
+   sesión: [día(0=L..4=V), inicio, fin, etiqueta, subgrupo|null, aula?, nota?]
+   ========================================================= */
+const ASIGS = [
+
+/* ===== 1.º CURSO · 1.er CUATRIMESTRE ===== */
+{id:"1a-hist-publi", n:"Historia de la publicidad", curso:1, cuat:1, ects:6, tipo:"OB", ops:[
+  {id:"G1", n:"Grupo 1 · Mañana", aula:"G-114", ses:[
+    [0,"10:00","11:20","T1",null],[0,"11:20","12:00","A1","A1"],[0,"12:00","12:40","A3","A3"],
+    [1,"13:00","15:00","T1",null]]},
+  {id:"G2", n:"Grupo 2 · Tarde", aula:"G-114", ses:[
+    [0,"15:00","16:20","T2",null],[0,"16:20","17:00","A2","A2"],[0,"17:00","17:40","A4","A4"],
+    [1,"18:00","20:00","T2",null]]}]},
+
+{id:"1a-sistemas", n:"Sistemas de información y comunicación", curso:1, cuat:1, ects:6, tipo:"OB", ops:[
+  {id:"G1", n:"Grupo 1 · Mañana", aula:"G-114", ses:[
+    [0,"13:00","15:00","T1",null],
+    [1,"10:20","11:00","A3","A3",null,"sin PDTO"],[1,"11:00","12:20","T1",null],[1,"12:20","13:00","A1","A1"]]},
+  {id:"G2", n:"Grupo 2 · Tarde", aula:"G-114", ses:[
+    [0,"18:00","20:00","T2",null],
+    [1,"15:00","16:20","T2",null],[1,"16:20","17:00","A2","A2"],[1,"17:00","17:40","A4","A4"]]}]},
+
+{id:"1a-teorias-com", n:"Teorías de la comunicación y de la información", curso:1, cuat:1, ects:6, tipo:"OB", ops:[
+  {id:"G1", n:"Grupo 1 · Mañana", aula:"G-114", ses:[
+    [2,"09:00","11:00","T1",null],
+    [3,"11:00","12:20","T1",null],[3,"12:20","13:00","A1","A1"],[3,"13:00","13:40","A3","A3"]]},
+  {id:"G2", n:"Grupo 2 · Tarde", aula:"G-114", ses:[
+    [2,"15:00","17:00","T2",null],
+    [3,"17:00","18:20","T2",null],[3,"18:20","19:00","A2","A2"],[3,"19:00","19:40","A4","A4"]]}]},
+
+{id:"1a-teoria-leng", n:"Teoría del lenguaje", curso:1, cuat:1, ects:6, tipo:"OB", ops:[
+  {id:"G1", n:"Grupo 1 · Mañana", aula:"G-114", ses:[
+    [2,"11:00","11:40","T1",null],[2,"11:40","13:00","A1","A1"],[2,"13:00","14:20","A3","A3"],
+    [4,"13:00","15:00","T1",null]]},
+  {id:"G2", n:"Grupo 2 · Tarde", aula:"G-114", ses:[
+    [2,"17:00","17:40","T2",null,null,"el PDF imprime 15:00-15:40 dentro de la franja 17:00-20:30 y chocaría con Teorías de la comunicación"],
+    [2,"17:40","19:00","A2","A2",null,"el PDF imprime 15:40-19:00"],
+    [2,"19:00","20:20","A4","A4"],
+    [4,"18:30","20:30","T2",null]]}]},
+
+{id:"1a-hist-universal", n:"Historia universal contemporánea", curso:1, cuat:1, ects:6, tipo:"OB", ops:[
+  {id:"G1", n:"Grupo 1 · Mañana", aula:"G-114", ses:[
+    [3,"09:00","11:00","T1",null],
+    [4,"09:30","10:10","T1",null],[4,"10:10","11:30","A1","A1"],[4,"11:30","12:50","A3","A3"]]},
+  {id:"G2", n:"Grupo 2 · Tarde", aula:"G-114", ses:[
+    [3,"15:00","17:00","T2",null],
+    [4,"15:00","15:40","T2",null],[4,"15:40","17:00","A2","A2"],[4,"17:00","18:20","A4","A4"]]}]},
+
+/* ===== 1.º CURSO · 2.º CUATRIMESTRE ===== */
+{id:"1b-teoria-publi", n:"Teoría de la publicidad", curso:1, cuat:2, ects:6, tipo:"OB", ops:[
+  {id:"G1", n:"Grupo 1 · Mañana", aula:"G-114", ses:[
+    [0,"09:00","10:20","T1",null],[0,"10:20","11:00","A1","A1"],[0,"11:00","11:40","A3","A3",null,"sin PDTO"],
+    [1,"09:00","11:00","T1",null]]},
+  {id:"G2", n:"Grupo 2 · Tarde", aula:"G-114", ses:[
+    [0,"15:00","16:20","T2",null],[0,"16:20","17:00","A2","A2"],[0,"17:00","17:40","A4","A4"],
+    [1,"15:00","17:00","T2+A2",null]]}]},
+
+{id:"1b-economia", n:"Principios de economía", curso:1, cuat:2, ects:6, tipo:"OB", ops:[
+  {id:"G1", n:"Grupo 1 · Mañana", aula:"G-114", ses:[
+    [0,"12:00","14:00","T1",null],
+    [1,"11:00","11:40","T1",null],[1,"11:40","13:00","A1","A1"],[1,"13:00","14:20","A3","A3"]]},
+  {id:"G2", n:"Grupo 2 · Tarde", aula:"G-114", ses:[
+    [0,"18:00","20:00","T2",null],
+    [1,"17:00","17:40","T2",null],[1,"17:40","19:00","A2","A2"],[1,"19:00","20:20","A4","A4"]]}]},
+
+{id:"1b-marketing", n:"Fundamentos de marketing", curso:1, cuat:2, ects:6, tipo:"OB", ops:[
+  {id:"G1", n:"Grupo 1 · Mañana", aula:"G-114", ses:[
+    [2,"09:00","11:00","T1",null],
+    [4,"11:00","13:00","A1","A1"],[4,"13:00","15:00","A3","A3"]]},
+  {id:"G2", n:"Grupo 2 · Tarde", aula:"G-114", ses:[
+    [2,"15:00","17:00","T2",null],[4,"17:00","19:00","T2",null]]}]},
+
+{id:"1b-com-edu", n:"Comunicación, educación y sociedad", curso:1, cuat:2, ects:6, tipo:"OB", ops:[
+  {id:"G1", n:"Grupo 1 · Mañana", aula:"G-114", ses:[
+    [2,"11:00","12:20","T1",null],[2,"12:20","13:00","A1","A1"],[2,"13:00","13:40","A3","A3"],
+    [3,"09:00","11:00","T1",null]]},
+  {id:"G2", n:"Grupo 2 · Tarde", aula:"G-114", ses:[
+    [2,"17:00","18:20","T2",null],[2,"18:20","19:00","A2","A2"],[2,"19:00","19:40","A4","A4"],
+    [3,"15:00","17:00","T2",null]]}]},
+
+{id:"1b-arte", n:"Arte y publicidad", curso:1, cuat:2, ects:6, tipo:"OB", ops:[
+  {id:"G1", n:"Grupo 1 · Mañana", aula:"G-114", ses:[
+    [3,"11:00","11:40","T1",null],[3,"11:40","13:00","A1","A1"],[3,"13:00","14:20","A3","A3"],
+    [4,"09:00","11:00","T1",null]]},
+  {id:"G2", n:"Grupo 2 · Tarde", aula:"G-114", ses:[
+    [3,"17:00","17:40","T2",null],[3,"17:40","19:00","A2","A2"],[3,"19:00","20:20","A4","A4"],
+    [4,"15:00","17:00","T2",null]]}]},
+
+/* ===== 2.º CURSO · 1.er CUATRIMESTRE ===== */
+{id:"2a-psico-com", n:"Psicología de la comunicación", curso:2, cuat:1, ects:6, tipo:"OB", ops:[
+  {id:"G1", n:"Grupo 1 · Mañana", aula:"G-012", ses:[
+    [0,"11:40","13:00","A3","A3",null,"sin PDTO"],[0,"13:00","13:40","T1",null],[0,"13:40","15:00","A1","A1"],
+    [1,"09:00","11:00","T1",null]]},
+  {id:"G2", n:"Grupo 2 · Tarde", aula:"G-012", ses:[
+    [0,"17:30","18:10","T2",null],[0,"18:10","19:30","A2","A2"],[0,"19:30","21:00","A4","A4"],
+    [1,"15:00","17:00","T2",null]]},
+  {id:"G3", n:"Grupo 3 · Mañana", aula:"A-216", ses:[
+    [0,"09:00","11:00","T3+A5",null],[1,"11:00","13:00","T3",null]]}]},
+
+{id:"2a-tecnologias", n:"Introducción a las tecnologías de la comunicación", curso:2, cuat:1, ects:4, tipo:"OB", ops:[
+  {id:"G1", n:"Grupo 1 · Mañana", aula:"G-012", ses:[
+    [0,"08:30","09:30","T1",null],[0,"09:30","11:30","L1/L3/L5/L7",null,null,"sesión de laboratorio de los subgrupos L1, L3, L5 y L7"],
+    [3,"13:00","13:40","A1","A1"],[3,"13:40","14:20","A3","A3"],[3,"14:20","14:45","L6",null,null,"sesión L6"]]},
+  {id:"G2", n:"Grupo 2 · Tarde", aula:"G-012", ses:[
+    [0,"15:00","16:30","T2",null],[0,"16:30","17:10","A4","A4"],
+    [3,"19:30","20:10","A2","A2"],[3,"20:10","21:00","L2/L4",null,null,"sesión de laboratorio L2 y L4"]]}]},
+
+{id:"2a-teoria-imagen", n:"Teoría de la imagen", curso:2, cuat:1, ects:4, tipo:"OB", ops:[
+  {id:"G1", n:"Grupo 1 · Mañana", aula:"G-012", ses:[
+    [1,"11:00","13:00","T1",null],[3,"11:30","12:10","A1","A1"],[3,"12:10","12:50","A3","A3"]]},
+  {id:"G2", n:"Grupo 2 · Tarde", aula:"G-012", ses:[
+    [1,"17:00","19:00","T2",null],[3,"16:30","17:10","A2","A2"],[3,"17:10","17:50","A4","A4"]]}]},
+
+{id:"2a-cultura", n:"Cultura e identidad corporativa", curso:2, cuat:1, ects:4, tipo:"OB", ops:[
+  {id:"G1", n:"Grupo 1 · Mañana", aula:"G-012", ses:[
+    [2,"13:00","15:00","T1",null],[3,"08:30","09:10","A1","A1"],[3,"09:10","09:50","A3","A3"]]},
+  {id:"G2", n:"Grupo 2 · Tarde", aula:"G-012", ses:[
+    [2,"18:30","20:30","T2",null],[3,"15:00","15:40","A2","A2"],[3,"15:40","16:20","A4","A4"]]}]},
+
+{id:"2a-estructura-social", n:"Estructura social contemporánea", curso:2, cuat:1, ects:6, tipo:"OB", ops:[
+  {id:"G1", n:"Grupo 1 · Mañana", aula:"G-012", ses:[
+    [2,"11:00","13:00","T1",null],
+    [4,"09:00","11:00","A1","A1"],[4,"09:00","11:00","A3","A3","A-108"]]},
+  {id:"G2", n:"Grupo 2 · Tarde", aula:"G-012", ses:[
+    [2,"15:00","17:00","T2",null],[4,"15:00","17:00","A2","A2"],[4,"17:00","19:00","A4","A4"]]}]},
+
+{id:"2a-estructura-publi", n:"Estructura del sistema publicitario", curso:2, cuat:1, ects:4, tipo:"OB", ops:[
+  {id:"G1", n:"Grupo 1 · Mañana", aula:"G-012", ses:[
+    [1,"13:00","13:40","A1","A1"],[1,"13:40","14:20","A3","A3"],[2,"09:00","11:00","T1",null]]},
+  {id:"G2", n:"Grupo 2 · Tarde", aula:"G-012", ses:[
+    [1,"19:00","21:00","T2",null],[2,"17:00","17:40","A2","A2"],[2,"17:40","18:20","A4","A4"]]}]},
+
+{id:"2a-rrpp", n:"Fundamentos de las Relaciones Públicas", curso:2, cuat:1, ects:4, tipo:"OB", ops:[
+  {id:"G1", n:"Grupo 1 · Mañana", aula:"G-012", ses:[
+    [3,"10:00","10:40","A1","A1"],[3,"10:40","11:20","A3","A3"],[4,"11:00","13:00","T1",null]]},
+  {id:"G2", n:"Grupo 2 · Tarde", aula:"G-012", ses:[
+    [3,"18:00","18:40","A2","A2"],[3,"18:40","19:20","A4","A4"],[4,"19:00","21:00","T2",null]]}]},
+
+/* ===== 2.º CURSO · 2.º CUATRIMESTRE ===== */
+{id:"2b-derecho", n:"Derecho de la publicidad", curso:2, cuat:2, ects:6, tipo:"OB", ops:[
+  {id:"G1", n:"Grupo 1 · Mañana", aula:"G-012", ses:[
+    [0,"09:00","09:40","1T",null],[0,"09:40","11:00","1A","A1"],[0,"13:00","14:20","3A","A3"],
+    [1,"09:00","10:20","1T",null]]},
+  {id:"G2", n:"Grupo 2 · Tarde", aula:"G-012", ses:[
+    [0,"15:00","17:00","2T",null],
+    [1,"15:00","16:20","2A","A2"],[1,"16:20","17:00","2T",null],[1,"17:00","18:20","4A","A4"]]}]},
+
+{id:"2b-lenguaje-publi", n:"Lenguaje publicitario", curso:2, cuat:2, ects:6, tipo:"OB", ops:[
+  {id:"G1", n:"Grupo 1 · Mañana", aula:"G-012", ses:[
+    [0,"11:00","13:00","1T",null],
+    [1,"11:00","12:20","1T",null],[1,"12:20","13:00","1A","A1"],[1,"13:00","13:40","3A","A3"]]},
+  {id:"G2", n:"Grupo 2 · Tarde", aula:"G-012", ses:[
+    [0,"17:00","19:00","2T",null],
+    [1,"18:30","19:50","2T",null],[1,"19:50","20:30","2A","A2"],[1,"20:30","21:10","4A","A4"]]}]},
+
+{id:"2b-metodos", n:"Métodos y técnicas de investigación social", curso:2, cuat:2, ects:4, tipo:"OB", ops:[
+  {id:"G1", n:"Grupo 1 · Mañana", aula:"G-012", ses:[
+    [2,"13:00","14:20","1T",null],[4,"10:30","11:50","1A","A1"],[4,"13:30","14:50","3A","A3"]]},
+  {id:"G2", n:"Grupo 2 · Tarde", aula:"G-012", ses:[
+    [2,"19:00","20:20","2T",null,null,"el PDF imprime 18:00-19:20 dentro de la franja 19:00-20:30 y chocaría con Los anunciantes"],
+    [4,"18:00","19:20","2A","A2"],[4,"19:20","20:40","4A","A4"]]}]},
+
+{id:"2b-anunciantes", n:"Los anunciantes: dirección y gestión", curso:2, cuat:2, ects:4, tipo:"OB", ops:[
+  {id:"G1", n:"Grupo 1 · Mañana", aula:"G-012", ses:[
+    [2,"11:00","13:00","1T",null],[3,"12:00","12:40","1A","A1"],[3,"12:40","13:20","3A","A3"]]},
+  {id:"G2", n:"Grupo 2 · Tarde", aula:"G-012", ses:[
+    [2,"17:00","19:00","2T",null],[3,"18:00","18:40","2A","A2"],[3,"18:40","19:20","4A","A4"]]}]},
+
+{id:"2b-gestion-corp", n:"Gestión de la comunicación corporativa", curso:2, cuat:2, ects:4, tipo:"OB", ops:[
+  {id:"G1", n:"Grupo 1 · Mañana", aula:"G-012", ses:[
+    [2,"09:00","11:00","1T",null],[3,"09:00","09:40","1A","A1"],[3,"09:40","10:20","3A","A3"]]},
+  {id:"G2", n:"Grupo 2 · Tarde", aula:"G-012", ses:[
+    [2,"15:00","17:00","2T",null],[3,"15:00","15:40","2A","A2"],[3,"15:40","16:20","4A","A4"]]}]},
+
+{id:"2b-sociologia", n:"Sociología de la publicidad y del consumo", curso:2, cuat:2, ects:4, tipo:"OB", ops:[
+  {id:"G1", n:"Grupo 1 · Mañana", aula:"G-012", ses:[
+    [3,"10:30","11:50","1T",null],[4,"09:00","10:20","1A","A1"],
+    [4,"12:00","13:20","3A","A3",null,"el PDF imprime 12:00-12:20 en una franja de 12:00 a 13:30"]]},
+  {id:"G2", n:"Grupo 2 · Tarde", aula:"G-012", ses:[
+    [3,"16:30","17:50","2T",null],[4,"15:00","16:20","2A","A2"],[4,"16:30","17:50","4A","A4"]]}]},
+
+/* ===== 3.º CURSO · 1.er CUATRIMESTRE ===== */
+{id:"3a-planificacion", n:"Planificación estratégica de la publicidad", curso:3, cuat:1, ects:4, tipo:"OB", ops:[
+  {id:"G1", n:"Grupo 1 · Mañana", aula:"G-123", ses:[
+    [0,"10:30","11:50","1T",null],[1,"10:30","11:50","1A","A1"],[1,"12:00","13:20","3A","A3"]]},
+  {id:"G2", n:"Grupo 2 · Tarde", aula:"G-214", ses:[
+    [0,"16:30","17:50","2T",null],[1,"15:00","16:20","2A","A2"]]}]},
+
+{id:"3a-psico-publi", n:"Psicología de la publicidad", curso:3, cuat:1, ects:6, tipo:"OB", ops:[
+  {id:"G1", n:"Grupo 1 · Mañana", aula:"G-123", ses:[
+    [2,"11:00","13:00","1T",null],[3,"11:00","13:00","1A","A1","G-122"],[3,"09:00","11:00","3A","A3","G-122"]]},
+  {id:"G2", n:"Grupo 2 · Tarde", aula:"G-214", ses:[
+    [2,"17:00","19:00","2T",null],[3,"17:00","19:00","2A","A2","G-121"],[3,"15:00","17:00","4A","A4","G-121"]]}]},
+
+{id:"3a-medios", n:"Los medios publicitarios", curso:3, cuat:1, ects:6, tipo:"OB", ops:[
+  {id:"G1", n:"Grupo 1 · Mañana", aula:"G-123", ses:[
+    [2,"09:00","11:00","1T",null],[3,"09:00","11:00","1A","A1"],[3,"11:00","13:00","3A","A3"]]},
+  {id:"G2", n:"Grupo 2 · Tarde", aula:"G-214", ses:[
+    [2,"15:00","17:00","2T",null],[3,"15:00","17:00","2A","A2"]]}]},
+
+{id:"3a-agencias", n:"Las agencias de publicidad: dirección y gestión", curso:3, cuat:1, ects:4, tipo:"OB", ops:[
+  {id:"G1", n:"Grupo 1 · Mañana", aula:"G-123", ses:[
+    [0,"12:00","13:20","1T",null],[0,"13:30","14:50","1A","A1"],[1,"09:00","10:20","3A","A3"]]},
+  {id:"G2", n:"Grupo 2 · Tarde", aula:"G-214", ses:[
+    [0,"18:00","19:20","2T+2A",null],[1,"18:00","19:30","2T+2A",null]]}]},
+
+{id:"3a-gestion-marca", n:"Gestión de marca", curso:3, cuat:1, ects:4, tipo:"OB", ops:[
+  {id:"G1", n:"Grupo 1 · Mañana", aula:"G-123", ses:[
+    [0,"09:00","10:20","1T",null],[1,"10:30","11:50","3A","A3","G-122"],[1,"12:00","13:20","1A","A1","G-122"]]},
+  {id:"G2", n:"Grupo 2 · Tarde", aula:"G-214", ses:[
+    [0,"15:00","16:20","2T",null],[1,"16:30","17:50","2A","A2"]]}]},
+
+{id:"3a-musica", n:"Música y publicidad", curso:3, cuat:1, ects:3, tipo:"OP", ops:[
+  {id:"U", n:"Horario único · Mañana", aula:"G-123", ses:[
+    [4,"13:00","13:40","1T",null],[4,"13:40","15:00","1A",null]]}]},
+
+{id:"3a-industrias", n:"Industrias culturales", curso:3, cuat:1, ects:3, tipo:"OP", ops:[
+  {id:"U", n:"Horario único · Tarde", aula:"G-214", ses:[[4,"15:00","17:00","1T+1A",null]]}]},
+
+{id:"3a-lab-diseno", n:"Laboratorio de diseño gráfico", curso:3, cuat:1, ects:3, tipo:"OP", ops:[
+  {id:"U", n:"Horario único · Mañana", aula:"G-123 / Lab. Diseño", ses:[
+    [2,"13:00","13:40","T1",null,"G-123"],
+    [2,"13:40","15:00","L1","L1","Lab. Diseño"],
+    [4,"09:00","10:20","L2","L2","Lab. Diseño"],
+    [4,"10:20","11:40","L3","L3","Lab. Diseño"],
+    [4,"11:40","13:00","L4","L4","Lab. Diseño"]]}]},
+
+{id:"3a-cartel", n:"Historia del cartel", curso:3, cuat:1, ects:3, tipo:"OP", ops:[
+  {id:"U", n:"Horario único · Mañana", aula:"G-123", ses:[[3,"13:00","15:00","",null]]}]},
+
+{id:"3a-manifestaciones", n:"Nuevas manifestaciones artísticas", curso:3, cuat:1, ects:3, tipo:"OP", ops:[
+  {id:"U", n:"Horario único · Tarde", aula:"G-214", ses:[[3,"17:00","19:00","",null]]}]},
+
+/* ===== 3.º CURSO · 2.º CUATRIMESTRE ===== */
+{id:"3b-ideas", n:"Ideas, métodos y estrategias creativas", curso:3, cuat:2, ects:6, tipo:"OB", ops:[
+  {id:"G1", n:"Grupo 1 · Mañana", aula:"G-123", ses:[
+    [0,"09:00","11:00","1T",null],[0,"12:30","14:30","1A","A1"],[1,"10:30","12:30","3A","A3"]]},
+  {id:"G2", n:"Grupo 2 · Tarde", aula:"G-214", ses:[
+    [0,"15:00","17:00","2T",null],[1,"16:30","18:30","2A","A2"]]}]},
+
+{id:"3b-direccion", n:"Dirección estratégica de la publicidad / RRPP", curso:3, cuat:2, ects:4, tipo:"OB", ops:[
+  {id:"G1", n:"Grupo 1 · Mañana", aula:"G-123", ses:[
+    [0,"11:00","12:20","1T",null],[1,"09:00","10:20","1A","A1"],[1,"12:30","13:50","3A","A3"]]},
+  {id:"G2", n:"Grupo 2 · Tarde", aula:"G-214", ses:[
+    [0,"17:00","18:20","2T",null],[1,"15:00","16:20","2A","A2"]]}]},
+
+{id:"3b-etica", n:"Ética y deontología de la comunicación publicitaria", curso:3, cuat:2, ects:4, tipo:"OB", ops:[
+  {id:"G1", n:"Grupo 1 · Mañana", aula:"G-123", ses:[
+    [2,"10:30","11:50","1T",null],[3,"09:00","10:20","1A","A1"],[3,"10:30","11:50","3A","A3"]]},
+  {id:"G2", n:"Grupo 2 · Tarde", aula:"G-214", ses:[
+    [2,"15:00","16:20","2T+2A",null],[3,"16:30","17:50","2T+2A",null]]}]},
+
+{id:"3b-publicos", n:"Públicos y usuarios de la comunicación publicitaria", curso:3, cuat:2, ects:4, tipo:"OB", ops:[
+  {id:"G1", n:"Grupo 1 · Mañana", aula:"G-123", ses:[
+    [2,"09:00","10:20","1T",null],[3,"10:30","11:50","1A","A1","G-122"],[3,"09:00","10:20","3A","A3","G-122"]]},
+  {id:"G2", n:"Grupo 2 · Tarde", aula:"G-214", ses:[
+    [2,"16:30","17:50","2T+2A",null],[3,"15:00","16:20","2T+2A",null]]}]},
+
+{id:"3b-estadistica", n:"Estadística aplicada a la publicidad", curso:3, cuat:2, ects:3, tipo:"OP", ops:[
+  {id:"U", n:"Horario único · Mañana", aula:"Li002", ses:[[2,"13:00","15:00","",null]]}]},
+{id:"3b-retorica", n:"Retórica de la publicidad", curso:3, cuat:2, ects:3, tipo:"OP", ops:[
+  {id:"U", n:"Horario único · Mañana", aula:"G-123", ses:[[2,"12:00","14:00","",null]]}]},
+{id:"3b-crisis", n:"Comunicación de crisis", curso:3, cuat:2, ects:3, tipo:"OP", ops:[
+  {id:"U", n:"Horario único · Mañana", aula:"G-123", ses:[[3,"12:00","14:00","",null]]}]},
+{id:"3b-modelos", n:"Modelos de análisis publicitario", curso:3, cuat:2, ects:3, tipo:"OP", ops:[
+  {id:"U", n:"Horario único · Mañana", aula:"G-122", ses:[[3,"12:00","14:00","",null]]}]},
+{id:"3b-lab-foto", n:"Laboratorio de fotografía", curso:3, cuat:2, ects:3, tipo:"OP", ops:[
+  {id:"U", n:"Horario único · Mañana", aula:"G-123", ses:[
+    [4,"09:00","09:40","T1","T1"],[4,"09:40","10:20","T2","T2"],
+    [4,"10:20","11:40","L1","L1"],[4,"11:40","13:00","L2","L2"],
+    [4,"13:00","14:20","L3","L3"],[4,"14:20","15:40","L4","L4"]]}]},
+{id:"3b-narrativa", n:"Narrativa publicitaria", curso:3, cuat:2, ects:3, tipo:"OP", ops:[
+  {id:"U", n:"Horario único · Mañana", aula:"G-208", ses:[[4,"11:00","13:00","",null]]}]},
+{id:"3b-expresion", n:"Técnicas de expresión oral", curso:3, cuat:2, ects:3, tipo:"OP", ops:[
+  {id:"U", n:"Horario único · Mañana", aula:"G-208", ses:[[4,"13:00","15:00","",null]]}]},
+{id:"3b-mk-directo", n:"Marketing directo y promocional", curso:3, cuat:2, ects:3, tipo:"OP", ops:[
+  {id:"U", n:"Horario único · Tarde", aula:"G-121", ses:[[2,"18:00","20:00","",null]]}]},
+{id:"3b-opinion", n:"Opinión pública", curso:3, cuat:2, ects:3, tipo:"OP", ops:[
+  {id:"U", n:"Horario único · Tarde", aula:"G-214", ses:[[2,"18:00","20:00","",null]]}]},
+{id:"3b-mk-estrategico", n:"Marketing estratégico", curso:3, cuat:2, ects:3, tipo:"OP", ops:[
+  {id:"U", n:"Horario único · Tarde", aula:"G-121", ses:[[3,"18:00","20:00","",null]]}]},
+{id:"3b-com-interna", n:"Comunicación interna", curso:3, cuat:2, ects:3, tipo:"OP", ops:[
+  {id:"U", n:"Horario único · Tarde", aula:"G-214", ses:[[3,"18:00","20:00","",null]]}]},
+
+/* ===== 4.º CURSO · 1.er CUATRIMESTRE ===== */
+{id:"4a-procesos", n:"Procesos de creación del mensaje publicitario", curso:4, cuat:1, ects:6, tipo:"OB", ops:[
+  {id:"G1", n:"Grupo 1 · Mañana", aula:"G-208", ses:[
+    [0,"09:00","11:00","1T",null],[0,"12:30","14:30","1A","A1"],[2,"10:30","12:30","3A","A3"]]},
+  {id:"G2", n:"Grupo 2 · Tarde", aula:"G-208", ses:[
+    [0,"15:00","17:00","2T+2A",null],[2,"17:00","19:00","2T+2A",null]]}]},
+
+{id:"4a-eficacia", n:"Investigación de la eficacia publicitaria", curso:4, cuat:1, ects:4, tipo:"OB", ops:[
+  {id:"G1", n:"Grupo 1 · Mañana", aula:"G-208", ses:[
+    [0,"11:00","12:20","1T",null],[1,"09:00","10:20","1A","A1"],[1,"10:30","11:50","3A","A3"]]},
+  {id:"G2", n:"Grupo 2 · Tarde", aula:"G-208", ses:[
+    [0,"17:00","18:20","2T",null],[1,"15:00","16:20","2A","A2"]]}]},
+
+{id:"4a-rsc", n:"Responsabilidad social corporativa e institucional", curso:4, cuat:1, ects:4, tipo:"OB", ops:[
+  {id:"G1", n:"Grupo 1 · Mañana", aula:"G-208", ses:[
+    [1,"09:00","10:20","3A","A3","A-219"],[1,"10:30","11:50","1A","A1","A-219"],[2,"09:00","10:20","1T",null]]},
+  {id:"G2", n:"Grupo 2 · Tarde", aula:"G-208", ses:[
+    [1,"16:30","17:50","2A","A2"],[2,"15:30","16:50","2T",null]]}]},
+
+{id:"4a-creatividad-online", n:"Creatividad on line", curso:4, cuat:1, ects:3, tipo:"OP", ops:[
+  {id:"U", n:"Horario único · Mañana", aula:"G-208 / Lab. Diseño", ses:[
+    [3,"09:00","09:40","1T",null,"G-208"],
+    [3,"09:40","11:00","1L","L1","Lab. Diseño"],
+    [3,"11:00","12:20","2L","L2","Lab. Diseño"],
+    [3,"12:20","13:40","3L","L3","Lab. Diseño"]]}]},
+{id:"4a-protocolo", n:"Protocolo y organización de eventos", curso:4, cuat:1, ects:3, tipo:"OP", ops:[
+  {id:"U", n:"Horario único · Mañana", aula:"G-208", ses:[
+    [3,"12:00","13:00","1T",null],[3,"13:00","14:00","1A","A1"],[3,"14:00","15:00","2A","A2"]]}]},
+{id:"4a-igualdad", n:"Publicidad e igualdad", curso:4, cuat:1, ects:3, tipo:"OP", ops:[
+  {id:"U", n:"Horario único · Mañana", aula:"G-208", ses:[
+    [1,"12:00","13:00","1T",null],[1,"13:00","14:00","1A","A1"],[1,"14:00","15:00","2A","A2"]]}]},
+{id:"4a-lab-audiovisual", n:"Laboratorio audiovisual digital", curso:4, cuat:1, ects:3, tipo:"OP", ops:[
+  {id:"U", n:"Horario único · Mañana", aula:"G-208 / Li004", ses:[
+    [4,"09:00","09:40","1T",null,"G-208"],
+    [4,"09:40","11:00","1L","L1","Li004"],[4,"11:00","12:20","2L","L2","Li004"]]}]},
+{id:"4a-politica", n:"Publicidad política y propaganda", curso:4, cuat:1, ects:3, tipo:"OP", ops:[
+  {id:"U", n:"Horario único · Mañana", aula:"G-122", ses:[[4,"09:00","11:00","1T+1A",null]]}]},
+{id:"4a-redaccion", n:"Redacción publicitaria", curso:4, cuat:1, ects:3, tipo:"OP", ops:[
+  {id:"U", n:"Horario único · Mañana", aula:"G-122", ses:[
+    [4,"11:00","12:00","1T",null],[4,"12:00","13:00","1A","A1"]]}]},
+{id:"4a-lab-recepcion", n:"Laboratorio de estudios de recepción", curso:4, cuat:1, ects:3, tipo:"OP", ops:[
+  {id:"U", n:"Horario único · Mañana", aula:"Li007", ses:[
+    [1,"12:00","12:40","T1",null],[1,"12:40","14:00","L1","L1"]]}]},
+{id:"4a-rrpp-inst", n:"Relaciones públicas institucionales", curso:4, cuat:1, ects:3, tipo:"OP", ops:[
+  {id:"U", n:"Horario único · Mañana", aula:"G-208", ses:[[2,"12:30","14:30","",null]]}]},
+{id:"4a-mk-relacional", n:"Marketing relacional", curso:4, cuat:1, ects:3, tipo:"OP", ops:[
+  {id:"U", n:"Horario único · Tarde", aula:"G-208", ses:[[1,"18:30","20:30","",null]]}]},
+{id:"4a-direccion-arte", n:"Dirección de arte", curso:4, cuat:1, ects:3, tipo:"OP", ops:[
+  {id:"U", n:"Horario único · Tarde", aula:"G-208", ses:[
+    [3,"15:00","15:40","T1",null],[3,"15:40","17:00","A1","A1"],[3,"17:00","18:20","A2","A2"]]}]},
+
+/* ===== 4.º CURSO · 2.º CUATRIMESTRE ===== */
+{id:"4b-produccion", n:"Producción y realización publicitarias", curso:4, cuat:2, ects:6, tipo:"OB", ops:[
+  {id:"G1", n:"Grupo 1 · Mañana", aula:"G-208", ses:[
+    [0,"09:00","11:00","1T",null],[0,"12:30","14:30","1L","L1"],
+    [1,"10:00","12:00","3L","L3"],[1,"12:00","14:00","5L","L5"]]},
+  {id:"G2", n:"Grupo 2 · Tarde", aula:"G-208", ses:[
+    [0,"16:30","18:30","2T",null],[0,"18:30","20:30","2L","L2"],
+    [1,"16:30","18:30","4L","L4"],[1,"18:30","20:30","6L","L6"]]}]},
+
+{id:"4b-teoria-critica", n:"Teoría crítica de la cultura", curso:4, cuat:2, ects:4, tipo:"OB", ops:[
+  {id:"G1", n:"Grupo 1 · Mañana", aula:"G-208", ses:[
+    [0,"11:00","12:20","1T",null],[1,"10:00","11:20","1A","A1","G-122"],[1,"12:00","13:20","3A","A3","G-122"]]},
+  {id:"G2", n:"Grupo 2 · Tarde", aula:"G-208", ses:[
+    [0,"15:00","16:20","2T+2A",null,null,"el PDF imprime 17:00-18:20 dentro de la franja 15:00-16:30 y chocaría con Producción y realización"],
+    [1,"15:00","16:20","2T+2A",null,null,"el PDF imprime 17:00-18:20 dentro de la franja 15:00-16:30 y chocaría con Producción y realización"]]}]},
+
+{id:"4b-redes", n:"Redes sociales de comunicación", curso:4, cuat:2, ects:3, tipo:"OP", ops:[
+  {id:"U", n:"Horario único · Mañana", aula:"G-208", ses:[
+    [2,"10:00","11:00","1T",null],[2,"11:00","12:00","1A","A1"],[2,"12:00","13:00","2A","A2"]]}]},
+{id:"4b-lab-multimedia", n:"Laboratorio multimedia", curso:4, cuat:2, ects:3, tipo:"OP", ops:[
+  {id:"U", n:"Horario único · Mañana", aula:"G-208 / Lab. Diseño", ses:[
+    [2,"09:00","09:40","T1",null,"G-208"],
+    [2,"09:40","11:00","L1","L1","Lab. Diseño"],[2,"11:00","12:20","L2","L2","Lab. Diseño"],
+    [2,"12:20","13:40","L3","L3","Lab. Diseño"]]}]},
+{id:"4b-interactiva", n:"Publicidad interactiva", curso:4, cuat:2, ects:3, tipo:"OP", ops:[
+  {id:"U", n:"Horario único · Mañana", aula:"G-208", ses:[[3,"09:00","11:00","",null]]}]},
+{id:"4b-patrocinio", n:"Patrocinio y mecenazgo", curso:4, cuat:2, ects:3, tipo:"OP", ops:[
+  {id:"U", n:"Horario único · Mañana", aula:"G-208", ses:[
+    [3,"11:00","12:00","1T",null],[3,"12:00","13:00","1A","A1"],[3,"13:00","14:00","2A","A2"]]}]},
+{id:"4b-politicas-eu", n:"Políticas de comunicación en el contexto europeo", curso:4, cuat:2, ects:3, tipo:"OP", ops:[
+  {id:"U", n:"Horario único · Tarde", aula:"G-208", ses:[[2,"15:00","17:00","",null]]}]},
+{id:"4b-gestion-multimedia", n:"Gestión comercial de las empresas multimedia", curso:4, cuat:2, ects:3, tipo:"OP", ops:[
+  {id:"U", n:"Horario único · Tarde", aula:"G-208", ses:[[2,"17:00","19:00","",null]]}]},
+{id:"4b-identidad-visual", n:"Programas de identidad visual corporativa", curso:4, cuat:2, ects:3, tipo:"OP", ops:[
+  {id:"U", n:"Horario único · Tarde", aula:"G-121 / Lab. Diseño", ses:[
+    [3,"15:00","16:00","1T",null,"G-121"],[3,"16:00","17:00","1A","A1","Lab. Diseño"]]}]},
+{id:"4b-creatividad-rrpp", n:"Creatividad e innovación en las RRPP", curso:4, cuat:2, ects:3, tipo:"OP", ops:[
+  {id:"U", n:"Horario único · Tarde", aula:"G-208", ses:[
+    [3,"15:00","16:00","1T",null],[3,"16:00","17:00","1A","A1"],[3,"17:00","18:00","2A","A2"]]}]}
+];
+
+/* =========================================================
+   COLOR POR ASIGNATURA (uno distinto dentro de cada curso y cuatrimestre)
+   ========================================================= */
+const PALETA = [
+  "#E8A0B4","#7EC8C8","#92AADC","#E0B87A","#82C99A","#B89AD4","#D98BA8","#6EC5D0",
+  "#C4A088","#95B0BC","#E09A6A","#9B92D0","#6EB8A8","#D08BA4","#8FAAB4","#B8A090",
+  "#C8C070","#7A98D0","#D49A70","#6AAA70"
+];
+const COLOR_BASE = {};
+[1,2,3,4].forEach(curso => [1,2].forEach(c => {
+  let i = (curso - 1) * 5;
+  ASIGS.filter(a => a.curso === curso && a.cuat === c)
+       .forEach(a => { COLOR_BASE[a.id] = PALETA[i % PALETA.length]; i++; });
+}));
+function aclara(hex, p){
+  const n = parseInt(hex.slice(1),16), r = n>>16, g = (n>>8)&255, b = n&255;
+  const m = v => Math.round(v + (255 - v) * p);
+  return `rgb(${m(r)},${m(g)},${m(b)})`;
+}
+function oscurece(hex, p){
+  const n = parseInt(hex.slice(1),16), r = n>>16, g = (n>>8)&255, b = n&255;
+  const m = v => Math.round(v * (1 - p));
+  return `rgb(${m(r)},${m(g)},${m(b)})`;
+}
+
+/* =========================================================
+   ESTADO
+   ========================================================= */
+const CLAVE = "uva-publicidad-horarios-2627";
+const DIAS = ["Lunes","Martes","Miércoles","Jueves","Viernes"];
+const DIA_C = ["Lun","Mar","Mié","Jue","Vie"];
+const INICIO_DIA = 8*60+30, FIN_DIA = 21*60+30, PX_MIN_DEFAULT = 1.5;
+const ORD = ["1.er","2.º","3.er","4.º"];
+const NOM_FAM = {A:"Subgrupo de prácticas de aula", L:"Subgrupo de laboratorio", T:"Grupo de teoría"};
+
+const PRESELECCION = [
+  ["3a-industrias"], ["3a-musica"], ["3a-planificacion","G2"],   // en tarde no choca con 4.º
+  ["4a-direccion-arte"], ["4a-eficacia","G1"], ["4a-lab-audiovisual"], ["4a-mk-relacional"],
+  ["4a-procesos","G1"], ["4a-protocolo"], ["4a-igualdad"], ["4a-rsc","G1"]
+];
+
+let estado = { cuat:1, curso:"todos", q:"", vista:"cal", sel:{}, abierta:null, tonos:false, ofCurso:4, ofGrupo:null, ofSolo:false };
+const porId = {}; ASIGS.forEach(a => porId[a.id] = a);
+
+const min = t => { const [h,m] = t.split(":").map(Number); return h*60+m; };
+const hhmm = m => String(Math.floor(m/60)).padStart(2,"0")+":"+String(m%60).padStart(2,"0");
+const esc = s => String(s==null?"":s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const familia = g => g ? g[0] : null;
+const colorDe = id => (estado.sel[id] && estado.sel[id].color) || COLOR_BASE[id];
+
+function subgruposDe(op){
+  const fam = {};
+  op.ses.forEach(s => { const g = s[4]; if(g){ const f = familia(g); (fam[f] = fam[f] || []); if(!fam[f].includes(g)) fam[f].push(g); } });
+  Object.keys(fam).forEach(f => fam[f].sort());
+  return fam;
+}
+const opcionDe = (a,s) => a.ops.find(o => o.id === s.op) || a.ops[0];
+
+function anadir(id, abrir){
+  const a = porId[id], op = a.ops[0], fam = subgruposDe(op), sub = {};
+  Object.keys(fam).forEach(f => sub[f] = fam[f][0]);
+  estado.sel[id] = { op:op.id, sub, color:null, profesor:"", correo:"", notas:"", etiqueta:"", convocatoria:"", dificultad:0, evalOrd:{examen:0,pracGrupal:0,pracIndiv:0,asistencia:0,participacion:0,otros:0}, evalExt:{examen:0,pracGrupal:0,pracIndiv:0,asistencia:0,participacion:0,otros:0} };
+  guardar(); pintar();
+  if(abrir) abrirModal(id);
+}
+const quitar = id => { delete estado.sel[id]; guardar(); pintar(); };
+
+/* =========================================================
+   BLOQUES
+   ========================================================= */
+function bloquesVisibles(cuat){
+  const out = [];
+  Object.keys(estado.sel).forEach(id => {
+    const a = porId[id]; if(!a || a.cuat !== cuat) return;
+    const s = estado.sel[id], op = opcionDe(a,s);
+    op.ses.forEach(ses => {
+      const g = ses[4];
+      if(g && s.sub[familia(g)] !== g) return;
+      out.push({ asig:a, op, dia:ses[0], ini:min(ses[1]), fin:min(ses[2]),
+                 etiqueta:ses[3], sub:g, aula:ses[5] || op.aula, nota:ses[6] || null });
+    });
+  });
+  return out;
+}
+function detectarSolapes(bloques){
+  bloques.forEach(b => b.choca = false);
+  const pares = [];
+  for(let i=0;i<bloques.length;i++) for(let j=i+1;j<bloques.length;j++){
+    const x = bloques[i], y = bloques[j];
+    if(x.dia === y.dia && x.ini < y.fin && y.ini < x.fin){ x.choca = y.choca = true; pares.push([x,y]); }
+  }
+  return pares;
+}
+function repartirColumnas(dia){
+  dia.sort((a,b) => a.ini - b.ini || a.fin - b.fin);
+  const grupos = []; let act = [], finMax = -1;
+  dia.forEach(b => {
+    if(act.length && b.ini >= finMax){ grupos.push(act); act = []; finMax = -1; }
+    act.push(b); finMax = Math.max(finMax, b.fin);
+  });
+  if(act.length) grupos.push(act);
+  grupos.forEach(gr => {
+    const cols = [];
+    gr.forEach(b => { let k = 0; while(cols[k] && cols[k] > b.ini) k++; cols[k] = b.fin; b.col = k; });
+    gr.forEach(b => b.cols = cols.length);
+  });
+}
+const tipoDe = b => !b.sub ? "teoria" : (familia(b.sub) === "L" ? "lab" : (familia(b.sub) === "T" ? "teoria" : "aula"));
+
+/* =========================================================
+   PINTADO GENERAL
+   ========================================================= */
+function pintar(){
+  pintarChips(); pintarCatalogo(); pintarSeleccion(); pintarVista(); pintarMetricas();
+  if(estado.abierta && estado.sel[estado.abierta]) pintarModal();
+}
+
+function pintarChips(){
+  const c = document.getElementById("chips-curso");
+  c.innerHTML = [["todos","Todos"],["1","1.º"],["2","2.º"],["3","3.º"],["4","4.º"]]
+    .map(([v,t]) => `<button class="chip" data-curso="${v}" aria-pressed="${estado.curso===v}">${t}</button>`).join("");
+  c.querySelectorAll(".chip").forEach(b => b.onclick = () => { estado.curso = b.dataset.curso; pintarChips(); pintarCatalogo(); });
+}
+
+function pintarCatalogo(){
+  const lista = document.getElementById("lista"), q = estado.q.trim().toLowerCase();
+  const f = ASIGS.filter(a => a.cuat === estado.cuat &&
+    (estado.curso === "todos" || String(a.curso) === estado.curso) &&
+    (!q || a.n.toLowerCase().includes(q)));
+  document.getElementById("c-catalogo").textContent = f.length + " disponibles";
+  if(!f.length){ lista.innerHTML = `<div class="vacio">Nada con ese filtro.<br>Cambia de curso o borra la búsqueda.</div>`; return; }
+  let html = "", cp = null, tp = null;
+  f.forEach(a => {
+    if(a.curso !== cp || a.tipo !== tp){
+      html += `<div class="grupo-titulo"><b>${ORD[a.curso-1]} curso</b><span>${a.tipo==="OB"?"obligatorias":"optativas"}</span></div>`;
+      cp = a.curso; tp = a.tipo;
+    }
+    const on = !!estado.sel[a.id], col = colorDe(a.id);
+    html += `<button class="item ${on?"activo":""}" data-id="${a.id}">
+      <span class="tick" style="${on?`background:${col}`:""}">${on?"✓":""}</span>
+      <span style="flex:1">
+        <span class="nom">${esc(a.n)}</span>
+        <span class="meta">
+          <span class="tag">${a.ects} ECTS</span>
+          ${a.tipo==="OP"?'<span class="tag op">optativa</span>':""}
+          ${a.ops.length>1?`<span class="tag elige">${a.ops.length} turnos</span>`:'<span class="tag">horario fijo</span>'}
+        </span>
+      </span></button>`;
+  });
+  lista.innerHTML = html;
+  lista.querySelectorAll(".item").forEach(b => b.onclick = () => {
+    const id = b.dataset.id;
+    if(estado.sel[id]) quitar(id);
+    else anadir(id, porId[id].ops.length > 1);
+  });
+}
+
+/* ─────── selección agrupada por curso ─────── */
+function pintarSeleccion(){
+  const cont = document.getElementById("seleccion");
+  const ids = Object.keys(estado.sel).filter(id => porId[id]);
+  if(!ids.length){
+    cont.innerHTML = `<div class="vacio">Aún no has elegido nada.<br>Marca asignaturas arriba: las de horario fijo se colocan solas y las de varios turnos abren su ficha para que elijas.</div>`;
+    return;
+  }
+  ids.sort((x,y) => porId[x].curso - porId[y].curso || porId[x].cuat - porId[y].cuat ||
+                    porId[x].tipo.localeCompare(porId[y].tipo) || porId[x].n.localeCompare(porId[y].n));
+  let html = "", cp = null;
+  ids.forEach(id => {
+    const a = porId[id], s = estado.sel[id], op = opcionDe(a,s), fam = subgruposDe(op), col = colorDe(id);
+    if(a.curso !== cp){
+      const dc = ids.filter(i => porId[i].curso === a.curso);
+      const e1 = dc.filter(i => porId[i].cuat===1).reduce((t,i)=>t+porId[i].ects,0);
+      const e2 = dc.filter(i => porId[i].cuat===2).reduce((t,i)=>t+porId[i].ects,0);
+      html += `<div class="curso-cab"><span class="curso-num">${ORD[a.curso-1]} curso</span>
+        <span class="barra"></span><span class="ects">${e1} + ${e2} = ${e1+e2} ECTS</span></div>`;
+      cp = a.curso;
+    }
+    const convCls = s.convocatoria === "ext" ? " conv-ext" : (s.convocatoria === "ord" ? " conv-ord" : "");
+    // alerta de importancia
+    let alertaHtml = "";
+    if(s.etiqueta === "importante") alertaHtml = `<div class="t-alerta a-imp"><span class="a-ico">&#9888;</span> Importante</div>`;
+    else if(s.etiqueta === "muy importante") alertaHtml = `<div class="t-alerta a-muyimp"><span class="a-ico">&#128680;</span> Muy importante</div>`;
+    // eval tags (show active convocatoria's eval)
+    const ev = (s.convocatoria === "ext" ? s.evalExt : s.evalOrd) || {};
+    const evTags = [
+      ev.examen ? `Exam ${ev.examen}%` : null,
+      ev.pracGrupal ? `P.Gr ${ev.pracGrupal}%` : null,
+      ev.pracIndiv ? `P.Ind ${ev.pracIndiv}%` : null,
+      ev.asistencia ? `Asist ${ev.asistencia}%` : null,
+      ev.participacion ? `Partic ${ev.participacion}%` : null,
+      ev.otros ? `Otros ${ev.otros}%` : null
+    ].filter(Boolean);
+    const evHtml = evTags.length ? evTags.map(t => `<span class="t-eval-tag">${t}</span>`).join("") : "";
+    // turn selector for subjects with multiple groups
+    const turnHtml = a.ops.length > 1 ? `<div class="t-turnos">${a.ops.map(o =>
+      `<button class="t-turno ${o.id===op.id?"on":""}" data-turno="${id}|${o.id}">${esc(o.n.replace("Grupo ","G").replace(" · Mañana","☀").replace(" · Tarde","☾").replace("Horario único · ",""))}</button>`
+    ).join("")}</div>` : "";
+    html += `<div class="tarjeta ${a.cuat!==estado.cuat?"otro":""}${convCls}" style="--c:${col}">
+      ${alertaHtml}
+      <div class="t-h" data-ficha="${id}" role="button" tabindex="0" title="Abrir ficha">
+        <span class="nom">${esc(a.n)}
+          <span class="t-sub">
+            <span class="tag">${a.ects} ECTS</span>
+            ${Object.keys(fam).map(f=>`<span class="tag">${esc(s.sub[f])}</span>`).join("")}
+            ${s.profesor?`<span class="tag">${esc(s.profesor)}</span>`:""}
+          </span>
+        </span>
+        <button class="mini" title="Abrir ficha">⋯</button>
+        <button class="mini" data-quitar="${id}" title="Quitar">✕</button>
+      </div>
+      ${turnHtml}
+      <div class="t-footer">
+        <button class="t-conv-btn ${s.convocatoria==="ord"?"ord-on":""}" data-tconv="${id}|ord">ORD</button>
+        <button class="t-conv-btn ${s.convocatoria==="ext"?"ext-on":""}" data-tconv="${id}|ext">EXT</button>
+        <span class="t-eval-tags">${evHtml}</span>
+      </div>
+    </div>`;
+  });
+  cont.innerHTML = html;
+  cont.querySelectorAll("[data-ficha]").forEach(el => {
+    el.onclick = e => { if(!e.target.closest("[data-quitar]")) abrirModal(el.dataset.ficha); };
+    el.onkeydown = e => { if(e.key === "Enter" || e.key === " "){ e.preventDefault(); abrirModal(el.dataset.ficha); } };
+  });
+  cont.querySelectorAll("[data-quitar]").forEach(b => b.onclick = e => { e.stopPropagation(); quitar(b.dataset.quitar); });
+  cont.querySelectorAll("[data-tconv]").forEach(b => b.onclick = e => {
+    e.stopPropagation();
+    const [id,v] = b.dataset.tconv.split("|");
+    estado.sel[id].convocatoria = (estado.sel[id].convocatoria === v) ? "" : v;
+    guardar(); pintar();
+  });
+  cont.querySelectorAll("[data-turno]").forEach(b => b.onclick = e => {
+    e.stopPropagation();
+    const [id,opId] = b.dataset.turno.split("|");
+    const a = porId[id];
+    estado.sel[id].op = opId;
+    const fam = subgruposDe(opcionDe(a, estado.sel[id])), sub = {};
+    Object.keys(fam).forEach(f => sub[f] = fam[f].includes(estado.sel[id].sub[f]) ? estado.sel[id].sub[f] : fam[f][0]);
+    estado.sel[id].sub = sub;
+    guardar(); pintar();
+  });
+}
+
+/* =========================================================
+   VENTANA EMERGENTE
+   ========================================================= */
+function miniSemana(op, sub, col){
+  const H = 76, R = FIN_DIA - INICIO_DIA;
+  let cols = "";
+  for(let d = 0; d < 5; d++){
+    cols += `<div class="ms-col">` + op.ses.filter(s => s[0] === d).map(s => {
+      const t = (min(s[1]) - INICIO_DIA) / R * H;
+      const h = Math.max((min(s[2]) - min(s[1])) / R * H, 3);
+      const fuera = sub && s[4] && sub[familia(s[4])] !== s[4];
+      return `<span style="top:${t.toFixed(1)}px;height:${h.toFixed(1)}px;background:${col};opacity:${fuera?".26":"1"}"></span>`;
+    }).join("") + `</div>`;
+  }
+  const linea = ((14*60) - INICIO_DIA) / R * H;
+  return `<div class="mini-sem">
+    <div class="ms-dias">${DIA_C.map(d=>`<span>${d}</span>`).join("")}</div>
+    <div class="ms-grid">${cols}<div class="ms-linea" style="top:${linea.toFixed(1)}px"></div></div>
+    <div class="ms-pie"><span>08:30</span><span>14:00</span><span>21:30</span></div>
+  </div>`;
+}
+function horarioHtml(a, op, sub){
+  const porDia = {};
+  op.ses.forEach(s => { (porDia[s[0]] = porDia[s[0]] || []).push(s); });
+  let out = `<div class="horario">`;
+  for(let d = 0; d < 5; d++){
+    if(!porDia[d]) continue;
+    const ss = porDia[d].slice().sort((x,y) => min(x[1]) - min(y[1]));
+    out += `<div class="d">${DIA_C[d]}</div><div>` + ss.map(s => {
+      const g = s[4];
+      const fuera = sub && g && sub[familia(g)] !== g;
+      return `<div class="s ${fuera?"off":""}"><em>${s[1]}–${s[2]}</em>${s[3]?` <u>${esc(s[3])}</u>`:""} ${esc(s[5]||op.aula)}${s[6]?" ⚠":""}</div>`;
+    }).join("") + `</div>`;
+  }
+  return out + `</div>`;
+}
+
+function htmlModal(id){
+  const a = porId[id], s = estado.sel[id], op = opcionDe(a,s), fam = subgruposDe(op), col = colorDe(id);
+  const mias = op.ses.filter(x => !x[4] || s.sub[familia(x[4])] === x[4])
+                     .sort((x,y) => x[0]-y[0] || min(x[1])-min(y[1]));
+  const horas = mias.reduce((t,x) => t + (min(x[2]) - min(x[1])), 0);
+  const resumen = mias.map(x => `${DIA_C[x[0]]} ${x[1]}–${x[2]} <span class="pt">${x[4]?esc(x[4]):"teoría"}</span>`).join(" &nbsp;·&nbsp; ");
+
+  const turnos = `<div class="m-sec"><h4>${a.ops.length>1 ? "Elige turno · "+a.ops.length+" disponibles" : "Horario de la asignatura"}</h4>
+    <div class="opciones">${a.ops.map(o => {
+      const ini = Math.min(...o.ses.map(x=>min(x[1]))), fin = Math.max(...o.ses.map(x=>min(x[2])));
+      return `<button class="opc" data-op="${id}|${o.id}" aria-pressed="${o.id===op.id}">
+        <span class="opc-h"><b>${esc(o.n)}</b><span>${hhmm(ini)}–${hhmm(fin)} · aula ${esc(o.aula)}</span></span>
+        ${miniSemana(o, o.id===op.id ? s.sub : null, col)}
+        ${horarioHtml(a, o, o.id===op.id ? s.sub : null)}
+      </button>`; }).join("")}</div></div>`;
+
+  const subs = Object.keys(fam).map(f => `
+    <div class="m-sec"><h4>${NOM_FAM[f] || "Subgrupo"} — elige el tuyo</h4>
+      <div class="sub-cards">${fam[f].map(g => {
+        const activo = s.sub[f]===g;
+        const sesiones = op.ses.filter(x => x[4] === g).sort((x,y) => x[0]-y[0] || min(x[1])-min(y[1]));
+        return `<button class="sub-card ${activo?"on":""}" data-sub="${id}|${f}|${g}">
+          <span class="sc-nombre">${esc(g)}</span>
+          <span class="sc-horario">${sesiones.map(x =>
+            `<span class="sc-ses">${DIA_C[x[0]]} <em>${x[1]}–${x[2]}</em> <u>${esc(x[5]||op.aula)}</u></span>`
+          ).join("")}</span>
+          ${activo?'<span class="sc-check">&#10003;</span>':""}
+        </button>`;
+      }).join("")}</div>
+    </div>`).join("");
+
+  const colores = `<div class="m-sec"><h4>Color en el calendario</h4>
+    <div class="swatches">${PALETA.map(c =>
+      `<button class="sw" style="background:${c}" data-color="${id}|${c}" aria-pressed="${col.toLowerCase()===c.toLowerCase()}" title="${c}"></button>`).join("")}
+      <button class="btn" data-color="${id}|" style="margin-left:4px">Por defecto</button>
+    </div></div>`;
+
+  const glos = `<div class="m-sec"><h4>Qué significa cada cosa</h4>
+    <div class="glos"><dl>
+      <dt>T</dt><dd>Sesión teórica: va todo el grupo, no se elige.</dd>
+      <dt>A1 · A3</dt><dd>Subgrupos de prácticas de aula del turno de mañana. Vas solo al tuyo.</dd>
+      <dt>A2 · A4</dt><dd>Los mismos subgrupos, pero del turno de tarde.</dd>
+      <dt>L1 · L2…</dt><dd>Subgrupos de laboratorio. También vas solo al tuyo.</dd>
+      <dt>Grupo 1</dt><dd>Turno de mañana. <b>Grupo 2</b> es el de tarde y <b>Grupo 3</b>, un tercer turno que solo existe en Psicología de la comunicación.</dd>
+      <dt>G-114</dt><dd>Aula. Las que empiezan por <b>Li</b> son de informática y <b>Lab. Diseño</b> es el laboratorio de diseño.</dd>
+      <dt>⚠</dt><dd>Hora que en el PDF está mal impresa. La he ajustado a la franja coherente; confírmala en Secretaría.</dd>
+      <dt>Color</dt><dd>Identifica a esta asignatura en todo el planificador. Todas sus sesiones llevan el mismo, sean de teoría o de prácticas.</dd>
+      <dt>ORD</dt><dd><b>Ordinaria</b>: convocatoria de primera oportunidad (la normal).</dd>
+      <dt>EXT</dt><dd><b>Extraordinaria</b>: convocatoria de segunda oportunidad (la de recuperación). Márcala si crees que irás a esta.</dd>
+      <dt>1–5</dt><dd>Tu dificultad percibida. A partir de 3 la alerta se vuelve roja para que la tengas más presente.</dd>
+    </dl></div></div>`;
+
+  function evalBlock(prefix, label, evObj){
+    const ev = evObj || {examen:0,pracGrupal:0,pracIndiv:0,asistencia:0,participacion:0,otros:0};
+    const t = ev.examen+ev.pracGrupal+ev.pracIndiv+ev.asistencia+ev.participacion+ev.otros;
+    const cls = t===100?"ok":t>100?"bad":"warn";
+    const col = t===100?"#4CAF50":t>100?"#F44336":"#FF9800";
+    return `<div class="eval-grid">
+      <div class="eval-item"><label>Examen</label><input type="number" min="0" max="100" data-ev="${id}|${prefix}|examen" value="${ev.examen}"><span class="pct">%</span></div>
+      <div class="eval-item"><label>Prac. grupal</label><input type="number" min="0" max="100" data-ev="${id}|${prefix}|pracGrupal" value="${ev.pracGrupal}"><span class="pct">%</span></div>
+      <div class="eval-item"><label>Prac. individual</label><input type="number" min="0" max="100" data-ev="${id}|${prefix}|pracIndiv" value="${ev.pracIndiv}"><span class="pct">%</span></div>
+      <div class="eval-item"><label>Asistencia</label><input type="number" min="0" max="100" data-ev="${id}|${prefix}|asistencia" value="${ev.asistencia}"><span class="pct">%</span></div>
+      <div class="eval-item"><label>Participacion</label><input type="number" min="0" max="100" data-ev="${id}|${prefix}|participacion" value="${ev.participacion}"><span class="pct">%</span></div>
+      <div class="eval-item"><label>Otros</label><input type="number" min="0" max="100" data-ev="${id}|${prefix}|otros" value="${ev.otros}"><span class="pct">%</span></div>
+    </div>
+    <div class="eval-total ${cls}">
+      <div class="eval-bar"><div class="eval-bar-fill" style="width:${Math.min(t,100)}%;background:${col}"></div></div>
+      <span class="eval-total-num">${t}%</span>
+    </div>`;
+  }
+
+  const fichaEval = `
+    <div class="m-sec"><h4>Convocatoria ordinaria</h4>
+      ${evalBlock("evalOrd","Ordinaria",s.evalOrd)}
+    </div>
+    <div class="m-sec" style="margin-top:8px"><h4>Convocatoria extraordinaria</h4>
+      ${evalBlock("evalExt","Extraordinaria",s.evalExt)}
+    </div>`;
+
+  const fichaDatos = `
+    <div class="m-sec"><h4>Profesor y contacto</h4>
+      <div class="datos-cards">
+        <div class="dato-card">
+          <label>Profesor/a</label>
+          <input data-f="profesor" data-id="${id}" value="${esc(s.profesor)}" placeholder="Nombre y apellidos">
+        </div>
+        <div class="dato-card">
+          <label>Correo</label>
+          <input data-f="correo" data-id="${id}" value="${esc(s.correo)}" placeholder="nombre@uva.es">
+        </div>
+      </div>
+    </div>
+    <div class="m-sec"><h4>Tu configuracion</h4>
+      <div class="datos-cards">
+        <div class="dato-card">
+          <label>Convocatoria</label>
+          <div class="conv-sel">
+            <button class="conv-btn" data-conv="${id}|ord" aria-pressed="${s.convocatoria==="ord"}">Ordinaria</button>
+            <button class="conv-btn" data-conv="${id}|ext" aria-pressed="${s.convocatoria==="ext"}">Extraordinaria</button>
+          </div>
+        </div>
+        <div class="dato-card">
+          <label>Importancia</label>
+          <select data-f="etiqueta" data-id="${id}">
+            <option value="">Normal</option>
+            <option value="ir" ${s.etiqueta==="ir"?"selected":""}>Ir a clase</option>
+            <option value="importante" ${s.etiqueta==="importante"?"selected":""}>Importante</option>
+            <option value="muy importante" ${s.etiqueta==="muy importante"?"selected":""}>Muy importante</option>
+          </select>
+        </div>
+        <div class="dato-card">
+          <label>Dificultad</label>
+          <div class="dif-toggle" style="margin:0">
+            ${[1,2,3,4,5].map(d => `<button class="dif-dot ${(s.dificultad||0)>=d?"on":""}" data-dif="${id}|${d}" title="${d}/5">${d}</button>`).join("")}
+            <button class="dif-dot" data-dif="${id}|0" title="Quitar" style="margin-left:4px;font-size:9px">✕</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="m-sec"><h4>Notas personales</h4>
+      <textarea class="notas-area" data-f="notas" data-id="${id}" placeholder="Lo que quieras recordar de esta asignatura…">${esc(s.notas)}</textarea>
+    </div>`;
+
+  return `<div class="m-cab" style="--c:${col}">
+      <span class="espina"></span>
+      <div style="flex:1;min-width:0">
+        <h3>${esc(a.n)}</h3>
+        <span class="t-sub">
+          <span class="tag">${ORD[a.curso-1]} curso</span>
+          <span class="tag">${a.cuat===1?"1.er cuat.":"2.º cuat."}</span>
+          <span class="tag">${a.ects} ECTS</span>
+          <span class="tag ${a.tipo==="OP"?"op":""}">${a.tipo==="OP"?"optativa":"obligatoria"}</span>
+          <span class="tag">${(Math.round(horas/6)/10).toString().replace(".",",")} h/sem</span>
+        </span>
+      </div>
+      <button class="mini" id="m-cerrar" title="Cerrar">✕</button>
+    </div>
+
+    <div class="m-resumen-bar">
+      <span class="pt">Tu horario</span>
+      <b>${resumen || "sin sesiones"}</b>
+    </div>
+
+    <div class="m-tabs" id="m-tabs">
+      <button class="m-tab on" data-mtab="horario">Horario</button>
+      <button class="m-tab" data-mtab="evaluacion">Evaluacion</button>
+      <button class="m-tab" data-mtab="datos">Datos</button>
+    </div>
+
+    <div class="m-panel" data-mpanel="horario">
+      ${turnos}
+      ${subs}
+    </div>
+
+    <div class="m-panel" data-mpanel="evaluacion" style="display:none">
+      ${fichaEval}
+    </div>
+
+    <div class="m-panel" data-mpanel="datos" style="display:none">
+      ${fichaDatos}
+      ${colores}
+    </div>
+
+    <div class="m-pie">
+      <button class="btn peligro" id="m-quitar">Quitar</button>
+      <span class="pista">Se guarda solo</span>
+      <button class="btn ppal" id="m-hecho">Hecho</button>
+    </div>`;
+}
+
+function pintarModal(){
+  const id = estado.abierta; if(!id || !estado.sel[id]) return;
+  const m = document.getElementById("modal");
+  const scroll = m.scrollTop;
+  m.innerHTML = htmlModal(id);
+  m.scrollTop = scroll;
+
+  m.querySelector("#m-cerrar").onclick = cerrarModal;
+  m.querySelector("#m-hecho").onclick = cerrarModal;
+  m.querySelector("#m-quitar").onclick = () => { quitar(id); cerrarModal(); };
+
+  /* tabs del modal */
+  m.querySelectorAll(".m-tab").forEach(t => t.onclick = () => {
+    m.querySelectorAll(".m-tab").forEach(o => o.classList.toggle("on", o === t));
+    m.querySelectorAll(".m-panel").forEach(p => p.style.display = p.dataset.mpanel === t.dataset.mtab ? "" : "none");
+  });
+
+  m.querySelectorAll("[data-op]").forEach(b => b.onclick = () => {
+    const [i,o] = b.dataset.op.split("|");
+    estado.sel[i].op = o;
+    const fam = subgruposDe(opcionDe(porId[i], estado.sel[i])), sub = {};
+    Object.keys(fam).forEach(f => sub[f] = fam[f].includes(estado.sel[i].sub[f]) ? estado.sel[i].sub[f] : fam[f][0]);
+    estado.sel[i].sub = sub; guardar(); pintar();
+  });
+  m.querySelectorAll("[data-sub]").forEach(b => b.onclick = () => {
+    const [i,f,g] = b.dataset.sub.split("|");
+    estado.sel[i].sub[f] = g; guardar(); pintar();
+  });
+  m.querySelectorAll("[data-color]").forEach(b => b.onclick = () => {
+    const [i,c] = b.dataset.color.split("|");
+    estado.sel[i].color = c || null; guardar(); pintar();
+  });
+  m.querySelectorAll("[data-conv]").forEach(b => b.onclick = () => {
+    const [i,v] = b.dataset.conv.split("|");
+    estado.sel[i].convocatoria = (estado.sel[i].convocatoria === v) ? "" : v;
+    guardar(); pintar();
+  });
+  m.querySelectorAll("[data-dif]").forEach(b => b.onclick = () => {
+    const [i,d] = b.dataset.dif.split("|");
+    estado.sel[i].dificultad = Number(d);
+    guardar(); pintar();
+  });
+  m.querySelectorAll("[data-ev]").forEach(el => {
+    el.oninput = () => {
+      const parts = el.dataset.ev.split("|");
+      const i = parts[0], prefix = parts[1], campo = parts[2];
+      const defEv = {examen:0,pracGrupal:0,pracIndiv:0,asistencia:0,participacion:0,otros:0};
+      if(!estado.sel[i][prefix]) estado.sel[i][prefix] = {...defEv};
+      estado.sel[i][prefix][campo] = Math.max(0, Math.min(100, Number(el.value) || 0));
+      guardar();
+      /* actualizar barra sin repintar todo (para no perder foco) */
+      const ev = estado.sel[i][prefix];
+      const t = ev.examen+ev.pracGrupal+ev.pracIndiv+ev.asistencia+ev.participacion+ev.otros;
+      const wrap = el.closest(".m-sec");
+      if(wrap){
+        const bar = wrap.querySelector(".eval-bar-fill");
+        const num = wrap.querySelector(".eval-total-num");
+        const tot = wrap.querySelector(".eval-total");
+        if(bar) bar.style.width = Math.min(t,100)+"%";
+        if(bar) bar.style.background = t===100?"#4CAF50":t>100?"#F44336":"#FF9800";
+        if(num) num.textContent = t+"%";
+        if(tot){ tot.className = "eval-total "+(t===100?"ok":t>100?"bad":"warn"); }
+      }
+      pintarSeleccion();
+    };
+  });
+  m.querySelectorAll("[data-f]").forEach(el => {
+    el.oninput = () => { estado.sel[el.dataset.id][el.dataset.f] = el.value; guardar(); pintarSeleccion(); };
+    el.onchange = el.oninput;
+  });
+}
+
+function abrirModal(id){
+  if(!estado.sel[id]) return;
+  estado.abierta = id;
+  document.getElementById("velo").classList.add("on");
+  document.body.style.overflow = "hidden";
+  pintarModal();
+  document.getElementById("modal").scrollTop = 0;
+}
+function cerrarModal(){
+  estado.abierta = null;
+  document.getElementById("velo").classList.remove("on");
+  document.body.style.overflow = "";
+}
+
+/* ─────── vistas ─────── */
+function pintarVista(){
+  const v = document.getElementById("vista");
+  if(estado.vista === "cal"){ v.innerHTML = htmlCalendario(); engancharBloques(); }
+  else if(estado.vista === "of"){ v.innerHTML = htmlOficial(); engancharOficial(); }
+  else v.innerHTML = htmlNota();
+}
+function engancharBloques(){
+  document.querySelectorAll("#vista .bq[data-asig]").forEach(b => b.onclick = () => abrirModal(b.dataset.asig));
+}
+function engancharLeyenda(){
+  const cuerpo = document.querySelector("#vista .cal-cuerpo");
+  document.querySelectorAll("#vista [data-ley]").forEach(el => {
+    const id = el.dataset.ley;
+    el.onclick = () => abrirModal(id);
+    el.onmouseenter = () => {
+      if(!cuerpo) return;
+      cuerpo.classList.add("dim");
+      cuerpo.querySelectorAll(`.bq[data-asig="${id}"]`).forEach(b => b.classList.add("on"));
+    };
+    el.onmouseleave = () => {
+      if(!cuerpo) return;
+      cuerpo.classList.remove("dim");
+      cuerpo.querySelectorAll(".bq.on").forEach(b => b.classList.remove("on"));
+    };
+  });
+}
+function engancharOficial(){
+  document.querySelectorAll("#vista [data-ofc]").forEach(b => b.onclick = () => {
+    estado.ofCurso = Number(b.dataset.ofc); estado.ofGrupo = null; pintarVista();
+  });
+  document.querySelectorAll("#vista [data-ofg]").forEach(b => b.onclick = () => {
+    estado.ofGrupo = b.dataset.ofg; pintarVista();
+  });
+  const solo = document.getElementById("of-solo");
+  if(solo) solo.onclick = () => { estado.ofSolo = !estado.ofSolo; pintarVista(); };
+  document.querySelectorAll("#vista .bq[data-add]").forEach(b => b.onclick = () => {
+    const [id, opId, sub] = b.dataset.add.split("|");
+    const a = porId[id];
+    if(!estado.sel[id]){
+      const op = a.ops.find(o => o.id === opId) || a.ops[0], fam = subgruposDe(op), s2 = {};
+      Object.keys(fam).forEach(f => s2[f] = fam[f][0]);
+      if(sub) s2[familia(sub)] = sub;
+      estado.sel[id] = { op:op.id, sub:s2, color:null, profesor:"", correo:"", notas:"", etiqueta:"", convocatoria:"", dificultad:0, evalOrd:{examen:0,pracGrupal:0,pracIndiv:0,asistencia:0,participacion:0,otros:0}, evalExt:{examen:0,pracGrupal:0,pracIndiv:0,asistencia:0,participacion:0,otros:0} };
+    }else{
+      estado.sel[id].op = opId;
+      const fam = subgruposDe(opcionDe(a, estado.sel[id])), s2 = {};
+      Object.keys(fam).forEach(f => s2[f] = fam[f].includes(estado.sel[id].sub[f]) ? estado.sel[id].sub[f] : fam[f][0]);
+      if(sub) s2[familia(sub)] = sub;
+      estado.sel[id].sub = s2;
+    }
+    guardar(); pintar();
+  });
+}
+
+function htmlRejilla(bloques, opt){
+  opt = opt || {};
+
+  /* ── recortar rango a las horas que realmente tienen bloques ── */
+  let rangoIni = INICIO_DIA, rangoFin = FIN_DIA;
+  if(bloques.length && !opt.oficial){
+    const bMin = Math.min(...bloques.map(b => b.ini));
+    const bMax = Math.max(...bloques.map(b => b.fin));
+    rangoIni = Math.floor(bMin / 60) * 60;           // redondear abajo a hora entera
+    rangoFin = Math.ceil(bMax / 60) * 60;             // redondear arriba a hora entera
+    rangoIni = Math.max(rangoIni - 30, INICIO_DIA);   // 30 min margen
+    rangoFin = Math.min(rangoFin + 30, FIN_DIA);
+  }
+
+  /* ── calcular px/min para encajar en pantalla ── */
+  const rangoMin = rangoFin - rangoIni;
+  const movil = window.innerWidth <= 768;
+  let px;
+  if(opt.px){
+    px = opt.px;
+  } else {
+    // restar: header(~80/48) + barra(~44/36) + navmovil(56) + paddings
+    const overhead = movil ? 160 : 170;
+    const disponible = Math.max(window.innerHeight - overhead, movil ? 280 : 360);
+    px = Math.max(disponible / rangoMin, movil ? 0.55 : 0.7);
+    px = Math.min(px, movil ? 1.0 : PX_MIN_DEFAULT);
+  }
+
+  const alto = rangoMin * px;
+  let horas = `<div class="horas" style="height:${alto}px">`;
+  for(let m = rangoIni; m <= rangoFin; m += 60)
+    horas += `<div class="hm" style="top:${(m-rangoIni)*px}px">${hhmm(m)}</div>`;
+  horas += `</div>`;
+
+  let dias = "";
+  for(let d = 0; d < 5; d++){
+    const delDia = bloques.filter(b => b.dia === d);
+    repartirColumnas(delDia);
+    let inner = "";
+    for(let m = rangoIni; m <= rangoFin; m += 30)
+      inner += `<div class="raya ${m%60===0?"h":""}" style="top:${(m-rangoIni)*px}px"></div>`;
+    /* detectar desdobles: bloques de la misma asignatura solapados en el mismo día */
+    const desdobles = new Set();
+    for(let i=0;i<delDia.length;i++) for(let j=i+1;j<delDia.length;j++){
+      const a=delDia[i], bb=delDia[j];
+      if(a.asig.id===bb.asig.id && a.ini<bb.fin && bb.ini<a.fin){ desdobles.add(i); desdobles.add(j); }
+    }
+    delDia.forEach((b,idx) => {
+      const t = tipoDe(b), col = colorDe(b.asig.id);
+      /* colores pastel: teoria=base, aula=mas claro, lab=mas oscuro */
+      let fondo = col;
+      if(estado.tonos){
+        if(t === "aula") fondo = aclara(col, .35);
+        else if(t === "lab") fondo = oscurece(col, .15);
+      }
+      const gap = movil ? 1 : 2;
+      const top = (b.ini - rangoIni) * px + gap;
+      const h = Math.max((b.fin - b.ini) * px - gap*2, movil ? 16 : 24);
+      const w = 100 / (b.cols||1), x = w * (b.col||0);
+      const extra = opt.oficial ? (b.mia ? " mia" : " nomia") : "";
+      const dato = opt.oficial ? `data-add="${b.asig.id}|${b.op.id}|${b.sub||""}"` : `data-asig="${b.asig.id}"`;
+      const selB = estado.sel[b.asig.id];
+      const convCls = (!opt.oficial && selB && selB.convocatoria === "ext") ? " bq-ext" : "";
+      const impCls = (!opt.oficial && selB && selB.etiqueta === "importante") ? " bq-imp"
+                   : (!opt.oficial && selB && selB.etiqueta === "muy importante") ? " bq-muyimp" : "";
+      const desCls = desdobles.has(idx) ? " desdoble" : "";
+      const borderCol = oscurece(col, .3);
+      const pad = movil ? 1 : 3;
+      /* siempre mostrar nombre + hora, adaptar contenido al espacio */
+      const mostrarHora = h > (movil ? 26 : 32);
+      inner += `<div class="bq ${t} ${b.choca?"choca":""}${extra}${convCls}${impCls}${desCls}" ${dato}
+        style="top:${top}px;height:${h}px;left:calc(${x}% + ${pad}px);width:calc(${w}% - ${pad*2}px);background:${fondo};border-color:${borderCol}"
+        title="${esc(b.asig.n)} · ${hhmm(b.ini)}–${hhmm(b.fin)} · ${b.sub||"T"} · ${esc(b.aula||"")}">
+        <span class="tipo">${b.sub ? esc(b.sub) : "T"}</span>
+        <span class="bq-nombre">${esc(b.asig.n)}</span>
+        ${mostrarHora?`<span class="bq-hora">${hhmm(b.ini)}–${hhmm(b.fin)} · ${esc(b.aula||"")}</span>`:""}
+      </div>`;
+    });
+    dias += `<div class="dia" style="height:${alto}px">${inner}</div>`;
+  }
+  return `<div class="cal-wrap"><div class="cal-cab"><div></div>${DIAS.map(d=>`<div>${d}</div>`).join("")}</div>
+    <div class="cal-cuerpo">${horas}${dias}</div></div>`;
+}
+
+function htmlCalendario(){
+  const bloques = bloquesVisibles(estado.cuat);
+  const pares = detectarSolapes(bloques);
+
+  if(!bloques.length){
+    return `<div class="cal-vacio">Tu semana del ${estado.cuat===1?"1.er":"2.º"} cuatrimestre está vacía.<br>
+      Elige asignaturas a la izquierda. Después, pulsa cualquier bloque para abrir su ficha.</div>`;
+  }
+
+  let avisos = "";
+  const vistos = new Set(), conf = [];
+  pares.forEach(([x,y]) => {
+    const k = [x.asig.id,x.dia,x.ini,y.asig.id,y.ini].join("|");
+    if(vistos.has(k)) return; vistos.add(k);
+    conf.push(`${DIAS[x.dia]} · <b>${esc(x.asig.n)}</b> ${hhmm(x.ini)}–${hhmm(x.fin)} choca con <b>${esc(y.asig.n)}</b> ${hhmm(y.ini)}–${hhmm(y.fin)}`);
+  });
+  const dudas = bloques.filter(b => b.nota).map(b =>
+    `${DIAS[b.dia]} ${hhmm(b.ini)}–${hhmm(b.fin)} · <b>${esc(b.asig.n)}</b>: ${esc(b.nota)}`);
+  if(conf.length) avisos += `<div class="aviso-caja rojo"><b>${conf.length} solape${conf.length>1?"s":""}</b><ul>${conf.map(c=>`<li>${c}</li>`).join("")}</ul>
+    <div style="margin-top:6px">Pulsa la asignatura para cambiar de turno o de subgrupo y deshacer el choque.</div></div>`;
+  if(dudas.length) avisos += `<div class="aviso-caja ambar"><b>Erratas del PDF que conviene confirmar en Secretaría</b><ul>${dudas.map(c=>`<li>${c}</li>`).join("")}</ul></div>`;
+
+  return avisos + htmlRejilla(bloques);
+}
+
+/* ─────── tablas oficiales ─────── */
+function celdasDe(a, op){
+  const porDia = {};
+  op.ses.forEach(s => { (porDia[s[0]] = porDia[s[0]] || []).push(s); });
+  const celdas = [];
+  Object.keys(porDia).forEach(d => {
+    const ss = porDia[d].slice().sort((x,y) => min(x[1]) - min(y[1]));
+    let bloque = [ss[0]];
+    for(let i = 1; i < ss.length; i++){
+      const finPrev = Math.max(...bloque.map(b => min(b[2])));
+      if(min(ss[i][1]) - finPrev <= 60) bloque.push(ss[i]);
+      else { celdas.push({dia:+d, ses:bloque}); bloque = [ss[i]]; }
+    }
+    celdas.push({dia:+d, ses:bloque});
+  });
+  return celdas;
+}
+
+function gruposDe(curso, cuat){
+  const g = [];
+  ASIGS.filter(a => a.curso === curso && a.cuat === cuat)
+       .forEach(a => a.ops.forEach(o => { if(!g.includes(o.n)) g.push(o.n); }));
+  return g.sort();
+}
+
+function htmlOficial(){
+  const curso = estado.ofCurso, gs = gruposDe(curso, estado.cuat);
+  if(!gs.length) return `<div class="cal-vacio">No hay horarios de ${ORD[curso-1]} curso en este cuatrimestre.</div>`;
+  if(!gs.includes(estado.ofGrupo)) estado.ofGrupo = gs[0];
+
+  const ctrl = `<div class="of-ctrl">
+      <span class="ley-rot">Curso</span>
+      ${[1,2,3,4].map(c => `<button class="chip" data-ofc="${c}" aria-pressed="${c===curso}">${ORD[c-1]}</button>`).join("")}
+      <span class="sep"></span>
+      <span class="ley-rot">Grupo</span>
+      ${gs.map(g => `<button class="chip" data-ofg="${esc(g)}" aria-pressed="${g===estado.ofGrupo}">${esc(g)}</button>`).join("")}
+      <span class="sep"></span>
+      <button class="btn" id="of-solo" aria-pressed="${estado.ofSolo}">Solo mis asignaturas</button>
+    </div>`;
+
+  const delCurso = ASIGS.filter(a => a.curso === curso && a.cuat === estado.cuat &&
+                                     a.ops.some(o => o.n === estado.ofGrupo) &&
+                                     (!estado.ofSolo || estado.sel[a.id]));
+  const bloques = [], aulas = new Set();
+  delCurso.forEach(a => {
+    const op = a.ops.find(o => o.n === estado.ofGrupo);
+    aulas.add(op.aula);
+    op.ses.forEach(x => bloques.push({
+      asig:a, op, dia:x[0], ini:min(x[1]), fin:min(x[2]), etiqueta:x[3], sub:x[4],
+      aula:x[5] || op.aula, nota:x[6] || null,
+      mia: !!(estado.sel[a.id] && estado.sel[a.id].op === op.id &&
+              (!x[4] || estado.sel[a.id].sub[familia(x[4])] === x[4]))
+    }));
+  });
+  bloques.forEach(b => b.choca = false);
+
+  const cuerpo = bloques.length
+    ? `<div class="of-cal">${htmlRejilla(bloques, {oficial:true, px:0.95})}</div>`
+    : `<div class="cal-vacio">No tienes ninguna asignatura elegida en este grupo.</div>`;
+
+  const tabla = `<table class="of-prof"><thead><tr>
+      <th></th><th>Asignatura</th><th>Profesor/a</th><th>Sesiones</th><th style="text-align:center">ECTS</th></tr></thead><tbody>
+    ${ASIGS.filter(a => a.curso === curso && a.cuat === estado.cuat).map(a => {
+      const op = a.ops.find(o => o.n === estado.ofGrupo);
+      const sel = !!estado.sel[a.id];
+      const p = sel && estado.sel[a.id].profesor;
+      const det = op ? [...new Set(op.ses.map(x => x[3] || "—"))].join(" · ") : "otro grupo";
+      return `<tr class="${sel?"sel":""}">
+        <td class="pill-c"><span class="pto" style="background:${colorDe(a.id)}"></span></td>
+        <td>${esc(a.n)}${a.tipo==="OP"?' <span class="tag op">optativa</span>':""}</td>
+        <td class="${p?"":"vacio-p"}">${p ? esc(p) : "el PDF no lo indica"}</td>
+        <td style="font-family:var(--mono);font-size:10.5px;color:var(--ink-3)">${esc(det)}</td>
+        <td class="ects">${a.ects}</td></tr>`;
+    }).join("")}</tbody></table>`;
+
+  return ctrl + `<div class="of-tit"><h3>${ORD[curso-1]} curso · ${esc(estado.ofGrupo)}</h3>
+      <span>${estado.cuat===1?"1.er":"2.º"} cuatrimestre · aula ${esc([...aulas].join(" / ")) || "—"} · ${bloques.length} sesiones</span></div>
+    <div class="of-pista">Este es el horario tal cual lo publica la Facultad, con todos los subgrupos a la vez. Las que ya tienes elegidas van con borde negro; pulsa cualquier otra para añadirla con ese turno y ese subgrupo.</div>`
+    + cuerpo + tabla;
+}
+
+function htmlNota(){
+  return `<div class="nota">
+    <h3>Nota informativa del PDF oficial</h3>
+    <p>Horarios aprobados en la Junta de Facultad de Ciencias Sociales, Jurídicas y de la Comunicación del Campus de Segovia de la UVa, celebrada el 26 de mayo de 2026. Podrán ser susceptibles de cambios por motivos de carácter administrativo. Si fuera necesario, podrán recuperarse horas de docencia perdidas en franjas disponibles, solicitando día y hora en la Secretaría del Centro.</p>
+    <p>Los estudiantes matriculados en el PDTO Turismo-Publicidad se integran en los grupos del turno de mañana (Grupo 1) en los cursos 1.º y 2.º. A partir de 3.º pueden elegir turno.</p>
+    <p>En algunos casos, los tiempos de docencia están divididos entre sesiones teóricas (T) y prácticas, divididas a su vez en aula (A) y laboratorio (L). Para las prácticas, el grupo se divide en dos subgrupos: en turno de mañana <code>A1</code> y <code>A3</code>, y en turno de tarde <code>A2</code> y <code>A4</code>. El estudiante asiste a todas las sesiones teóricas, pero solo a las de su subgrupo.</p>
+    <p>Las horas marcadas en rojo en el PDF aluden a tiempos completos de referencia, quedando luego detallados los tiempos reales de cada sesión. Este planificador coloca los <b>tiempos reales</b>, no la franja de referencia.</p>
+
+    <h4>Cómo se usa</h4>
+    <ul>
+      <li>Pulsa una asignatura del catálogo para añadirla. Si tiene más de un turno, se abre su ficha para que elijas viendo el horario completo de cada uno, día a día.</li>
+      <li>Pulsa cualquier bloque del calendario, o una tarjeta de tu selección, para abrir esa misma ficha: turno, subgrupo, color, profesor, correo, criterios y notas.</li>
+      <li>Bloque de color liso = teoría. Tono claro con filo de color = práctica de aula. Rayado = laboratorio. La etiqueta de la esquina indica el subgrupo.</li>
+      <li>Cada asignatura nace con un color propio dentro de su curso y cuatrimestre, y lo cambias desde su ficha.</li>
+    </ul>
+
+    <h4>Erratas detectadas en el PDF</h4>
+    <p>En cinco celdas el detalle horario impreso no encaja con la franja de referencia de su cabecera, y en tres de ellas además provocaría un choque con otra asignatura del mismo grupo. El planificador coloca la hora coherente y marca el bloque con <b>⚠</b>. Conviene confirmarlas en Secretaría:</p>
+    <ul>
+      <li><b>Teoría del lenguaje</b> · 1.º, Grupo 2, miércoles: detalle 15:00–15:40 y 15:40–19:00 dentro de una franja de 17:00 a 20:30, que además pisaría a Teorías de la comunicación. Colocado en 17:00–17:40 y 17:40–19:00.</li>
+      <li><b>Sociología de la publicidad y del consumo</b> · 2.º, Grupo 1, viernes: subgrupo 3A impreso como 12:00–12:20 en una franja de 12:00 a 13:30. Colocado en 12:00–13:20.</li>
+      <li><b>Métodos y técnicas de investigación social</b> · 2.º, Grupo 2, miércoles: detalle 18:00–19:20 bajo una franja de 19:00 a 20:30, que además pisaría a Los anunciantes. Colocado en 19:00–20:20.</li>
+      <li><b>Teoría crítica de la cultura</b> · 4.º, Grupo 2, lunes y martes: detalle 17:00–18:20 bajo una franja de 15:00 a 16:30, que además pisaría a Producción y realización publicitarias. Colocado en 15:00–16:20.</li>
+    </ul>
+
+    <h4>Otros detalles del PDF recogidos aquí</h4>
+    <ul>
+      <li>Psicología de la comunicación (2.º) tiene un tercer grupo de mañana, <b>Grupo 3</b>, en el aula A-216.</li>
+      <li>Sesiones marcadas “sin PDTO”: Historia de la publicidad y Sistemas de información (1.º, 1.er cuat.), Teoría de la publicidad (1.º, 2.º cuat.) y Psicología de la comunicación (2.º, 1.er cuat.).</li>
+      <li>Laboratorio de fotografía (3.º) tiene dos sesiones de teoría, T1 y T2: eliges una en la ficha.</li>
+      <li>Aulas distintas a la del grupo: A-108, A-219, G-121, G-122, G-123, G-208, G-214, Li002, Li004, Li007 y Lab. Diseño.</li>
+      <li>Todas las optativas son de 3 ECTS; las obligatorias, de 4 o 6.</li>
+    </ul>
+  </div>`;
+}
+
+function pintarMetricas(){
+  const ids = Object.keys(estado.sel).filter(i => porId[i]);
+  const bloques = bloquesVisibles(estado.cuat);
+  const pares = detectarSolapes(bloques);
+  const vistos = new Set(); let n = 0;
+  pares.forEach(([x,y]) => { const k = [x.asig.id,x.dia,x.ini,y.asig.id,y.ini].join("|"); if(!vistos.has(k)){ vistos.add(k); n++; } });
+  const minutos = bloques.reduce((t,b) => t + (b.fin - b.ini), 0);
+  document.getElementById("m-asigs").textContent = ids.length;
+  document.getElementById("m-ects").textContent = ids.reduce((t,i) => t + porId[i].ects, 0);
+  document.getElementById("m-horas").textContent = (Math.round(minutos/6)/10).toString().replace(".",",");
+  document.getElementById("m-choques").textContent = n;
+  const n1 = ids.filter(i => porId[i].cuat===1).length, n2 = ids.length - n1;
+  const ects1 = ids.filter(i => porId[i].cuat===1).reduce((t,i)=>t+porId[i].ects,0);
+  const ects2 = ids.filter(i => porId[i].cuat===2).reduce((t,i)=>t+porId[i].ects,0);
+  const cs = document.getElementById("c-seleccion");
+  if(cs) cs.textContent = ids.length ? `${ids.length} elegidas · C1 ${n1} (${ects1} ECTS) · C2 ${n2} (${ects2} ECTS)` : "";
+  document.getElementById("m-choques-w").classList.toggle("mal", n > 0);
+}
+
+/* =========================================================
+   GUARDADO Y EVENTOS
+   ========================================================= */
+function guardar(){ try{ localStorage.setItem(CLAVE, JSON.stringify({sel:estado.sel, cuat:estado.cuat, tonos:estado.tonos})); }catch(e){} }
+function cargar(){
+  let hay = false;
+  try{
+    const d = JSON.parse(localStorage.getItem(CLAVE) || "null");
+    if(d && d.sel && Object.keys(d.sel).length){
+      Object.keys(d.sel).forEach(k => {
+        if(!d.sel[k].convocatoria) d.sel[k].convocatoria = "";
+        if(!d.sel[k].dificultad) d.sel[k].dificultad = 0;
+        const defEv = {examen:0,pracGrupal:0,pracIndiv:0,asistencia:0,participacion:0,otros:0};
+        if(!d.sel[k].evalOrd) d.sel[k].evalOrd = d.sel[k].eval ? {...defEv,...d.sel[k].eval} : {...defEv};
+        if(!d.sel[k].evalExt) d.sel[k].evalExt = {...defEv};
+        delete d.sel[k].eval;
+      });
+      estado.sel = d.sel; estado.cuat = d.cuat || 1; estado.tonos = !!d.tonos; hay = true;
+    }
+  }catch(e){}
+  if(!hay){
+    PRESELECCION.forEach(([id, opId]) => {
+      const a = porId[id]; if(!a) return;
+      const op = a.ops.find(o => o.id === opId) || a.ops[0], fam = subgruposDe(op), sub = {};
+      Object.keys(fam).forEach(f => sub[f] = fam[f][0]);
+      estado.sel[id] = { op:op.id, sub, color:null, profesor:"", correo:"", notas:"", etiqueta:"", convocatoria:"", dificultad:0, evalOrd:{examen:0,pracGrupal:0,pracIndiv:0,asistencia:0,participacion:0,otros:0}, evalExt:{examen:0,pracGrupal:0,pracIndiv:0,asistencia:0,participacion:0,otros:0} };
+    });
+  }
+}
+
+/* =========================================================
+   NAVEGACION POR PAGINAS (escritorio + movil)
+   ========================================================= */
+function esMovil(){ return window.innerWidth <= 768; }
+let paginaActual = "horario";
+
+function irAPagina(pag){
+  paginaActual = pag;
+  document.querySelectorAll(".pagina").forEach(el => el.classList.remove("activa"));
+  const target = document.querySelector(`[data-pag-id="${pag}"]`);
+  if(target) target.classList.add("activa");
+  document.querySelectorAll(".tab-pag").forEach(b => b.setAttribute("aria-selected", b.dataset.pag === pag));
+  if(pag === "horario") pintarVista();
+}
+
+/* tabs de pagina en header */
+document.querySelectorAll(".tab-pag").forEach(b => b.onclick = () => irAPagina(b.dataset.pag));
+
+/* tabs de cuatrimestre */
+document.querySelectorAll(".tab").forEach(t => t.onclick = () => {
+  estado.cuat = Number(t.dataset.cuat);
+  document.querySelectorAll(".tab").forEach(o => o.setAttribute("aria-selected", o === t));
+  guardar(); pintar();
+});
+
+/* vista calendario/tablas/nota */
+document.getElementById("seg-vista").querySelectorAll("button").forEach(b => b.onclick = () => {
+  estado.vista = b.dataset.vista;
+  document.getElementById("seg-vista").querySelectorAll("button").forEach(o => o.setAttribute("aria-pressed", o === b));
+  pintarVista();
+});
+
+/* controles */
+document.getElementById("buscador").oninput = e => { estado.q = e.target.value; pintarCatalogo(); };
+document.getElementById("btn-tonos").onclick = e => {
+  estado.tonos = !estado.tonos;
+  e.currentTarget.setAttribute("aria-pressed", estado.tonos);
+  guardar(); pintarVista();
+};
+document.getElementById("btn-imprimir").onclick = () => window.print();
+document.getElementById("btn-limpiar").onclick = () => { if(confirm("¿Vaciar toda la selección?")){ estado.sel = {}; cerrarModal(); guardar(); pintar(); } };
+document.getElementById("velo").onclick = e => { if(e.target.id === "velo") cerrarModal(); };
+document.addEventListener("keydown", e => { if(e.key === "Escape" && estado.abierta) cerrarModal(); });
+
+document.getElementById("btn-exportar").onclick = () => {
+  const blob = new Blob([JSON.stringify({sel:estado.sel, cuat:estado.cuat}, null, 2)], {type:"application/json"});
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob); a.download = "mi-matricula-publicidad-2627.json"; a.click();
+};
+document.getElementById("btn-copiar").onclick = () => {
+  const ids = Object.keys(estado.sel).filter(i => porId[i])
+    .sort((x,y) => porId[x].curso - porId[y].curso || porId[x].cuat - porId[y].cuat);
+  const txt = ids.map(id => {
+    const a = porId[id], s = estado.sel[id], op = opcionDe(a,s);
+    const subs = Object.keys(subgruposDe(op)).map(f => s.sub[f]).join("/");
+    return `${a.curso}.º · ${a.cuat===1?"C1":"C2"} · ${a.n} · ${op.n}${subs?" · "+subs:""} · ${a.ects} ECTS`;
+  }).join("\n");
+  navigator.clipboard.writeText(txt || "(selección vacía)").then(
+    () => { const b = document.getElementById("btn-copiar"); b.textContent = "Copiada"; setTimeout(()=>b.textContent="Copiar", 1600); },
+    () => prompt("Copia esta lista:", txt));
+};
+document.getElementById("btn-importar").onclick = () => document.getElementById("fichero").click();
+document.getElementById("fichero").onchange = e => {
+  const f = e.target.files[0]; if(!f) return;
+  const r = new FileReader();
+  r.onload = () => {
+    try{
+      const d = JSON.parse(r.result);
+      if(d && d.sel){
+        estado.sel = d.sel; estado.cuat = d.cuat || estado.cuat;
+        document.querySelectorAll(".tab").forEach(o => o.setAttribute("aria-selected", Number(o.dataset.cuat)===estado.cuat));
+        guardar(); pintar();
+      }
+    }catch(err){ alert("Ese archivo no tiene el formato esperado. Usa el que genera el botón Guardar."); }
+  };
+  r.readAsText(f);
+};
+
+/* =========================================================
+   NAVEGACION MOVIL (3 ventanas)
+   ========================================================= */
+function cambiarMob(sec){
+  const pagAsigs = document.querySelector(".pag-asigs");
+  document.querySelectorAll(".pagina").forEach(el => { el.classList.remove("mob-activo"); });
+  document.querySelectorAll("#mob-nav button").forEach(b => b.classList.toggle("activo", b.dataset.mob === sec));
+  pagAsigs.classList.remove("mob-show-sel");
+
+  if(sec === "horario"){
+    document.querySelector(".pag-horario").classList.add("mob-activo");
+    pintarVista();
+  } else if(sec === "asigs"){
+    pagAsigs.classList.add("mob-activo");
+  } else if(sec === "elegidas"){
+    pagAsigs.classList.add("mob-activo","mob-show-sel");
+  }
+}
+
+document.getElementById("mob-nav").querySelectorAll("button").forEach(b => {
+  b.onclick = () => cambiarMob(b.dataset.mob);
+});
+
+/* al anadir asignatura en movil, saltar al horario */
+const _anadirOriginal = anadir;
+anadir = function(id, abrir){
+  _anadirOriginal(id, abrir);
+  if(esMovil() && !abrir) cambiarMob("horario");
+};
+
+/* arranque */
+cargar();
+document.querySelectorAll(".tab").forEach(o => o.setAttribute("aria-selected", Number(o.dataset.cuat)===estado.cuat));
+document.getElementById("btn-tonos").setAttribute("aria-pressed", estado.tonos);
+pintar();
+
+/* en movil, activar la primera vista */
+if(esMovil()) cambiarMob("horario");
+
+/* recalcular calendario al cambiar tamano */
+let _rzTimer;
+window.addEventListener("resize", () => {
+  clearTimeout(_rzTimer);
+  _rzTimer = setTimeout(() => {
+    if(paginaActual === "horario" || esMovil()) pintarVista();
+  }, 200);
+});
+</script>
+</body>
+</html>
