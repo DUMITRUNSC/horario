@@ -206,10 +206,12 @@ header.top{background:linear-gradient(135deg,#14131A 0%,#1E1D2A 100%);color:#fff
 .raya.h{border-top-color:#DDDDE8}
 
 /* ── bloques de asignatura ── */
-.bq{position:absolute;border-radius:10px;padding:4px 7px 4px 9px;overflow:hidden;color:#1A1828;font-size:11px;line-height:1.18;box-shadow:0 1px 4px rgba(20,19,26,.1);transition:filter .12s,box-shadow .12s,transform .12s;border:1.5px solid rgba(0,0,0,.1);display:flex;flex-direction:column;justify-content:center;gap:0}
-.bq .bq-nombre{font-weight:700;font-size:11.5px;letter-spacing:-.02em;line-height:1.15;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.bq .bq-hora{font-family:var(--mono);font-size:9px;color:rgba(0,0,0,.5);letter-spacing:.01em;line-height:1.3}
+.bq{position:absolute;border-radius:10px;padding:3px 6px 3px 8px;overflow:hidden;color:#1A1828;line-height:1;box-shadow:0 1px 4px rgba(20,19,26,.1);transition:filter .12s,box-shadow .12s,transform .12s;border:1.5px solid rgba(0,0,0,.1);display:flex;align-items:flex-start;gap:0;flex-direction:column;justify-content:center}
+.bq .bq-row{display:flex;align-items:baseline;gap:4px;width:100%;min-width:0}
+.bq .bq-nombre{font-weight:700;font-size:11.5px;letter-spacing:-.02em;line-height:1.2;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1;min-width:0}
+.bq .bq-hora{font-family:var(--mono);font-size:8.5px;color:rgba(0,0,0,.45);letter-spacing:.01em;white-space:nowrap;flex:none}
 .bq .tipo{position:absolute;top:3px;right:4px;font-family:var(--mono);font-size:7.5px;font-weight:800;background:rgba(0,0,0,.08);border-radius:4px;padding:1px 4px;letter-spacing:.04em;color:rgba(0,0,0,.45);line-height:1.3}
+.bq .bq-aula{font-family:var(--mono);font-size:8px;color:rgba(0,0,0,.4);line-height:1.2}
 .bq.aula::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:rgba(0,0,0,.12)}
 .bq.lab::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(135deg,rgba(0,0,0,.04) 0 4px,transparent 4px 8px);pointer-events:none}
 /* desdoble */
@@ -484,9 +486,11 @@ header.top{background:linear-gradient(135deg,#14131A 0%,#1E1D2A 100%);color:#fff
   .t-turnos{padding:0 10px 5px;gap:2px}
   .t-turno{padding:3px 7px;font-size:8px}
   .hm{font-size:9px;right:4px;font-weight:700}
-  .bq{padding:3px 5px 3px 7px;border-radius:7px;border-width:1px}
+  .bq{padding:3px 5px 3px 7px;border-radius:8px;border-width:1px}
+  .bq .bq-row{gap:3px}
   .bq .bq-nombre{font-size:10.5px}
   .bq .bq-hora{font-size:8px}
+  .bq .bq-aula{font-size:7.5px}
   .bq .tipo{font-size:7px;top:2px;right:3px;padding:1px 3px;border-radius:3px}
   .bq .warn{font-size:7px;bottom:1px;right:2px}
   .bq.aula::before{width:3px}
@@ -651,7 +655,6 @@ header.top{background:linear-gradient(135deg,#14131A 0%,#1E1D2A 100%);color:#fff
     <div class="barra">
       <div class="seg" id="seg-vista">
         <button data-vista="cal" aria-pressed="true">Calendario</button>
-        <button data-vista="of" aria-pressed="false">Tablas oficiales</button>
         <button data-vista="nota" aria-pressed="false">Nota informativa</button>
       </div>
       <div class="acciones">
@@ -1738,14 +1741,13 @@ function htmlRejilla(bloques, opt){
       const desCls = desdobles.has(idx) ? " desdoble" : "";
       const borderCol = oscurece(col, .3);
       const pad = movil ? 1 : 3;
-      /* siempre mostrar nombre + hora, adaptar contenido al espacio */
-      const mostrarHora = h > (movil ? 26 : 32);
+      const alto2 = h > (movil ? 30 : 38);
       inner += `<div class="bq ${t} ${b.choca?"choca":""}${extra}${convCls}${impCls}${desCls}" ${dato}
         style="top:${top}px;height:${h}px;left:calc(${x}% + ${pad}px);width:calc(${w}% - ${pad*2}px);background:${fondo};border-color:${borderCol}"
         title="${esc(b.asig.n)} · ${hhmm(b.ini)}–${hhmm(b.fin)} · ${b.sub||"T"} · ${esc(b.aula||"")}">
         <span class="tipo">${b.sub ? esc(b.sub) : "T"}</span>
-        <span class="bq-nombre">${esc(b.asig.n)}</span>
-        ${mostrarHora?`<span class="bq-hora">${hhmm(b.ini)}–${hhmm(b.fin)} · ${esc(b.aula||"")}</span>`:""}
+        <span class="bq-row"><span class="bq-nombre">${esc(b.asig.n)}</span><span class="bq-hora">${hhmm(b.ini)}–${hhmm(b.fin)}</span></span>
+        ${alto2?`<span class="bq-aula">${esc(b.aula||"")}</span>`:""}
       </div>`;
     });
     dias += `<div class="dia" style="height:${alto}px">${inner}</div>`;
