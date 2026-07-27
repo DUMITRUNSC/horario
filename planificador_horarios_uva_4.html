@@ -2105,14 +2105,6 @@ document.querySelectorAll("[data-dianav]").forEach(b => b.onclick = () => {
   pintarVista();
 });
 
-/* en movil, empezar en vista dia */
-if(window.innerWidth <= 768){
-  estado.vista = "dia";
-  estado.diaActual = Math.min(new Date().getDay() - 1, 4);
-  if(estado.diaActual < 0) estado.diaActual = 0;
-  document.getElementById("seg-vista").querySelectorAll("button").forEach(o => o.setAttribute("aria-pressed", o.dataset.vista === "dia"));
-}
-
 /* controles */
 document.getElementById("buscador").oninput = e => { estado.q = e.target.value; pintarCatalogo(); };
 document.getElementById("btn-tonos").onclick = e => {
@@ -2196,7 +2188,14 @@ document.getElementById("btn-tonos").setAttribute("aria-pressed", estado.tonos);
 pintar();
 
 /* en movil, activar la primera vista */
-if(esMovil()) cambiarMob("horario");
+if(esMovil()){
+  cambiarMob("horario");
+  estado.vista = "dia";
+  estado.diaActual = Math.min(new Date().getDay() - 1, 4);
+  if(estado.diaActual < 0) estado.diaActual = 0;
+  document.getElementById("seg-vista").querySelectorAll("button").forEach(o => o.setAttribute("aria-pressed", o.dataset.vista === "dia"));
+  pintarVista();
+}
 
 /* recalcular calendario al cambiar tamano */
 let _rzTimer;
