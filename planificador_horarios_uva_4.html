@@ -228,26 +228,6 @@ header.top{background:linear-gradient(135deg,#14131A 0%,#1E1D2A 100%);color:#fff
 @keyframes glow-imp{0%,100%{box-shadow:0 0 0 3px #FF1744,0 0 8px rgba(255,23,68,.25)}50%{box-shadow:0 0 0 3px #FF1744,0 0 18px rgba(255,23,68,.45)}}
 .cal-vacio{padding:60px 24px;text-align:center;color:var(--ink-3);line-height:1.7;font-size:14px}
 
-/* ── vista diaria ── */
-.seg-dia{align-items:center}
-.seg-dia .dia-nombre{min-width:100px;text-align:center;font-weight:700;color:var(--ink);font-size:13px}
-.dia-wrap{padding:8px 12px 16px}
-.dia-cab{font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-2);padding:8px 0 6px;text-align:center;border-bottom:2px solid var(--linea)}
-.dia-grid{display:grid;grid-template-columns:52px 1fr;position:relative}
-.dia-horas{position:relative;border-right:2px solid var(--linea)}
-.dia-hm{position:absolute;left:0;right:6px;text-align:right;font-family:var(--mono);font-size:11px;color:#6E6D82;transform:translateY(-7px);font-weight:700}
-.dia-col{position:relative}
-.dia-raya{position:absolute;left:0;right:0;border-top:1px solid #EEEEF5}
-.dia-raya.h{border-top-color:#D8D8E5}
-.dia-bq{position:absolute;left:8px;right:8px;border-radius:14px;padding:12px 14px;color:#1A1828;box-shadow:0 2px 8px rgba(20,19,26,.1);border:1.5px solid rgba(0,0,0,.1);display:flex;flex-direction:column;gap:4px;cursor:pointer;transition:all .12s}
-.dia-bq:hover{transform:translateY(-1px);box-shadow:0 4px 16px rgba(20,19,26,.15)}
-.dia-bq .dia-bq-nombre{font-weight:700;font-size:15px;letter-spacing:-.02em;line-height:1.25}
-.dia-bq .dia-bq-info{display:flex;gap:8px;align-items:center;font-family:var(--mono);font-size:11px;color:rgba(0,0,0,.5)}
-.dia-bq .dia-bq-info b{font-weight:700;color:rgba(0,0,0,.65)}
-.dia-bq .dia-bq-tipo{font-family:var(--mono);font-size:9px;font-weight:700;background:rgba(0,0,0,.07);border-radius:5px;padding:2px 7px;color:rgba(0,0,0,.45);align-self:flex-start}
-.dia-bq.aula::before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px;border-radius:14px 0 0 14px;background:rgba(0,0,0,.1)}
-.dia-bq.lab::after{content:"";position:absolute;inset:0;border-radius:14px;background:repeating-linear-gradient(135deg,rgba(0,0,0,.03) 0 5px,transparent 5px 10px);pointer-events:none}
-.dia-vacio{padding:40px 20px;text-align:center;color:var(--ink-3);font-size:14px}
 
 /* ───────── tablas oficiales ───────── */
 .oficial{padding:16px}
@@ -622,16 +602,6 @@ header.top{background:linear-gradient(135deg,#14131A 0%,#1E1D2A 100%);color:#fff
   .conv-badge{font-size:9px;padding:3px 7px}
   .cal-vacio{padding:40px 16px;font-size:13px}
   /* dia movil */
-  .dia-wrap{padding:4px 8px 12px}
-  .dia-cab{font-size:12px;padding:10px 0 8px}
-  .dia-grid{grid-template-columns:40px 1fr}
-  .dia-hm{font-size:10px}
-  .dia-bq{left:6px;right:6px;padding:10px 12px;border-radius:12px;gap:3px}
-  .dia-bq .dia-bq-nombre{font-size:16px}
-  .dia-bq .dia-bq-info{font-size:12px}
-  .dia-bq .dia-bq-tipo{font-size:10px;padding:3px 8px}
-  .dia-vacio{padding:60px 16px;font-size:15px}
-  .seg-dia .dia-nombre{font-size:12px;min-width:80px}
 }
 
 /* ───────── movil pequeno ───────── */
