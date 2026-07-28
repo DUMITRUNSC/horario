@@ -493,8 +493,8 @@ header.top{background:linear-gradient(135deg,#14131A 0%,#1E1D2A 100%);color:#fff
   .acciones{flex:none;gap:3px}
   .btn{padding:5px 9px;font-size:9px;border-radius:7px}
 
-  /* ---- calendario movil: columnas proporcionales sin scroll ---- */
-  .cal-wrap{padding:0 0 6px;overflow:hidden}
+  /* ---- calendario movil: scroll suave ---- */
+  .cal-wrap{padding:0 0 6px;overflow:visible}
   .cal-cab{grid-template-columns:30px repeat(5,1fr)}
   .cal-cab div{padding:6px 2px;font-size:7.5px;letter-spacing:.06em}
   .cal-cuerpo{grid-template-columns:30px repeat(5,1fr)}
@@ -634,22 +634,22 @@ header.top{background:linear-gradient(135deg,#14131A 0%,#1E1D2A 100%);color:#fff
 .dia-view .bq .bq-detalle .bq-h{font-size:11px}
 .dia-view .bq .tipo{font-size:9px;padding:1px 5px}
 @media(max-width:768px){
-  /* ---- vista día móvil ~38px nav + dots ---- */
-  .dia-nav{padding:6px 16px;gap:12px;border-bottom:0;background:none}
-  .dia-nav button{width:32px;height:32px;font-size:16px;border-radius:9px}
-  .dia-nav .dia-nombre{font-size:15px;font-weight:700;min-width:100px}
-  .dia-dots{padding:0 0 3px}
+  /* ---- vista día móvil: amplia, scroll cómodo ---- */
+  .dia-nav{padding:8px 16px;gap:14px;border-bottom:0;background:none}
+  .dia-nav button{width:34px;height:34px;font-size:17px;border-radius:10px}
+  .dia-nav .dia-nombre{font-size:16px;font-weight:700;min-width:110px}
+  .dia-dots{padding:0 0 4px}
   .dia-dots span{width:6px;height:6px}
-  .dia-view .cal-wrap{padding:0 6px 8px}
+  .dia-view .cal-wrap{padding:0 8px 12px}
   .dia-view .cal-cab{display:none}
-  .dia-view .cal-cuerpo{grid-template-columns:40px 1fr}
-  .dia-view .hm{font-size:9.5px;font-weight:600}
-  .dia-view .dia{padding:0 3px}
-  .dia-view .bq{padding:6px 9px 5px 10px;border-radius:10px;border-width:1.5px;gap:2px}
-  .dia-view .bq .bq-nombre{font-size:13.5px;font-weight:700;white-space:normal;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;line-height:1.3;letter-spacing:-.01em}
-  .dia-view .bq .bq-detalle{font-size:11px;gap:4px;color:rgba(0,0,0,.5)}
-  .dia-view .bq .bq-detalle .bq-h{font-size:11px;font-weight:600}
-  .dia-view .bq .tipo{font-size:8px;padding:2px 5px;border-radius:4px;background:rgba(0,0,0,.1);color:rgba(0,0,0,.5);font-weight:700}
+  .dia-view .cal-cuerpo{grid-template-columns:44px 1fr}
+  .dia-view .hm{font-size:10px;font-weight:600}
+  .dia-view .dia{padding:0 4px}
+  .dia-view .bq{padding:8px 10px 7px 12px;border-radius:11px;border-width:1.5px;gap:3px}
+  .dia-view .bq .bq-nombre{font-size:14px;font-weight:700;white-space:normal;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;line-height:1.3;letter-spacing:-.01em}
+  .dia-view .bq .bq-detalle{font-size:11.5px;gap:4px;color:rgba(0,0,0,.5)}
+  .dia-view .bq .bq-detalle .bq-h{font-size:11.5px;font-weight:600}
+  .dia-view .bq .tipo{font-size:9px;padding:2px 6px;border-radius:4px;background:rgba(0,0,0,.1);color:rgba(0,0,0,.5);font-weight:700}
   .dia-view .bq.bq-tall .bq-nombre{-webkit-line-clamp:3}
 }
 
@@ -671,11 +671,13 @@ header.top{background:linear-gradient(135deg,#14131A 0%,#1E1D2A 100%);color:#fff
   .bq .bq-nombre{font-size:7.5px}
   .bq .bq-detalle{font-size:5.5px}
   .bq .tipo{font-size:5px;padding:0 2px}
-  .dia-view .cal-cuerpo{grid-template-columns:34px 1fr}
-  .dia-view .bq .bq-nombre{font-size:12px}
-  .dia-view .bq .bq-detalle{font-size:10px}
-  .dia-nav .dia-nombre{font-size:14px}
-  .dia-nav button{width:28px;height:28px;font-size:14px}
+  .dia-view .cal-cuerpo{grid-template-columns:38px 1fr}
+  .dia-view .hm{font-size:9px}
+  .dia-view .bq{padding:6px 8px 5px 10px;border-radius:10px}
+  .dia-view .bq .bq-nombre{font-size:13px}
+  .dia-view .bq .bq-detalle{font-size:10.5px}
+  .dia-nav .dia-nombre{font-size:15px}
+  .dia-nav button{width:30px;height:30px;font-size:15px}
 }
 
 @media print{
@@ -1766,11 +1768,15 @@ function htmlRejilla(bloques, opt){
   if(opt.px){
     px = opt.px;
   } else {
-    // restar: header(~48) + barra(~32) + navmovil(~52) + safe-area + paddings
-    const overhead = movil ? 145 : 170;
-    const disponible = Math.max(window.innerHeight - overhead, movil ? 280 : 360);
-    px = Math.max(disponible / rangoMin, movil ? 0.55 : 0.7);
-    px = Math.min(px, movil ? 1.0 : PX_MIN_DEFAULT);
+    if(movil){
+      /* en móvil semanal: px/min fijo, scroll si hace falta */
+      px = 0.7;
+    } else {
+      const overhead = 170;
+      const disponible = Math.max(window.innerHeight - overhead, 360);
+      px = Math.max(disponible / rangoMin, 0.7);
+      px = Math.min(px, PX_MIN_DEFAULT);
+    }
   }
 
   const alto = rangoMin * px;
@@ -1881,10 +1887,16 @@ function htmlCalendarioDia(){
   rangoFin = Math.min(rangoFin + 30, FIN_DIA);
   const rangoMin = rangoFin - rangoIni;
   const movil = window.innerWidth <= 768;
-  const overhead = movil ? 175 : 210;
-  const disponible = Math.max(window.innerHeight - overhead, movil ? 300 : 360);
-  let px = Math.max(disponible / rangoMin, movil ? 0.8 : 1.0);
-  px = Math.min(px, movil ? 1.8 : 2.5);
+  let px;
+  if(movil){
+    /* en móvil: px/min fijo para que se haga scroll cómodo */
+    px = 1.3;
+  } else {
+    const overhead = 210;
+    const disponible = Math.max(window.innerHeight - overhead, 360);
+    px = Math.max(disponible / rangoMin, 1.0);
+    px = Math.min(px, 2.5);
+  }
   const alto = rangoMin * px;
 
   let horas = `<div class="horas" style="height:${alto}px">`;
@@ -1903,18 +1915,19 @@ function htmlCalendarioDia(){
       if(t === "aula") fondo = aclara(col, .35);
       else if(t === "lab") fondo = oscurece(col, .15);
     }
-    const gap = movil ? 1 : 2;
+    const gap = movil ? 2 : 2;
     const top = (b.ini - rangoIni) * px + gap;
-    const h = Math.max((b.fin - b.ini) * px - gap*2, movil ? 22 : 34);
+    const h = Math.max((b.fin - b.ini) * px - gap*2, movil ? 28 : 34);
     const w = 100 / (b.cols||1), x = w * (b.col||0);
     const selB = estado.sel[b.asig.id];
     const convCls = (selB && selB.convocatoria === "ext") ? " bq-ext" : "";
     const impCls = (selB && selB.etiqueta === "importante") ? " bq-imp"
                  : (selB && selB.etiqueta === "muy importante") ? " bq-muyimp" : "";
-    const tallCls = h > (movil ? 40 : 48) ? " bq-tall" : "";
+    const tallCls = h > (movil ? 44 : 48) ? " bq-tall" : "";
     const borderCol = oscurece(col, .3);
+    const pad = movil ? 4 : 3;
     inner += `<div class="bq ${t} ${b.choca?"choca":""}${convCls}${impCls}${tallCls}" data-asig="${b.asig.id}"
-      style="top:${top}px;height:${h}px;left:calc(${x}% + 3px);width:calc(${w}% - 6px);background:${fondo};border-color:${borderCol}"
+      style="top:${top}px;height:${h}px;left:calc(${x}% + ${pad}px);width:calc(${w}% - ${pad*2}px);background:${fondo};border-color:${borderCol}"
       title="${esc(b.asig.n)} · ${hhmm(b.ini)}–${hhmm(b.fin)} · ${b.sub||"T"} · ${esc(b.aula||"")}">
       <span class="tipo">${b.sub ? esc(b.sub) : "T"}</span>
       <span class="bq-nombre">${esc(b.asig.n)}</span>
