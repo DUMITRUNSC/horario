@@ -641,7 +641,7 @@ header.top{background:linear-gradient(135deg,#14131A 0%,#1E1D2A 100%);color:#fff
   .dia-dots{padding:0 0 1px;gap:5px}
   .dia-dots span{width:4px;height:4px;border-radius:50%}
   .dia-dots span.act{background:var(--granate);transform:scale(1.2)}
-  .dia-view .cal-wrap{padding:0 4px 6px;overflow:visible}
+  .dia-view .cal-wrap{padding:0 4px 0;overflow:hidden}
   .dia-view .cal-cab{display:none}
   .dia-view .cal-cuerpo{grid-template-columns:32px 1fr}
   .dia-view .hm{font-size:8px;font-weight:600;color:#8E8DA0}
@@ -1889,7 +1889,10 @@ function htmlCalendarioDia(){
   const movil = window.innerWidth <= 768;
   let px;
   if(movil){
-    px = 0.75;
+    /* header(~48) + barra(~32) + diaNav+dots(~28) + navInf(~52) + safeArea(~34) + paddings(~12) = ~206 */
+    const overhead = 206;
+    const disponible = Math.max(window.innerHeight - overhead, 200);
+    px = disponible / rangoMin;
   } else {
     const overhead = 210;
     const disponible = Math.max(window.innerHeight - overhead, 360);
