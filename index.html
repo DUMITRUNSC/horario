@@ -2011,7 +2011,8 @@ document.getElementById("btn-tonos").onclick = e => {
   e.currentTarget.setAttribute("aria-pressed", estado.tonos);
   guardar(); pintarVista();
 };
-document.getElementById("btn-imprimir").onclick = () => window.print();
+const _btnImprimir = document.getElementById("btn-imprimir");
+if(_btnImprimir) _btnImprimir.onclick = () => window.print();
 document.getElementById("btn-limpiar").onclick = () => { if(confirm("¿Vaciar toda la selección?")){ estado.sel = {}; cerrarModal(); guardar(); pintar(); } };
 document.getElementById("velo").onclick = e => { if(e.target.id === "velo") cerrarModal(); };
 document.addEventListener("keydown", e => { if(e.key === "Escape" && estado.abierta) cerrarModal(); });
