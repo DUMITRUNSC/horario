@@ -1883,14 +1883,14 @@ function htmlCalendarioDia(){
 
   let rangoIni = Math.floor(Math.min(...bloques.map(b => b.ini)) / 60) * 60;
   let rangoFin = Math.ceil(Math.max(...bloques.map(b => b.fin)) / 60) * 60;
-  rangoIni = Math.max(rangoIni - 30, INICIO_DIA);
-  rangoFin = Math.min(rangoFin + 30, FIN_DIA);
+  rangoIni = Math.max(rangoIni - 10, INICIO_DIA);
+  rangoFin = Math.min(rangoFin + 10, FIN_DIA);
   const rangoMin = rangoFin - rangoIni;
   const movil = window.innerWidth <= 768;
   let px;
   if(movil){
-    /* header(~48) + barra(~32) + diaNav+dots(~28) + navInf(~52) + safeArea(~34) + paddings(~12) = ~206 */
-    const overhead = 206;
+    /* header(~48) + barra(~32) + diaNav+dots(~26) + navInf(~52) + safeArea(~34) + safari(~50) + pad(~8) = ~250 */
+    const overhead = 250;
     const disponible = Math.max(window.innerHeight - overhead, 200);
     px = disponible / rangoMin;
   } else {
