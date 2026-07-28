@@ -253,13 +253,37 @@ header.top{background:linear-gradient(135deg,#14131A 0%,#1E1D2A 100%);color:#fff
 .of-prof td.vacio-p{color:#B4B3C2;font-style:italic}
 
 /* ───────── nota ───────── */
-.nota{padding:20px 24px;max-width:78ch;line-height:1.65;font-size:13.5px}
-.nota h3{font-family:var(--display);font-size:18px;margin:0 0 10px;letter-spacing:-.02em}
-.nota h4{font-family:var(--display);font-size:13.5px;margin:20px 0 5px}
-.nota p{margin:0 0 10px;color:var(--ink-2)}
-.nota ul{margin:0 0 10px;padding-left:19px;color:var(--ink-2)}
-.nota li{margin-bottom:5px}
-.nota code{font-family:var(--mono);font-size:11.5px;background:#F0F0F5;padding:1px 5px;border-radius:5px}
+.nota{padding:24px;max-width:860px;margin:0 auto}
+.nota-hero{text-align:center;padding:28px 20px 22px;background:linear-gradient(135deg,#14131A 0%,#1E1D2A 100%);border-radius:16px;color:#fff;margin-bottom:20px}
+.nota-hero h3{font-family:var(--display);font-size:22px;font-weight:800;margin:0 0 6px;letter-spacing:-.03em}
+.nota-hero p{margin:0;font-size:13px;color:#9E9DB0;line-height:1.5}
+.nota-card{background:var(--panel);border:1px solid var(--linea);border-radius:14px;padding:0;margin-bottom:14px;overflow:hidden;box-shadow:0 1px 3px rgba(20,19,26,.05)}
+.nota-card-h{display:flex;align-items:center;gap:10px;padding:14px 18px;border-bottom:1px solid var(--linea-2);background:#FBFBFD}
+.nota-card-h .nc-ico{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;font-size:16px;flex:none}
+.nota-card-h h4{font-family:var(--display);font-size:15px;font-weight:700;margin:0;letter-spacing:-.015em}
+.nota-card-h .nc-sub{font-family:var(--mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);display:block;margin-top:1px}
+.nota-card-body{padding:16px 18px;font-size:13px;line-height:1.65;color:var(--ink-2)}
+.nota-card-body p{margin:0 0 10px}
+.nota-card-body p:last-child{margin:0}
+.nota-card-body ul{margin:0 0 10px;padding-left:18px}
+.nota-card-body li{margin-bottom:6px}
+.nota-card-body li::marker{color:var(--ink-3)}
+.nota-card-body code{font-family:var(--mono);font-size:11px;background:#EEEEF4;padding:2px 6px;border-radius:5px;color:var(--ink)}
+.nota-card-body b{color:var(--ink);font-weight:600}
+.nota-card-body .nota-step{display:flex;gap:12px;align-items:flex-start;padding:10px 0;border-bottom:1px solid var(--linea-2)}
+.nota-card-body .nota-step:last-child{border:0;padding-bottom:0}
+.nota-step-num{width:26px;height:26px;border-radius:8px;background:var(--ink);color:#fff;font-family:var(--mono);font-size:11px;font-weight:700;display:grid;place-items:center;flex:none;margin-top:1px}
+.nota-step-text{flex:1;font-size:13px;line-height:1.55}
+.nota-step-text b{display:block;font-size:13.5px;margin-bottom:2px;color:var(--ink)}
+.nota-leyenda{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin:6px 0}
+.nota-ley-item{display:flex;align-items:center;gap:8px;padding:10px 12px;background:#F6F6FA;border-radius:10px;font-size:12px;font-weight:500}
+.nota-ley-item .nli-dot{width:22px;height:14px;border-radius:4px;flex:none}
+.nota-errata{padding:10px 14px;background:#FDF8EF;border:1px solid #F5E6C8;border-radius:10px;margin-bottom:8px;font-size:12.5px;line-height:1.55}
+.nota-errata:last-child{margin:0}
+.nota-errata b{color:#8A5A12}
+.nota-detalle{display:flex;align-items:center;gap:8px;padding:8px 12px;background:#F6F6FA;border-radius:10px;margin-bottom:6px;font-size:12.5px;line-height:1.5}
+.nota-detalle:last-child{margin:0}
+.nota-detalle .nd-ico{font-size:14px;flex:none;width:22px;text-align:center}
 
 
 /* ───────── ventana emergente ───────── */
@@ -596,12 +620,49 @@ header.top{background:linear-gradient(135deg,#14131A 0%,#1E1D2A 100%);color:#fff
   .of-pista{padding:0 10px 6px;font-size:10.5px}
   .of-prof{font-size:10px;margin:4px 10px 14px;width:calc(100% - 20px)}
   .of-prof th,.of-prof td{padding:4px 5px}
-  .nota{padding:14px}
-  .nota h3{font-size:16px}
-  .nota p,.nota ul{font-size:12px}
+  .nota{padding:12px}
+  .nota-hero{padding:20px 14px 16px;border-radius:12px;margin-bottom:14px}
+  .nota-hero h3{font-size:18px}
+  .nota-hero p{font-size:12px}
+  .nota-card{margin-bottom:10px;border-radius:12px}
+  .nota-card-h{padding:12px 14px;gap:8px}
+  .nota-card-h .nc-ico{width:30px;height:30px;font-size:14px;border-radius:8px}
+  .nota-card-h h4{font-size:14px}
+  .nota-card-body{padding:14px;font-size:12px}
+  .nota-leyenda{grid-template-columns:1fr}
+  .nota-step-text{font-size:12px}
+  .nota-step-text b{font-size:12.5px}
   .conv-badge{font-size:9px;padding:3px 7px}
   .cal-vacio{padding:40px 16px;font-size:13px}
   /* dia movil */
+}
+
+/* ───────── vista de día ───────── */
+.dia-nav{display:flex;align-items:center;justify-content:center;gap:12px;padding:10px 16px;background:#FBFBFD;border-bottom:1px solid var(--linea-2)}
+.dia-nav button{border:0;background:var(--ink);color:#fff;width:34px;height:34px;border-radius:10px;font-size:16px;font-weight:700;display:grid;place-items:center;transition:all .12s}
+.dia-nav button:hover{background:#2A2935;transform:translateY(-1px)}
+.dia-nav .dia-nombre{font-family:var(--display);font-size:17px;font-weight:700;min-width:120px;text-align:center}
+.dia-view .cal-wrap{padding:4px 20px 10px}
+.dia-view .cal-cab{grid-template-columns:56px 1fr}
+.dia-view .cal-cuerpo{grid-template-columns:56px 1fr}
+.dia-view .dia{padding:0 6px}
+.dia-view .bq{padding:6px 10px 5px 12px;border-radius:10px;gap:2px}
+.dia-view .bq .bq-nombre{font-size:13px;white-space:normal}
+.dia-view .bq .bq-detalle{font-size:11px}
+.dia-view .bq .bq-detalle .bq-h{font-size:11px}
+.dia-view .bq .tipo{font-size:9px;padding:1px 5px}
+@media(max-width:768px){
+  .dia-nav{padding:8px 12px;gap:8px}
+  .dia-nav button{width:30px;height:30px;font-size:14px;border-radius:8px}
+  .dia-nav .dia-nombre{font-size:15px;min-width:100px}
+  .dia-view .cal-wrap{padding:2px 6px 6px}
+  .dia-view .cal-cab{grid-template-columns:32px 1fr}
+  .dia-view .cal-cuerpo{grid-template-columns:32px 1fr}
+  .dia-view .bq{padding:4px 6px 3px 8px;border-radius:7px}
+  .dia-view .bq .bq-nombre{font-size:11px}
+  .dia-view .bq .bq-detalle{font-size:9px}
+  .dia-view .bq .bq-detalle .bq-h{font-size:9px}
+  .dia-view .bq .tipo{font-size:7px;padding:0 3px}
 }
 
 /* ───────── movil pequeno ───────── */
@@ -668,7 +729,8 @@ header.top{background:linear-gradient(135deg,#14131A 0%,#1E1D2A 100%);color:#fff
   <section class="panel">
     <div class="barra">
       <div class="seg" id="seg-vista">
-        <button data-vista="cal" aria-pressed="true">Calendario</button>
+        <button data-vista="cal" aria-pressed="true">Semana</button>
+        <button data-vista="dia" aria-pressed="false">Día</button>
         <button data-vista="nota" aria-pressed="false">Info</button>
       </div>
       <div class="acciones">
@@ -1136,7 +1198,8 @@ const PRESELECCION = [
   ["4a-procesos","G1"], ["4a-protocolo"], ["4a-igualdad"], ["4a-rsc","G1"]
 ];
 
-let estado = { cuat:1, curso:"todos", q:"", vista:"cal", sel:{}, abierta:null, tonos:false, ofCurso:4, ofGrupo:null, ofSolo:false };
+let estado = { cuat:1, curso:"todos", q:"", vista:"cal", diaVista:new Date().getDay()-1, sel:{}, abierta:null, tonos:false, ofCurso:4, ofGrupo:null, ofSolo:false };
+if(estado.diaVista<0||estado.diaVista>4) estado.diaVista=0;
 const porId = {}; ASIGS.forEach(a => porId[a.id] = a);
 
 const min = t => { const [h,m] = t.split(":").map(Number); return h*60+m; };
@@ -1636,6 +1699,7 @@ function cerrarModal(){
 function pintarVista(){
   const v = document.getElementById("vista");
   if(estado.vista === "cal"){ v.innerHTML = htmlCalendario(); engancharBloques(); }
+  else if(estado.vista === "dia"){ v.innerHTML = htmlCalendarioDia(); engancharBloques(); engancharDiaNav(); }
   else if(estado.vista === "of"){ v.innerHTML = htmlOficial(); engancharOficial(); }
   else v.innerHTML = htmlNota();
 }
@@ -1795,6 +1859,102 @@ function htmlCalendario(){
   return avisos + htmlRejilla(bloques);
 }
 
+/* ─────── vista de un solo día ─────── */
+function htmlCalendarioDia(){
+  const d = estado.diaVista;
+  const bloques = bloquesVisibles(estado.cuat).filter(b => b.dia === d);
+
+  const nav = `<div class="dia-nav">
+    <button id="dia-prev">&#8249;</button>
+    <span class="dia-nombre">${DIAS[d]}</span>
+    <button id="dia-next">&#8250;</button></div>`;
+
+  if(!bloques.length){
+    return nav + `<div class="cal-vacio">No tienes clases el ${DIAS[d].toLowerCase()}.</div>`;
+  }
+
+  /* reutilizar la lógica de rejilla pero para un solo día */
+  bloques.forEach(b => b.dia = 0); /* temporalmente dia=0 para la rejilla */
+  repartirColumnas(bloques);
+  detectarSolapes(bloques);
+
+  let rangoIni = Math.floor(Math.min(...bloques.map(b => b.ini)) / 60) * 60;
+  let rangoFin = Math.ceil(Math.max(...bloques.map(b => b.fin)) / 60) * 60;
+  rangoIni = Math.max(rangoIni - 30, INICIO_DIA);
+  rangoFin = Math.min(rangoFin + 30, FIN_DIA);
+  const rangoMin = rangoFin - rangoIni;
+  const movil = window.innerWidth <= 768;
+  const overhead = movil ? 200 : 210;
+  const disponible = Math.max(window.innerHeight - overhead, movil ? 280 : 360);
+  let px = Math.max(disponible / rangoMin, movil ? 0.8 : 1.0);
+  px = Math.min(px, 2.5);
+  const alto = rangoMin * px;
+
+  let horas = `<div class="horas" style="height:${alto}px">`;
+  for(let m = rangoIni; m <= rangoFin; m += 60)
+    horas += `<div class="hm" style="top:${(m-rangoIni)*px}px">${hhmm(m)}</div>`;
+  horas += `</div>`;
+
+  let inner = "";
+  for(let m = rangoIni; m <= rangoFin; m += 30)
+    inner += `<div class="raya ${m%60===0?"h":""}" style="top:${(m-rangoIni)*px}px"></div>`;
+
+  bloques.forEach(b => {
+    const t = tipoDe(b), col = colorDe(b.asig.id);
+    let fondo = col;
+    if(estado.tonos){
+      if(t === "aula") fondo = aclara(col, .35);
+      else if(t === "lab") fondo = oscurece(col, .15);
+    }
+    const gap = 2;
+    const top = (b.ini - rangoIni) * px + gap;
+    const h = Math.max((b.fin - b.ini) * px - gap*2, 34);
+    const w = 100 / (b.cols||1), x = w * (b.col||0);
+    const selB = estado.sel[b.asig.id];
+    const convCls = (selB && selB.convocatoria === "ext") ? " bq-ext" : "";
+    const impCls = (selB && selB.etiqueta === "importante") ? " bq-imp"
+                 : (selB && selB.etiqueta === "muy importante") ? " bq-muyimp" : "";
+    const tallCls = h > 48 ? " bq-tall" : "";
+    const borderCol = oscurece(col, .3);
+    inner += `<div class="bq ${t} ${b.choca?"choca":""}${convCls}${impCls}${tallCls}" data-asig="${b.asig.id}"
+      style="top:${top}px;height:${h}px;left:calc(${x}% + 3px);width:calc(${w}% - 6px);background:${fondo};border-color:${borderCol}"
+      title="${esc(b.asig.n)} · ${hhmm(b.ini)}–${hhmm(b.fin)} · ${b.sub||"T"} · ${esc(b.aula||"")}">
+      <span class="tipo">${b.sub ? esc(b.sub) : "T"}</span>
+      <span class="bq-nombre">${esc(b.asig.n)}</span>
+      <span class="bq-detalle"><span class="bq-h">${hhmm(b.ini)}–${hhmm(b.fin)}</span> ${esc(b.aula||"")}</span>
+    </div>`;
+  });
+
+  /* restaurar dia original */
+  bloques.forEach(b => b.dia = d);
+
+  const grid = `<div class="dia-view"><div class="cal-wrap"><div class="cal-cab"><div></div><div>${DIAS[d]}</div></div>
+    <div class="cal-cuerpo">${horas}<div class="dia" style="height:${alto}px">${inner}</div></div></div></div>`;
+
+  return nav + grid;
+}
+
+function engancharDiaNav(){
+  const prev = document.getElementById("dia-prev");
+  const next = document.getElementById("dia-next");
+  if(prev) prev.onclick = () => { estado.diaVista = (estado.diaVista + 4) % 5; pintarVista(); };
+  if(next) next.onclick = () => { estado.diaVista = (estado.diaVista + 1) % 5; pintarVista(); };
+
+  /* swipe en la vista día */
+  const vista = document.getElementById("vista");
+  let sx = 0, sy = 0;
+  vista.addEventListener("touchstart", e => { sx = e.touches[0].clientX; sy = e.touches[0].clientY; }, {passive:true});
+  vista.addEventListener("touchend", e => {
+    if(estado.vista !== "dia") return;
+    const dx = e.changedTouches[0].clientX - sx, dy = e.changedTouches[0].clientY - sy;
+    if(Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.5){
+      if(dx < 0) estado.diaVista = (estado.diaVista + 1) % 5;
+      else estado.diaVista = (estado.diaVista + 4) % 5;
+      pintarVista();
+    }
+  }, {passive:true});
+}
+
 /* ─────── tablas oficiales ─────── */
 function celdasDe(a, op){
   const porDia = {};
@@ -1877,38 +2037,107 @@ function htmlOficial(){
 }
 
 function htmlNota(){
-  return `<div class="nota">
-    <h3>Nota informativa del PDF oficial</h3>
-    <p>Horarios aprobados en la Junta de Facultad de Ciencias Sociales, Jurídicas y de la Comunicación del Campus de Segovia de la UVa, celebrada el 26 de mayo de 2026. Podrán ser susceptibles de cambios por motivos de carácter administrativo. Si fuera necesario, podrán recuperarse horas de docencia perdidas en franjas disponibles, solicitando día y hora en la Secretaría del Centro.</p>
-    <p>Los estudiantes matriculados en el PDTO Turismo-Publicidad se integran en los grupos del turno de mañana (Grupo 1) en los cursos 1.º y 2.º. A partir de 3.º pueden elegir turno.</p>
-    <p>En algunos casos, los tiempos de docencia están divididos entre sesiones teóricas (T) y prácticas, divididas a su vez en aula (A) y laboratorio (L). Para las prácticas, el grupo se divide en dos subgrupos: en turno de mañana <code>A1</code> y <code>A3</code>, y en turno de tarde <code>A2</code> y <code>A4</code>. El estudiante asiste a todas las sesiones teóricas, pero solo a las de su subgrupo.</p>
-    <p>Las horas marcadas en rojo en el PDF aluden a tiempos completos de referencia, quedando luego detallados los tiempos reales de cada sesión. Este planificador coloca los <b>tiempos reales</b>, no la franja de referencia.</p>
+  return `<div class=”nota”>
 
-    <h4>Cómo se usa</h4>
-    <ul>
-      <li>Pulsa una asignatura del catálogo para añadirla. Si tiene más de un turno, se abre su ficha para que elijas viendo el horario completo de cada uno, día a día.</li>
-      <li>Pulsa cualquier bloque del calendario, o una tarjeta de tu selección, para abrir esa misma ficha: turno, subgrupo, color, profesor, correo, criterios y notas.</li>
-      <li>Bloque de color liso = teoría. Tono claro con filo de color = práctica de aula. Rayado = laboratorio. La etiqueta de la esquina indica el subgrupo.</li>
-      <li>Cada asignatura nace con un color propio dentro de su curso y cuatrimestre, y lo cambias desde su ficha.</li>
-    </ul>
+  <div class=”nota-hero”>
+    <h3>Publicidad y RRPP &middot; UVa Segovia</h3>
+    <p>Horarios oficiales del curso 2026-27 &middot; Aprobados en Junta de Facultad el 26 de mayo de 2026</p>
+  </div>
 
-    <h4>Erratas detectadas en el PDF</h4>
-    <p>En cinco celdas el detalle horario impreso no encaja con la franja de referencia de su cabecera, y en tres de ellas además provocaría un choque con otra asignatura del mismo grupo. El planificador coloca la hora coherente y marca el bloque con <b>⚠</b>. Conviene confirmarlas en Secretaría:</p>
-    <ul>
-      <li><b>Teoría del lenguaje</b> · 1.º, Grupo 2, miércoles: detalle 15:00–15:40 y 15:40–19:00 dentro de una franja de 17:00 a 20:30, que además pisaría a Teorías de la comunicación. Colocado en 17:00–17:40 y 17:40–19:00.</li>
-      <li><b>Sociología de la publicidad y del consumo</b> · 2.º, Grupo 1, viernes: subgrupo 3A impreso como 12:00–12:20 en una franja de 12:00 a 13:30. Colocado en 12:00–13:20.</li>
-      <li><b>Métodos y técnicas de investigación social</b> · 2.º, Grupo 2, miércoles: detalle 18:00–19:20 bajo una franja de 19:00 a 20:30, que además pisaría a Los anunciantes. Colocado en 19:00–20:20.</li>
-      <li><b>Teoría crítica de la cultura</b> · 4.º, Grupo 2, lunes y martes: detalle 17:00–18:20 bajo una franja de 15:00 a 16:30, que además pisaría a Producción y realización publicitarias. Colocado en 15:00–16:20.</li>
-    </ul>
+  <!-- CÓMO FUNCIONA -->
+  <div class=”nota-card”>
+    <div class=”nota-card-h”>
+      <div class=”nc-ico” style=”background:#E8F0FE;color:#1A73E8”>&#9881;</div>
+      <div><h4>Cómo funciona</h4><span class=”nc-sub”>Guía rápida</span></div>
+    </div>
+    <div class=”nota-card-body”>
+      <div class=”nota-step”>
+        <span class=”nota-step-num”>1</span>
+        <div class=”nota-step-text”><b>Elige asignaturas</b>Ve a la pestaña Asignaturas y pulsa cualquiera para añadirla. Si tiene varios turnos, se abre su ficha para que compares horarios.</div>
+      </div>
+      <div class=”nota-step”>
+        <span class=”nota-step-num”>2</span>
+        <div class=”nota-step-text”><b>Configura cada una</b>Pulsa cualquier bloque del calendario o tarjeta para abrir su ficha: turno, subgrupo, color, profesor, criterios de evaluación y notas.</div>
+      </div>
+      <div class=”nota-step”>
+        <span class=”nota-step-num”>3</span>
+        <div class=”nota-step-text”><b>Revisa tu horario</b>Usa la vista Semana para ver todo de golpe o Día para centrarte en una jornada concreta con flechas o deslizando.</div>
+      </div>
+    </div>
+  </div>
 
-    <h4>Otros detalles del PDF recogidos aquí</h4>
-    <ul>
-      <li>Psicología de la comunicación (2.º) tiene un tercer grupo de mañana, <b>Grupo 3</b>, en el aula A-216.</li>
-      <li>Sesiones marcadas “sin PDTO”: Historia de la publicidad y Sistemas de información (1.º, 1.er cuat.), Teoría de la publicidad (1.º, 2.º cuat.) y Psicología de la comunicación (2.º, 1.er cuat.).</li>
-      <li>Laboratorio de fotografía (3.º) tiene dos sesiones de teoría, T1 y T2: eliges una en la ficha.</li>
-      <li>Aulas distintas a la del grupo: A-108, A-219, G-121, G-122, G-123, G-208, G-214, Li002, Li004, Li007 y Lab. Diseño.</li>
-      <li>Todas las optativas son de 3 ECTS; las obligatorias, de 4 o 6.</li>
-    </ul>
+  <!-- LEYENDA DE COLORES -->
+  <div class=”nota-card”>
+    <div class=”nota-card-h”>
+      <div class=”nc-ico” style=”background:#F3E8FD;color:#9C27B0”>&#127912;</div>
+      <div><h4>Leyenda de bloques</h4><span class=”nc-sub”>Significado de los colores</span></div>
+    </div>
+    <div class=”nota-card-body”>
+      <div class=”nota-leyenda”>
+        <div class=”nota-ley-item”><div class=”nli-dot” style=”background:#92AADC”></div>Teoría (color liso)</div>
+        <div class=”nota-ley-item”><div class=”nli-dot” style=”background:#C9D5EE;border-left:3px solid #92AADC”></div>Prácticas de aula</div>
+        <div class=”nota-ley-item”><div class=”nli-dot” style=”background:repeating-linear-gradient(135deg,#7A90C0 0 3px,#92AADC 3px 6px)”></div>Laboratorio</div>
+      </div>
+      <p style=”margin-top:10px”>La etiqueta de la esquina indica el subgrupo (<code>A1</code>, <code>A3</code>, <code>L1</code>...). Asistes a todas las sesiones de teoría, pero solo a las de tu subgrupo de prácticas.</p>
+      <p>Mañana: subgrupos <code>A1</code> y <code>A3</code>. Tarde: <code>A2</code> y <code>A4</code>.</p>
+    </div>
+  </div>
+
+  <!-- INFORMACIÓN OFICIAL -->
+  <div class=”nota-card”>
+    <div class=”nota-card-h”>
+      <div class=”nc-ico” style=”background:#E0F2F1;color:#00796B”>&#127891;</div>
+      <div><h4>Información oficial</h4><span class=”nc-sub”>Del PDF de la UVa</span></div>
+    </div>
+    <div class=”nota-card-body”>
+      <p>Los horarios podrán ser susceptibles de cambios por motivos administrativos. Si fuera necesario, podrán recuperarse horas de docencia perdidas en franjas disponibles solicitando día y hora en Secretaría.</p>
+      <p>Los estudiantes del PDTO Turismo-Publicidad se integran en el turno de mañana (Grupo 1) en 1.º y 2.º. A partir de 3.º pueden elegir turno.</p>
+      <p>Las horas en rojo del PDF son franjas de referencia. Este planificador coloca los <b>tiempos reales</b> de cada sesión, no la franja.</p>
+    </div>
+  </div>
+
+  <!-- ERRATAS -->
+  <div class=”nota-card”>
+    <div class=”nota-card-h”>
+      <div class=”nc-ico” style=”background:#FFF3E0;color:#E65100”>&#9888;</div>
+      <div><h4>Erratas detectadas en el PDF</h4><span class=”nc-sub”>Confirmar en Secretaría</span></div>
+    </div>
+    <div class=”nota-card-body”>
+      <p>En cinco celdas el horario impreso no encaja con su franja de referencia. El planificador coloca la hora coherente y marca el bloque con <b>&#9888;</b>.</p>
+      <div class=”nota-errata”>
+        <b>Teoría del lenguaje</b> &middot; 1.º, Grupo 2, miércoles<br>
+        Detalle 15:00-15:40 y 15:40-19:00 dentro de franja 17:00-20:30; pisaría Teorías de la comunicación. Colocado en 17:00-17:40 y 17:40-19:00.
+      </div>
+      <div class=”nota-errata”>
+        <b>Sociología de la publicidad</b> &middot; 2.º, Grupo 1, viernes<br>
+        Subgrupo 3A como 12:00-12:20 en franja 12:00-13:30. Colocado en 12:00-13:20.
+      </div>
+      <div class=”nota-errata”>
+        <b>Métodos y técnicas de investigación</b> &middot; 2.º, Grupo 2, miércoles<br>
+        Detalle 18:00-19:20 bajo franja 19:00-20:30; pisaría Los anunciantes. Colocado en 19:00-20:20.
+      </div>
+      <div class=”nota-errata”>
+        <b>Teoría crítica de la cultura</b> &middot; 4.º, Grupo 2, lunes y martes<br>
+        Detalle 17:00-18:20 bajo franja 15:00-16:30; pisaría Producción y realización publicitarias. Colocado en 15:00-16:20.
+      </div>
+    </div>
+  </div>
+
+  <!-- DETALLES EXTRA -->
+  <div class=”nota-card”>
+    <div class=”nota-card-h”>
+      <div class=”nc-ico” style=”background:#E8F5E9;color:#2E7D32”>&#128196;</div>
+      <div><h4>Otros detalles</h4><span class=”nc-sub”>Notas adicionales</span></div>
+    </div>
+    <div class=”nota-card-body”>
+      <div class=”nota-detalle”><span class=”nd-ico”>&#128101;</span>Psicología de la comunicación (2.º) tiene un tercer grupo de mañana, <b>Grupo 3</b>, en A-216.</div>
+      <div class=”nota-detalle”><span class=”nd-ico”>&#128683;</span>Sesiones “sin PDTO”: Historia de la publicidad y Sistemas de información (1.º C1), Teoría de la publicidad (1.º C2) y Psicología de la comunicación (2.º C1).</div>
+      <div class=”nota-detalle”><span class=”nd-ico”>&#128247;</span>Laboratorio de fotografía (3.º) tiene dos sesiones de teoría, T1 y T2: eliges una en la ficha.</div>
+      <div class=”nota-detalle”><span class=”nd-ico”>&#127979;</span>Aulas especiales: A-108, A-219, G-121, G-122, G-123, G-208, G-214, Li002, Li004, Li007 y Lab. Diseño.</div>
+      <div class=”nota-detalle”><span class=”nd-ico”>&#128218;</span>Optativas: 3 ECTS. Obligatorias: 4 o 6 ECTS.</div>
+    </div>
+  </div>
+
   </div>`;
 }
 
