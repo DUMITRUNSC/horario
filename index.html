@@ -634,26 +634,26 @@ header.top{background:linear-gradient(135deg,#14131A 0%,#1E1D2A 100%);color:#fff
 .dia-view .bq .bq-detalle .bq-h{font-size:11.5px;font-weight:600}
 .dia-view .bq .tipo{font-size:9px;padding:2px 6px;border-radius:5px}
 @media(max-width:768px){
-  /* ---- vista día móvil: cabe en ancho, scroll vertical ---- */
-  .dia-nav{padding:10px 20px;gap:16px;border-bottom:0;background:none}
-  .dia-nav button{width:36px;height:36px;font-size:18px;border-radius:50%;background:var(--ink);box-shadow:0 2px 8px rgba(20,19,26,.18)}
-  .dia-nav .dia-nombre{font-size:17px;font-weight:800;min-width:120px;font-family:var(--display);letter-spacing:-.02em}
-  .dia-dots{padding:2px 0 6px;gap:8px}
-  .dia-dots span{width:7px;height:7px;border-radius:50%;transition:all .2s}
-  .dia-dots span.act{background:var(--granate);transform:scale(1.4);box-shadow:0 0 6px rgba(122,30,46,.3)}
-  .dia-view .cal-wrap{padding:0 10px 16px;overflow:visible}
+  /* ---- vista día móvil: compacta ---- */
+  .dia-nav{padding:4px 16px;gap:12px;border-bottom:0;background:none}
+  .dia-nav button{width:28px;height:28px;font-size:14px;border-radius:50%;background:var(--ink);box-shadow:none}
+  .dia-nav .dia-nombre{font-size:14px;font-weight:700;min-width:90px;font-family:var(--display);letter-spacing:-.02em}
+  .dia-dots{padding:0 0 2px;gap:6px}
+  .dia-dots span{width:5px;height:5px;border-radius:50%;transition:all .2s}
+  .dia-dots span.act{background:var(--granate);transform:scale(1.3)}
+  .dia-view .cal-wrap{padding:0 6px 10px;overflow:visible}
   .dia-view .cal-cab{display:none}
-  .dia-view .cal-cuerpo{grid-template-columns:46px 1fr}
-  .dia-view .hm{font-size:10.5px;font-weight:600;color:#8E8DA0}
-  .dia-view .dia{padding:0 4px}
+  .dia-view .cal-cuerpo{grid-template-columns:38px 1fr}
+  .dia-view .hm{font-size:9px;font-weight:600;color:#8E8DA0}
+  .dia-view .dia{padding:0 3px}
   .dia-view .raya{border-top-color:#EEEEF5}
   .dia-view .raya.h{border-top-color:#D0D0DE}
-  .dia-view .bq{padding:10px 12px 8px 14px;border-radius:14px;border-width:0;gap:3px;box-shadow:0 1px 4px rgba(20,19,26,.1),0 0 0 1px rgba(0,0,0,.04)}
-  .dia-view .bq .bq-nombre{font-size:14.5px;font-weight:700;white-space:normal;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;line-height:1.35;letter-spacing:-.015em}
-  .dia-view .bq .bq-detalle{font-size:12px;gap:6px;color:rgba(0,0,0,.45);margin-top:1px}
-  .dia-view .bq .bq-detalle .bq-h{font-size:12px;font-weight:600;color:rgba(0,0,0,.55)}
-  .dia-view .bq .tipo{font-size:9px;padding:2px 7px;border-radius:5px;background:rgba(0,0,0,.08);color:rgba(0,0,0,.45);font-weight:700;top:6px;right:6px}
-  .dia-view .bq.aula::before{width:4px;border-radius:14px 0 0 14px}
+  .dia-view .bq{padding:6px 8px 5px 10px;border-radius:10px;border-width:0;gap:2px;box-shadow:0 1px 3px rgba(20,19,26,.08),0 0 0 1px rgba(0,0,0,.04)}
+  .dia-view .bq .bq-nombre{font-size:12.5px;font-weight:700;white-space:normal;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;line-height:1.3;letter-spacing:-.01em}
+  .dia-view .bq .bq-detalle{font-size:10px;gap:4px;color:rgba(0,0,0,.45)}
+  .dia-view .bq .bq-detalle .bq-h{font-size:10px;font-weight:600;color:rgba(0,0,0,.55)}
+  .dia-view .bq .tipo{font-size:7.5px;padding:1px 5px;border-radius:4px;background:rgba(0,0,0,.08);color:rgba(0,0,0,.45);font-weight:700;top:4px;right:4px}
+  .dia-view .bq.aula::before{width:3px;border-radius:10px 0 0 10px}
   .dia-view .bq.bq-tall .bq-nombre{-webkit-line-clamp:3}
 }
 
@@ -671,13 +671,13 @@ header.top{background:linear-gradient(135deg,#14131A 0%,#1E1D2A 100%);color:#fff
   .cal-cab{grid-template-columns:32px repeat(5,minmax(110px,1fr));min-width:582px}
   .cal-cuerpo{grid-template-columns:32px repeat(5,minmax(110px,1fr));min-width:582px}
   .hm{font-size:8px;right:1px}
-  .dia-view .cal-cuerpo{grid-template-columns:40px 1fr}
-  .dia-view .hm{font-size:9.5px}
-  .dia-view .bq{padding:8px 10px 6px 12px;border-radius:12px}
-  .dia-view .bq .bq-nombre{font-size:13.5px}
-  .dia-view .bq .bq-detalle{font-size:11px}
-  .dia-nav .dia-nombre{font-size:15px}
-  .dia-nav button{width:32px;height:32px;font-size:16px}
+  .dia-view .cal-cuerpo{grid-template-columns:34px 1fr}
+  .dia-view .hm{font-size:8px}
+  .dia-view .bq{padding:5px 7px 4px 8px;border-radius:9px}
+  .dia-view .bq .bq-nombre{font-size:11.5px}
+  .dia-view .bq .bq-detalle{font-size:9px}
+  .dia-nav .dia-nombre{font-size:13px}
+  .dia-nav button{width:26px;height:26px;font-size:13px}
 }
 
 @media print{
@@ -1889,8 +1889,8 @@ function htmlCalendarioDia(){
   const movil = window.innerWidth <= 768;
   let px;
   if(movil){
-    /* en móvil: px/min fijo, scroll vertical cómodo */
-    px = 1.4;
+    /* en móvil: px/min compacto */
+    px = 1.0;
   } else {
     const overhead = 210;
     const disponible = Math.max(window.innerHeight - overhead, 360);
@@ -1915,17 +1915,17 @@ function htmlCalendarioDia(){
       if(t === "aula") fondo = aclara(col, .35);
       else if(t === "lab") fondo = oscurece(col, .15);
     }
-    const gap = movil ? 3 : 2;
+    const gap = movil ? 1 : 2;
     const top = (b.ini - rangoIni) * px + gap;
-    const h = Math.max((b.fin - b.ini) * px - gap*2, movil ? 36 : 34);
+    const h = Math.max((b.fin - b.ini) * px - gap*2, movil ? 24 : 34);
     const w = 100 / (b.cols||1), x = w * (b.col||0);
     const selB = estado.sel[b.asig.id];
     const convCls = (selB && selB.convocatoria === "ext") ? " bq-ext" : "";
     const impCls = (selB && selB.etiqueta === "importante") ? " bq-imp"
                  : (selB && selB.etiqueta === "muy importante") ? " bq-muyimp" : "";
-    const tallCls = h > (movil ? 50 : 48) ? " bq-tall" : "";
+    const tallCls = h > (movil ? 38 : 48) ? " bq-tall" : "";
     const borderCol = oscurece(col, .3);
-    const pad = movil ? 3 : 3;
+    const pad = movil ? 2 : 3;
     inner += `<div class="bq ${t} ${b.choca?"choca":""}${convCls}${impCls}${tallCls}" data-asig="${b.asig.id}"
       style="top:${top}px;height:${h}px;left:calc(${x}% + ${pad}px);width:calc(${w}% - ${pad*2}px);background:${fondo};border-color:${borderCol}"
       title="${esc(b.asig.n)} · ${hhmm(b.ini)}–${hhmm(b.fin)} · ${b.sub||"T"} · ${esc(b.aula||"")}">
