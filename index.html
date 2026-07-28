@@ -421,32 +421,31 @@ header.top{background:linear-gradient(135deg,#14131A 0%,#1E1D2A 100%);color:#fff
 
 /* ───────── responsive: movil ───────── */
 @media (max-width:768px){
-  /* ---- nav inferior fija ---- */
-  .mob-nav{display:flex;position:fixed;bottom:0;left:0;right:0;z-index:60;background:rgba(20,19,26,.97);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-top:1px solid rgba(255,255,255,.08);padding:0 0 env(safe-area-inset-bottom,0);height:calc(52px + env(safe-area-inset-bottom,0))}
-  .mob-nav button{flex:1;border:0;background:none;color:#8E8DA0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-family:var(--ui);font-size:9.5px;font-weight:600;letter-spacing:.02em;padding:6px 0;transition:all .15s}
-  .mob-nav button.activo{color:#fff}
-  .mob-nav button.activo .mn-ico{background:var(--granate);transform:scale(1.05);box-shadow:0 0 10px rgba(122,30,46,.3)}
-  .mn-ico{width:26px;height:26px;border-radius:8px;display:grid;place-items:center;font-size:14px;transition:all .15s}
+  /* ---- nav inferior: OCULTA ---- */
+  .mob-nav{display:none!important}
 
-  /* ---- header compacto ~48px ---- */
-  .top-in{flex-direction:row;align-items:center;gap:0;padding:6px 12px 0;flex-wrap:nowrap}
+  /* ---- header rediseñado ---- */
+  header.top{background:#14131A;position:sticky;top:0;z-index:50}
+  .top-in{flex-direction:row;align-items:center;gap:0;padding:8px 14px 0;flex-wrap:nowrap}
   .kicker{display:none}
-  .marca h1{font-size:15px;margin:0;white-space:nowrap}
+  .marca h1{font-size:15px;margin:0;white-space:nowrap;font-weight:700}
   .marca h1 em{display:none}
-  .metricas{gap:4px;padding-bottom:0;margin-left:auto;flex-shrink:0}
-  .metrica{padding:3px 7px;border-radius:7px}
-  .metrica b{font-size:12px}
-  .metrica span{font-size:6px;margin-top:1px;letter-spacing:.1em}
-  .top-tabs{padding:0 12px;margin-top:2px;gap:0;overflow-x:auto}
+  .metricas{gap:3px;padding-bottom:0;margin-left:auto;flex-shrink:0}
+  .metrica{padding:2px 6px;border-radius:6px;background:rgba(255,255,255,.08);border:0}
+  .metrica b{font-size:11px;font-weight:600}
+  .metrica span{font-size:5.5px;margin-top:1px;letter-spacing:.08em}
+  .top-tabs{padding:0 14px;margin-top:6px;gap:8px;overflow-x:auto;align-items:center;padding-bottom:8px}
   .tabs-sep{display:none}
-  .tabs-pag{display:none}
+  .tabs-pag{display:flex;background:rgba(255,255,255,.08);border-radius:8px;padding:2px;gap:1px}
+  .tab-pag{padding:5px 12px;font-size:10px;border-radius:6px;gap:4px}
+  .tab-pag .tp-ico{font-size:11px}
   .tabs-cuat{gap:1px;padding:2px}
-  .tab{padding:5px 12px;font-size:10.5px}
+  .tab{padding:5px 10px;font-size:10px}
 
   /* ---- paginas en movil ---- */
   .pagina{display:none!important}
   .pagina.mob-activo{display:block!important}
-  .pag-horario,.pag-asigs{padding:0 0 calc(58px + env(safe-area-inset-bottom,0))}
+  .pag-horario,.pag-asigs{padding:0 0 env(safe-area-inset-bottom,0)}
   .pag-horario .panel{border:0;border-radius:0;box-shadow:none}
   .dos-cols{grid-template-columns:1fr;gap:10px}
 
@@ -486,12 +485,13 @@ header.top{background:linear-gradient(135deg,#14131A 0%,#1E1D2A 100%);color:#fff
   .sub-card{padding:12px 14px;border-radius:12px}
   .sc-nombre{font-size:15px}
 
-  /* ---- barra calendario ~32px ---- */
-  .barra{padding:5px 8px;gap:6px;flex-direction:row;flex-wrap:nowrap;overflow-x:auto;border-bottom:1px solid var(--linea-2)}
-  .seg{flex:none;border-radius:9px;padding:2px}
-  .seg button{padding:5px 11px;font-size:10px;border-radius:7px}
-  .acciones{flex:none;gap:3px}
-  .btn{padding:5px 9px;font-size:9px;border-radius:7px}
+  /* ---- barra calendario limpia ---- */
+  .barra{padding:6px 10px;gap:6px;flex-direction:row;flex-wrap:nowrap;overflow-x:auto;border-bottom:1px solid var(--linea-2);background:#fff}
+  .seg{flex:none;border-radius:8px;padding:2px;background:#F3F3F8}
+  .seg button{padding:4px 10px;font-size:10px;border-radius:6px;font-weight:500;color:var(--ink-3)}
+  .seg button[aria-pressed="true"]{background:#fff;color:var(--ink);font-weight:600;box-shadow:0 1px 3px rgba(0,0,0,.08)}
+  .acciones{flex:none;gap:3px;margin-left:auto}
+  .btn{padding:4px 8px;font-size:9px;border-radius:6px}
 
   /* ---- calendario semanal movil: scroll H + V, columnas amplias ---- */
   .cal-wrap{padding:0 0 8px;overflow-x:auto;overflow-y:visible;-webkit-overflow-scrolling:touch;scroll-snap-type:x proximity}
@@ -617,6 +617,7 @@ header.top{background:linear-gradient(135deg,#14131A 0%,#1E1D2A 100%);color:#fff
 }
 
 /* ───────── vista de día ───────── */
+.dia-tabs{display:none}
 .dia-nav{display:flex;align-items:center;justify-content:center;gap:12px;padding:10px 16px;background:#FBFBFD;border-bottom:1px solid var(--linea-2)}
 .dia-nav button{border:0;background:var(--ink);color:#fff;width:34px;height:34px;border-radius:10px;font-size:16px;font-weight:700;display:grid;place-items:center;transition:all .12s}
 .dia-nav button:hover{background:#2A2935;transform:translateY(-1px)}
@@ -634,37 +635,34 @@ header.top{background:linear-gradient(135deg,#14131A 0%,#1E1D2A 100%);color:#fff
 .dia-view .bq .bq-detalle .bq-h{font-size:11.5px;font-weight:600}
 .dia-view .bq .tipo{font-size:9px;padding:2px 6px;border-radius:5px}
 @media(max-width:768px){
-  /* ---- vista día móvil: igual que semanal pero 1 columna, ajustada a pantalla ---- */
-  .dia-nav{padding:3px 14px;gap:10px;border-bottom:0;background:none}
-  .dia-nav button{width:24px;height:24px;font-size:12px;border-radius:50%;background:var(--ink)}
-  .dia-nav .dia-nombre{font-size:12px;font-weight:700;min-width:70px;font-family:var(--display)}
-  .dia-dots{padding:0 0 1px;gap:5px}
-  .dia-dots span{width:4px;height:4px;border-radius:50%}
-  .dia-dots span.act{background:var(--granate);transform:scale(1.2)}
+  /* ---- vista día móvil: selector de tabs + rejilla ajustada ---- */
+  .dia-nav{display:none}
+  .dia-dots{display:none}
+  .dia-tabs{display:flex;gap:0;padding:0 10px;background:#fff;border-bottom:1px solid var(--linea-2)}
+  .dia-tabs button{flex:1;border:0;background:none;padding:8px 0;font-family:var(--ui);font-size:12px;font-weight:500;color:var(--ink-3);position:relative;transition:all .15s}
+  .dia-tabs button.act{color:var(--ink);font-weight:700}
+  .dia-tabs button.act::after{content:"";position:absolute;bottom:0;left:20%;right:20%;height:2px;background:var(--ink);border-radius:1px}
   .dia-view .cal-wrap{padding:0 0 0;overflow:hidden}
   .dia-view .cal-cab{display:none}
   .dia-view .cal-cuerpo{grid-template-columns:32px 1fr}
-  .dia-view .hm{font-size:8px;font-weight:700}
+  .dia-view .hm{font-size:8px;font-weight:600;color:var(--ink-3)}
 }
 
 /* ───────── movil pequeno ───────── */
 @media (max-width:400px){
   .marca h1{font-size:13px}
-  .metricas{gap:3px}
-  .metrica{padding:2px 5px;border-radius:6px}
+  .metricas{gap:2px}
+  .metrica{padding:2px 5px}
   .metrica b{font-size:10px}
-  .metrica span{font-size:5.5px}
-  .tab{padding:4px 9px;font-size:9.5px}
-  .mob-nav{height:calc(50px + env(safe-area-inset-bottom,0))}
-  .mn-ico{width:24px;height:24px;font-size:13px;border-radius:7px}
-  .mob-nav button{font-size:9px;gap:1px}
-  .cal-cab{grid-template-columns:32px repeat(5,minmax(110px,1fr));min-width:582px}
-  .cal-cuerpo{grid-template-columns:32px repeat(5,minmax(110px,1fr));min-width:582px}
-  .hm{font-size:8px;right:1px}
+  .metrica span{font-size:5px}
+  .tab{padding:4px 8px;font-size:9px}
+  .tab-pag{padding:4px 10px;font-size:9px}
+  .dia-tabs button{font-size:11px;padding:6px 0}
+  .cal-cab{grid-template-columns:28px repeat(5,minmax(100px,1fr));min-width:528px}
+  .cal-cuerpo{grid-template-columns:28px repeat(5,minmax(100px,1fr));min-width:528px}
+  .hm{font-size:7.5px;right:1px}
   .dia-view .cal-cuerpo{grid-template-columns:28px 1fr}
   .dia-view .hm{font-size:7px}
-  .dia-nav .dia-nombre{font-size:11px}
-  .dia-nav button{width:22px;height:22px;font-size:11px}
 }
 
 @media print{
@@ -1854,7 +1852,9 @@ function htmlCalendarioDia(){
   const bloques = todos.filter(b => b.dia === d);
 
   const dots = DIA_C.map((_,i) => `<span class="${i===d?"act":""}"></span>`).join("");
-  const nav = `<div class="dia-nav">
+  const tabs = DIA_C.map((dn,i) => `<button class="${i===d?"act":""}" data-dia="${i}">${dn}</button>`).join("");
+  const nav = `<div class="dia-tabs" id="dia-tabs">${tabs}</div>
+    <div class="dia-nav">
     <button id="dia-prev">&#8249;</button>
     <span class="dia-nombre">${DIAS[d]}</span>
     <button id="dia-next">&#8250;</button></div>
@@ -1877,7 +1877,8 @@ function htmlCalendarioDia(){
     rIni = Math.max(rIni - 10, INICIO_DIA);
     rFin = Math.min(rFin + 10, FIN_DIA);
     const rango = rFin - rIni;
-    const overhead = 250;
+    /* header(~60) + barra(~34) + diaTabs(~36) + safeArea + safari(~44) */
+    const overhead = 195;
     const disponible = Math.max(window.innerHeight - overhead, 200);
     pxOpt = disponible / rango;
   }
@@ -1957,6 +1958,12 @@ function engancharDiaNav(){
   const next = document.getElementById("dia-next");
   if(prev) prev.onclick = () => { estado.diaVista = (estado.diaVista + 4) % 5; pintarVista(); };
   if(next) next.onclick = () => { estado.diaVista = (estado.diaVista + 1) % 5; pintarVista(); };
+
+  /* tabs de día (móvil) */
+  const tabs = document.getElementById("dia-tabs");
+  if(tabs) tabs.querySelectorAll("button").forEach(b => {
+    b.onclick = () => { estado.diaVista = Number(b.dataset.dia); pintarVista(); };
+  });
 
   /* swipe en la vista día */
   const vista = document.getElementById("vista");
@@ -2248,8 +2255,19 @@ function cambiarMob(sec){
   }
 }
 
-document.getElementById("mob-nav").querySelectorAll("button").forEach(b => {
+const _mobNav = document.getElementById("mob-nav");
+if(_mobNav) _mobNav.querySelectorAll("button").forEach(b => {
   b.onclick = () => cambiarMob(b.dataset.mob);
+});
+/* tabs de pagina en header (tambien en movil ahora) */
+document.querySelectorAll(".tab-pag").forEach(b => {
+  b.onclick = () => {
+    if(esMovil()){
+      if(b.dataset.pag === "horario") cambiarMob("horario");
+      else if(b.dataset.pag === "asigs") cambiarMob("asigs");
+    }
+    irAPagina(b.dataset.pag);
+  };
 });
 
 /* al anadir asignatura en movil, saltar al horario */
@@ -2266,12 +2284,12 @@ document.querySelectorAll(".tab").forEach(o => o.setAttribute("aria-selected", N
 document.getElementById("btn-tonos").setAttribute("aria-pressed", estado.tonos);
 pintar();
 
-/* en movil, vista dia por defecto + activar primera vista */
+/* en movil, vista dia por defecto */
 if(esMovil()){
   estado.vista = "dia";
   document.getElementById("seg-vista").querySelectorAll("button").forEach(o => o.setAttribute("aria-pressed", o.dataset.vista === "dia"));
-  pintarVista();
   cambiarMob("horario");
+  pintarVista();
 }
 
 /* recalcular calendario al cambiar tamano */
