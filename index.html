@@ -421,31 +421,32 @@ header.top{background:linear-gradient(135deg,#14131A 0%,#1E1D2A 100%);color:#fff
 /* ───────── responsive: movil ───────── */
 @media (max-width:768px){
   /* ---- nav inferior fija ---- */
-  .mob-nav{display:flex;position:fixed;bottom:0;left:0;right:0;z-index:60;background:rgba(20,19,26,.95);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-top:1px solid rgba(255,255,255,.08);padding:0 0 env(safe-area-inset-bottom,0);height:calc(60px + env(safe-area-inset-bottom,0))}
-  .mob-nav button{flex:1;border:0;background:none;color:#8E8DA0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;font-family:var(--ui);font-size:10.5px;font-weight:600;letter-spacing:.02em;padding:8px 0;transition:all .15s}
+  .mob-nav{display:flex;position:fixed;bottom:0;left:0;right:0;z-index:60;background:rgba(20,19,26,.97);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-top:1px solid rgba(255,255,255,.08);padding:0 0 env(safe-area-inset-bottom,0);height:calc(52px + env(safe-area-inset-bottom,0))}
+  .mob-nav button{flex:1;border:0;background:none;color:#8E8DA0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-family:var(--ui);font-size:9.5px;font-weight:600;letter-spacing:.02em;padding:6px 0;transition:all .15s}
   .mob-nav button.activo{color:#fff}
-  .mob-nav button.activo .mn-ico{background:var(--granate);transform:scale(1.1);box-shadow:0 0 12px rgba(122,30,46,.35)}
-  .mn-ico{width:30px;height:30px;border-radius:10px;display:grid;place-items:center;font-size:16px;transition:all .15s}
+  .mob-nav button.activo .mn-ico{background:var(--granate);transform:scale(1.05);box-shadow:0 0 10px rgba(122,30,46,.3)}
+  .mn-ico{width:26px;height:26px;border-radius:8px;display:grid;place-items:center;font-size:14px;transition:all .15s}
 
   /* ---- header compacto ---- */
-  .top-in{flex-direction:row;align-items:center;gap:6px;padding:6px 10px 0;flex-wrap:nowrap}
+  .top-in{flex-direction:row;align-items:center;gap:0;padding:5px 10px 0;flex-wrap:nowrap}
   .kicker{display:none}
-  .marca h1{font-size:15px;margin:0;white-space:nowrap}
+  .marca h1{font-size:14px;margin:0;white-space:nowrap}
   .marca h1 em{display:none}
-  .metricas{gap:4px;padding-bottom:0;margin-left:auto;flex-shrink:0}
-  .metrica{padding:4px 8px;border-radius:8px}
-  .metrica b{font-size:13px}
-  .metrica span{font-size:6.5px;margin-top:1px}
-  .top-tabs{padding:0 10px;margin-top:4px;gap:0;overflow-x:auto}
+  .metricas{gap:3px;padding-bottom:0;margin-left:auto;flex-shrink:0}
+  .metrica{padding:3px 6px;border-radius:6px}
+  .metrica b{font-size:11px}
+  .metrica span{font-size:5.5px;margin-top:1px;letter-spacing:.1em}
+  .top-tabs{padding:0 10px;margin-top:3px;gap:0;overflow-x:auto}
   .tabs-sep{display:none}
   .tabs-pag{display:none}
-  .tabs-cuat{gap:1px}
-  .tab{padding:5px 12px;font-size:10.5px}
+  .tabs-cuat{gap:1px;padding:2px}
+  .tab{padding:4px 10px;font-size:10px}
 
   /* ---- paginas en movil ---- */
   .pagina{display:none!important}
   .pagina.mob-activo{display:block!important}
-  .pag-horario,.pag-asigs{padding:4px 4px calc(68px + env(safe-area-inset-bottom,0))}
+  .pag-horario,.pag-asigs{padding:0 0 calc(56px + env(safe-area-inset-bottom,0))}
+  .pag-horario .panel{border:0;border-radius:0;box-shadow:none}
   .dos-cols{grid-template-columns:1fr;gap:10px}
 
   /* en movil, "elegidas" es su propia vista */
@@ -485,12 +486,12 @@ header.top{background:linear-gradient(135deg,#14131A 0%,#1E1D2A 100%);color:#fff
   .sc-nombre{font-size:15px}
 
   /* ---- barra calendario compacta ---- */
-  .barra{padding:5px 8px;gap:4px;flex-direction:row;flex-wrap:nowrap;overflow-x:auto}
+  .barra{padding:4px 6px;gap:4px;flex-direction:row;flex-wrap:nowrap;overflow-x:auto;border-bottom:0}
   .seg{flex:none}
-  .seg button{padding:5px 10px;font-size:10px;border-radius:8px}
-  .seg{border-radius:10px;padding:2px}
-  .acciones{flex:none;gap:3px}
-  .btn{padding:5px 8px;font-size:9px;border-radius:8px}
+  .seg button{padding:4px 9px;font-size:9.5px;border-radius:7px}
+  .seg{border-radius:9px;padding:2px}
+  .acciones{flex:none;gap:2px}
+  .btn{padding:4px 7px;font-size:8.5px;border-radius:7px}
 
   /* ---- calendario movil: columnas proporcionales sin scroll ---- */
   .cal-wrap{padding:0 0 6px;overflow:hidden}
@@ -617,6 +618,9 @@ header.top{background:linear-gradient(135deg,#14131A 0%,#1E1D2A 100%);color:#fff
 .dia-nav button{border:0;background:var(--ink);color:#fff;width:34px;height:34px;border-radius:10px;font-size:16px;font-weight:700;display:grid;place-items:center;transition:all .12s}
 .dia-nav button:hover{background:#2A2935;transform:translateY(-1px)}
 .dia-nav .dia-nombre{font-family:var(--display);font-size:17px;font-weight:700;min-width:120px;text-align:center}
+.dia-dots{display:flex;gap:6px;justify-content:center;padding:0 0 6px}
+.dia-dots span{width:7px;height:7px;border-radius:50%;background:var(--linea);transition:all .15s}
+.dia-dots span.act{background:var(--ink);transform:scale(1.3)}
 .dia-view .cal-wrap{padding:4px 20px 10px}
 .dia-view .cal-cab{grid-template-columns:56px 1fr}
 .dia-view .cal-cuerpo{grid-template-columns:56px 1fr}
@@ -627,40 +631,42 @@ header.top{background:linear-gradient(135deg,#14131A 0%,#1E1D2A 100%);color:#fff
 .dia-view .bq .bq-detalle .bq-h{font-size:11px}
 .dia-view .bq .tipo{font-size:9px;padding:1px 5px}
 @media(max-width:768px){
-  .dia-nav{padding:8px 14px;gap:10px}
-  .dia-nav button{width:36px;height:36px;font-size:16px;border-radius:10px}
-  .dia-nav .dia-nombre{font-size:17px;min-width:110px}
-  .dia-view .cal-wrap{padding:2px 8px 6px}
-  .dia-view .cal-cab{grid-template-columns:36px 1fr}
-  .dia-view .cal-cab div{font-size:9px;padding:8px 4px}
-  .dia-view .cal-cuerpo{grid-template-columns:36px 1fr}
-  .dia-view .hm{font-size:9px;font-weight:700}
-  .dia-view .dia{padding:0 4px}
-  .dia-view .bq{padding:6px 8px 5px 10px;border-radius:9px;border-width:1.5px;gap:1px}
-  .dia-view .bq .bq-nombre{font-size:13px;white-space:normal;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;line-height:1.25}
-  .dia-view .bq .bq-detalle{font-size:10.5px;gap:3px}
-  .dia-view .bq .bq-detalle .bq-h{font-size:10.5px}
-  .dia-view .bq .tipo{font-size:8px;padding:1px 4px;border-radius:3px}
+  .dia-nav{padding:4px 10px;gap:8px;border-bottom:1px solid var(--linea-2)}
+  .dia-nav button{width:28px;height:28px;font-size:14px;border-radius:8px}
+  .dia-nav .dia-nombre{font-size:14px;font-weight:700;min-width:90px}
+  .dia-view .cal-wrap{padding:0 2px 6px}
+  .dia-view .cal-cab{display:none}
+  .dia-view .cal-cuerpo{grid-template-columns:34px 1fr}
+  .dia-view .hm{font-size:8.5px;font-weight:700}
+  .dia-view .dia{padding:0 3px}
+  .dia-view .bq{padding:5px 7px 4px 9px;border-radius:9px;border-width:1.5px;gap:1px}
+  .dia-view .bq .bq-nombre{font-size:12.5px;white-space:normal;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;line-height:1.25}
+  .dia-view .bq .bq-detalle{font-size:10px;gap:3px}
+  .dia-view .bq .bq-detalle .bq-h{font-size:10px}
+  .dia-view .bq .tipo{font-size:7.5px;padding:1px 4px;border-radius:3px}
   .dia-view .bq.bq-tall .bq-nombre{-webkit-line-clamp:4}
 }
 
 /* ───────── movil pequeno ───────── */
 @media (max-width:400px){
-  .marca h1{font-size:14px}
-  .metricas{gap:5px}
-  .metrica b{font-size:12px}
-  .metrica span{font-size:6.5px}
-  .tab{padding:5px 9px;font-size:10px}
-  .mob-nav{height:52px}
-  .mn-ico{width:24px;height:24px;font-size:13px;border-radius:6px}
-  .mob-nav button{font-size:9px}
-  .cal-cab{grid-template-columns:28px repeat(5,1fr)}
-  .cal-cuerpo{grid-template-columns:28px repeat(5,1fr)}
+  .marca h1{font-size:12px}
+  .metricas{gap:2px}
+  .metrica{padding:2px 5px;border-radius:5px}
+  .metrica b{font-size:10px}
+  .metrica span{font-size:5px}
+  .tab{padding:4px 8px;font-size:9px}
+  .mob-nav{height:calc(48px + env(safe-area-inset-bottom,0))}
+  .mn-ico{width:22px;height:22px;font-size:12px;border-radius:6px}
+  .mob-nav button{font-size:8.5px;gap:1px}
+  .cal-cab{grid-template-columns:26px repeat(5,1fr)}
+  .cal-cuerpo{grid-template-columns:26px repeat(5,1fr)}
   .hm{font-size:7px;right:0}
   .bq{padding:1px 1px 1px 3px;border-radius:4px}
   .bq .bq-nombre{font-size:7px}
   .bq .bq-detalle{font-size:5.5px}
   .bq .tipo{display:none}
+  .dia-view .cal-cuerpo{grid-template-columns:30px 1fr}
+  .dia-nav .dia-nombre{font-size:13px}
 }
 
 @media print{
@@ -1843,10 +1849,12 @@ function htmlCalendarioDia(){
   const d = estado.diaVista;
   const bloques = bloquesVisibles(estado.cuat).filter(b => b.dia === d);
 
+  const dots = DIA_C.map((_,i) => `<span class="${i===d?"act":""}"></span>`).join("");
   const nav = `<div class="dia-nav">
     <button id="dia-prev">&#8249;</button>
     <span class="dia-nombre">${DIAS[d]}</span>
-    <button id="dia-next">&#8250;</button></div>`;
+    <button id="dia-next">&#8250;</button></div>
+    <div class="dia-dots">${dots}</div>`;
 
   if(!bloques.length){
     return nav + `<div class="cal-vacio">No tienes clases el ${DIAS[d].toLowerCase()}.</div>`;
